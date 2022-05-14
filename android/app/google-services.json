@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "101848093224",
+    "project_id": "appointnet-23c98",
+    "storage_bucket": "appointnet-23c98.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101848093224:android:3431fdc404aa6e6894db1d",
+        "android_client_info": {
+          "package_name": "com.appointent.appointnet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101848093224-invqjkcje00hmk7madifhgsc49ioih2o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChUvKV_LRrC9R4H_KSWvqapQ6rH-sgB9o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "101848093224-invqjkcje00hmk7madifhgsc49ioih2o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "101848093224-04j6posh0jjbf2gus1ejcuf5j8k69b4r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.appointent.appointnet"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
