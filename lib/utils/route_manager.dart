@@ -1,3 +1,4 @@
+import 'package:appointnet/screens/login/login_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -16,8 +17,8 @@ class RouteManager {
     StatefulWidget screen;
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     switch (settings.name) {
-      case PleaseUpdateScreen.tag:
-        screen = PleaseUpdateScreen();
+      case LoginComponent.tag:
+        screen = LoginComponent();
         return ScaleRoute(page: screen, routeSettings: settings);   /// page animation
       default:
         return _noScreen();

@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "101848093224-4komoachse7ghhk5s8o19rm1ru738nic.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appointent.appointnet",
+            "certificate_hash": "700bc32771c0db6cd3fd935b137f9066edce278c"
+          }
+        },
+        {
+          "client_id": "101848093224-h1q31bjj303n6lkp6g2frigb4u2pdsad.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appointent.appointnet",
+            "certificate_hash": "992d27615e69400762123618a8c4d743a4706239"
+          }
+        },
+        {
           "client_id": "101848093224-invqjkcje00hmk7madifhgsc49ioih2o.apps.googleusercontent.com",
           "client_type": 3
         }

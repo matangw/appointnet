@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 abstract class LoginView{
 
-  void loginSucsses();
-  void loginFailed();
+  void loginSucsses(PhoneAuthCredential cred);
+  void loginFailed(String? error);
+  void gotCode();
 
 }
