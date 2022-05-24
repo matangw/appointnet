@@ -67,7 +67,7 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(radius: height*0.3,backgroundColor: MyColors().mainColor,),
+          CircleAvatar(radius: height*0.3,backgroundColor: MyColors().mainColor,backgroundImage: NetworkImage(user.imageUrl as String),),
           SizedBox(height: height*0.1,),
           WidgetUtils().customText(user.name,fontWeight: FontWeight.bold)
         ],

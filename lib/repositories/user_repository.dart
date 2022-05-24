@@ -30,7 +30,7 @@ class UserRepository{
 
   Future<AppointnetUser?> getUserData(String id)async{
     DocumentSnapshot<Object?> snap =await usersCollection.doc(id).get();
-    if(snap==null)
+    if(snap.data() == null)
       {return null;}
     var data = snap.data();
     return AppointnetUser.fromJson(data as Map<String,dynamic>);
