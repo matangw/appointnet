@@ -8,7 +8,9 @@ class HomePageModel{
   FirebaseAuth auth = FirebaseAuth.instance;
 
   HomePageView view;
-  HomePageModel(this.view){}
+  HomePageModel(this.view){
+    getUserData();
+  }
 
   Future<void> getUserData() async{
     AppointnetUser? user = await UserRepository().getUserData(auth.currentUser?.uid as String);
@@ -16,6 +18,7 @@ class HomePageModel{
       view.onError('[-] USER NOT FOUND');
     }
     else{
+      print('[+] FOUND USER');
       view.onFinishedLoading(user);
     }
 

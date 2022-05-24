@@ -36,8 +36,8 @@ class WidgetUtils{
     return SizedBox(
       height: height,
       width: width,
-      child: const Center(
-        child: CircularProgressIndicator(),
+      child:  Center(
+        child: CircularProgressIndicator(color: MyColors().mainColor,),
       ),
     );
   }
