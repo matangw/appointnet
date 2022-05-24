@@ -4,7 +4,6 @@ import 'package:appointnet/screens/home_page/home_page_model.dart';
 import 'package:appointnet/screens/home_page/home_page_view.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -68,7 +67,7 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(radius: height*0.3,backgroundColor: MyColors().mainColor,backgroundImage:CachedNetworkImageProvider(user.imageUrl as String)),
+          CircleAvatar(radius: height*0.3,backgroundColor: MyColors().mainColor,),
           SizedBox(height: height*0.1,),
           WidgetUtils().customText(user.name,fontWeight: FontWeight.bold)
         ],
@@ -169,8 +168,9 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
   }
 
+
   @override
-  void onLoadData(AppointnetUser user) {
+  void onFinishedLoading(AppointnetUser user) {
     setState(() {
       setState(() {
         print('SETTING NEW STATE');
