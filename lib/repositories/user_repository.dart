@@ -28,5 +28,14 @@ class UserRepository{
     return url;
   }
 
+  Future<AppointnetUser?> getUserData(String id)async{
+    DocumentSnapshot<Object?> snap =await usersCollection.doc(id).get();
+    if(snap==null)
+      {return null;}
+    var data = snap.data();
+    return AppointnetUser.fromJson(data as Map<String,dynamic>);
+
+  }
+
 
 }

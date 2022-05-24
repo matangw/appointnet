@@ -1,6 +1,10 @@
 import 'package:appointnet/main.dart';
+import 'package:appointnet/models/user.dart';
+import 'package:appointnet/screens/home_page/home_page_model.dart';
+import 'package:appointnet/screens/home_page/home_page_view.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -12,7 +16,20 @@ class HomePageComponent extends StatefulWidget{
   State<HomePageComponent> createState() => _HomePageComponentState();
 }
 
-class _HomePageComponentState extends State<HomePageComponent> {
+class _HomePageComponentState extends State<HomePageComponent> implements HomePageView {
+
+  late AppointnetUser user;
+  late HomePageModel model;
+
+  ///loading bools
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    model = HomePageModel(this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height- MediaQuery.of(context).padding.top;
@@ -20,7 +37,8 @@ class _HomePageComponentState extends State<HomePageComponent> {
     return Scaffold(
       backgroundColor: MyColors().backgroundColor,
       floatingActionButton: myFloatingActionButton(),
-      body: SingleChildScrollView(
+      body: isLoading? WidgetUtils().loadingWidget(height, width)
+      :SingleChildScrollView(
         child: Container(
           height: height,
           width: width,
@@ -41,14 +59,6 @@ class _HomePageComponentState extends State<HomePageComponent> {
     );
   }
 
-  PreferredSizeWidget myAppBar(){
-    return AppBar(
-      elevation: 0,
-      backgroundColor: MyColors().mainColor,
-      title: Text('name'),
-      leading: CircleAvatar(backgroundColor: Colors.white,),
-    );
-  }
 
   Widget profileContainer(double height,double width){
     return Container(
@@ -58,9 +68,9 @@ class _HomePageComponentState extends State<HomePageComponent> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(radius: height*0.3,backgroundColor: MyColors().mainColor,),
+          CircleAvatar(radius: height*0.3,backgroundColor: MyColors().mainColor,backgroundImage:CachedNetworkImageProvider(user.imageUrl as String)),
           SizedBox(height: height*0.1,),
-          WidgetUtils().customText('name of profile',fontWeight: FontWeight.bold)
+          WidgetUtils().customText(user.name,fontWeight: FontWeight.bold)
         ],
       ),
     );
@@ -152,6 +162,22 @@ class _HomePageComponentState extends State<HomePageComponent> {
         )
       ],
     );
+  }
+
+  @override
+  void onError(String error) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+  }
+
+  @override
+  void onLoadData(AppointnetUser user) {
+    setState(() {
+      setState(() {
+        print('SETTING NEW STATE');
+      });
+      isLoading = false;
+      this.user = user;
+    });
   }
 
 

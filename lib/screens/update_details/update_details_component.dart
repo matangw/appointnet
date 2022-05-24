@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/screens/update_details/update_details_model.dart';
 import 'package:appointnet/screens/update_details/update_details_view.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -28,6 +29,9 @@ class _UpdateDetailsComponentState extends State<UpdateDetailsComponent> impleme
   DateTime? birthDate;
   CroppedFile? userImage;
 
+  ///loading bool
+  bool isLoading = false;
+
   ImagePicker picker = ImagePicker();
 
   @override
@@ -42,7 +46,8 @@ class _UpdateDetailsComponentState extends State<UpdateDetailsComponent> impleme
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
     backgroundColor: MyColors().backgroundColor,
-    body: SingleChildScrollView(
+    body: isLoading? SizedBox(height: height,width: width,child: const  Center(child: CircularProgressIndicator(),),)
+    :SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: width*0.05),
         height: height,
@@ -61,8 +66,6 @@ class _UpdateDetailsComponentState extends State<UpdateDetailsComponent> impleme
             SizedBox(height: height*0.1,),
             submitButton(height*0.1, width*0.4),
             SizedBox(height: height*0.05)
-            ///TODO: date controller
-
           ],
 
         ),
@@ -231,7 +234,9 @@ class _UpdateDetailsComponentState extends State<UpdateDetailsComponent> impleme
 
   @override
   void onSubmit() {
-    // TODO: implement onSubmit
+    setState(() {
+      isLoading = true;
+    });
   }
 
   @override
@@ -256,5 +261,10 @@ class _UpdateDetailsComponentState extends State<UpdateDetailsComponent> impleme
         )
       }
     });
+  }
+
+  @override
+  void onFinshedUploading() {
+    Navigator.of(context).pushNamed(HomePageComponent.tag);
   }
 }

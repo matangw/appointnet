@@ -22,7 +22,7 @@ class AppointnetUser{
         phoneNumber: json['phone_number'],
         birthDate: DateTime.parse(json['birth_date']),
         id: json['id'],
-       imageUrl: json['imageUrl']?? ''
+       imageUrl: json['image_url']?? ''
     );
   }
 
@@ -32,7 +32,7 @@ class AppointnetUser{
       'birth_date': birthDate.toString(),
       'phone_number': phoneNumber,
       'id': id,
-      'imageUrl': imageUrl
+      'image_url': imageUrl
     };
   }
 

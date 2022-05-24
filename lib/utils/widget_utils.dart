@@ -31,4 +31,14 @@ class WidgetUtils{
       ),
     );
   }
+
+  Widget loadingWidget(double height,double width){
+    return SizedBox(
+      height: height,
+      width: width,
+      child: const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
 }

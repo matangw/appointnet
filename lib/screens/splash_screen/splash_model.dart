@@ -1,3 +1,4 @@
+import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/screens/login/login_component.dart';
 import 'package:appointnet/screens/update_details/update_details_component.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,6 +35,7 @@ class SplashModel{
 
       }
       else{
+        correctRoute = HomePageComponent.tag;
         print('need to gome to home screen');
       }
     }
