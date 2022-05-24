@@ -1,6 +1,8 @@
+import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/screens/login/login_component.dart';
 import 'package:appointnet/screens/splash_screen/splash_component.dart';
 import 'package:appointnet/screens/update_details/update_details_component.dart';
+import 'package:appointnet/utils/route_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -20,7 +22,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(),
-      home: UpdateDetailsComponent()
+      home: HomePageComponent(),
+        onGenerateRoute: RouteManager.generateRoute
     );
   }
 }

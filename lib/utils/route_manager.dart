@@ -1,4 +1,6 @@
 import 'package:appointnet/screens/login/login_component.dart';
+import 'package:appointnet/screens/update_details/update_details_component.dart';
+import 'package:appointnet/utils/transitions/scale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -19,6 +21,9 @@ class RouteManager {
     switch (settings.name) {
       case LoginComponent.tag:
         screen = LoginComponent();
+        return ScaleRoute(page: screen, routeSettings: settings);   /// page animation
+      case UpdateDetailsComponent.tag:
+        screen = UpdateDetailsComponent();
         return ScaleRoute(page: screen, routeSettings: settings);   /// page animation
       default:
         return _noScreen();
