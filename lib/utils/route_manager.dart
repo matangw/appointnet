@@ -1,5 +1,6 @@
 import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/screens/login/login_component.dart';
+import 'package:appointnet/screens/new_parlament/new_parlament_component.dart';
 import 'package:appointnet/screens/update_details/update_details_component.dart';
 import 'package:appointnet/utils/transitions/scale.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,9 @@ class RouteManager {
       case HomePageComponent.tag:
         screen = HomePageComponent();
         return ScaleRoute(page: screen, routeSettings: settings);   /// page animation/// page animation
+      case NewParlamentComponent.tag:
+        screen = NewParlamentComponent();
+        return ScaleRoute(page: screen, routeSettings: settings);
       default:
         return _noScreen();
     }
