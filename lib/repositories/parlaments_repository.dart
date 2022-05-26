@@ -26,13 +26,24 @@ class ParlamentsRepository{
     return url;
   }
 
-  Future<Parlament?> getUserData(String id)async{
+  Future<Parlament?> getParlamentData(String id)async{
     DocumentSnapshot<Object?> snap =await _parlamentCollection.doc(id).get();
     if(snap.data() == null)
     {return null;}
     var data = snap.data();
     return Parlament.fromJson(data as Map<String,dynamic>);
-
+  }
+  
+  Future<List<Parlament>> getParlmanetsForUser(String userId)async{
+    List<Parlament> result= [];
+    QuerySnapshot snap = await _parlamentCollection.where('users_id',arrayContains: userId).get();
+    if(snap.size==0){
+      return [];
+    }
+    for(var doc in snap.docs){
+      result.add(Parlament.fromJson(doc.data() as Map<String,dynamic>));
+    }
+    return result;
   }
 
 

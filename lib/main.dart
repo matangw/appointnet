@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(),
-      home: NewParlamentComponent(),
+      home: SplashComponent(),
         onGenerateRoute: RouteManager.generateRoute
     );
   }

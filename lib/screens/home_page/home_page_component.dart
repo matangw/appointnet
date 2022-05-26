@@ -1,4 +1,5 @@
 import 'package:appointnet/main.dart';
+import 'package:appointnet/models/parlament.dart';
 import 'package:appointnet/models/user.dart';
 import 'package:appointnet/screens/home_page/home_page_model.dart';
 import 'package:appointnet/screens/home_page/home_page_view.dart';
@@ -17,7 +18,11 @@ class HomePageComponent extends StatefulWidget{
 
 class _HomePageComponentState extends State<HomePageComponent> implements HomePageView {
 
+  /// user variables
   late AppointnetUser user;
+  late List<Parlament> userParlaments;
+
+
   late HomePageModel model;
 
   ///loading bools
@@ -121,12 +126,7 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
           Container(
             height: height*0.95,
             child: ListView(
-              children: [
-                parlamentListTile(height, width),
-                parlamentListTile(height, width),
-                parlamentListTile(height, width),
-                parlamentListTile(height, width),
-              ],
+              children: parlamentWidgetList(height*0.15, width*0.8),
             ),
           )
         ],
@@ -134,10 +134,18 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
     );
   }
 
-  Widget parlamentListTile(double height,double width){
+  List<Widget> parlamentWidgetList(double tileHeight,double tileWidth){
+    List<Widget> result = [];
+    for(var parlament in model.userParlaments){
+      result.add(parlamentListTile(tileHeight, tileWidth,parlament));
+    }
+    return result;
+  }
+
+  Widget parlamentListTile(double height,double width,Parlament parlament){
     return Container(
-      height: height*0.15,
-      width: width*0.8,
+      height: height,
+      width: width,
       margin: EdgeInsets.symmetric(vertical: height*0.02,horizontal: width*0.05),
       color: Colors.black,
     );
@@ -170,13 +178,14 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
 
 
   @override
-  void onFinishedLoading(AppointnetUser user) {
+  void onFinishedLoading() {
     setState(() {
       setState(() {
         print('SETTING NEW STATE');
       });
       isLoading = false;
-      this.user = user;
+      user = model.user;
+      userParlaments = model.userParlaments;
     });
   }
 

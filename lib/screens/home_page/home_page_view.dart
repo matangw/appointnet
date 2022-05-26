@@ -1,6 +1,6 @@
 import 'package:appointnet/models/user.dart';
 
 abstract class HomePageView{
-  void onFinishedLoading(AppointnetUser user);
+  void onFinishedLoading();
   void onError(String error);
 }

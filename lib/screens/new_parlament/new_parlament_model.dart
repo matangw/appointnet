@@ -13,18 +13,17 @@ class NewParlamentModel{
 
   NewParlamentModel(this.view);
 
-  Future<void> upload(String? name,List<String> friendsIds,File? parlamentImage) async{
-    if(parlamentImage==null){view.onError('Please upload image.');}
-    else if(name==null){view.onError('Please enter name.');}
-    else{
-      await uploadParlament(name, friendsIds, parlamentImage);
-    }
+  bool allFieldsFilled(String? name,List<String> friendsIds,String? parlamentImagePath) {
+    if(parlamentImagePath==null){view.onError('Please upload image.'); return false;}
+    else if(name?.isEmpty as bool){view.onError('Please enter name.'); return false;}
+    else{return true;}
   }
 
   Future<void> uploadParlament(String name,List<String> friendsIds,File parlamentImage) async{
     view.onSubmit();
     Parlament parlament = Parlament(name: name, managerId:auth.currentUser?.uid as String , usersId: friendsIds);
     String imageUrl = await repo.uploadPhoto(parlamentImage, parlament);
+    parlament.usersId.add(auth.currentUser?.uid as String);
     parlament.imageUrl = imageUrl;
     repo.updateParlament(parlament);
     view.onFinishedUploading();

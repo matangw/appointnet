@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/screens/new_parlament/new_parlament_model.dart';
 import 'package:appointnet/screens/new_parlament/new_parlament_view.dart';
 import 'package:appointnet/utils/my_colors.dart';
@@ -183,7 +184,7 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
     return FloatingActionButton(
         backgroundColor: needToConfirm? Colors.green : Colors.white,
         child: Icon(Icons.add,color:needToConfirm?Colors.white :  MyColors().mainColor,),
-        onPressed: ()=> showDialog(context: context, builder: (_)=> myAlertDialog(height,width)),
+        onPressed: ()=> floatingActionButtonFunction(height, width),
     );
   }
 
@@ -192,17 +193,17 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
       title: Text('Are you sure you want to create the group '+nameController.text),
       actions: [
         InkWell(
-          onTap: ()=>null,
+          onTap: ()=>model.uploadParlament(nameController.text, friendsIds, File(userImage?.path as String)),
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: width*0.05,vertical: height*0.01),
             color: MyColors().mainColor,
             child: WidgetUtils().customText('YES',color: Colors.white),
           ),
         ),
         InkWell(
-          onTap: ()=>null,
+          onTap: ()=>Navigator.of(context).pop(),
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: width*0.05,vertical: height*0.01),
             color: Colors.red,
             child: WidgetUtils().customText('NO',color: Colors.white),
           ),
@@ -212,15 +213,10 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
   }
 
 
-  void floatingActionButtonFunction(){
-    if(needToConfirm){
-      model.upload(nameController.text, friendsIds, File(userImage?.path as String));
-    }
-    else{
-      setState(() {
-        needToConfirm = true;
-      });
-    }
+  void floatingActionButtonFunction(double height,double width){
+      if(model.allFieldsFilled(nameController.text, friendsIds,userImage?.path)){
+        showDialog(context: context, builder:(_)=>myAlertDialog(height, width));
+      }
   }
 
   @override
@@ -266,6 +262,6 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
 
   @override
   void onFinishedUploading() {
-    Navigator.of(context).pushNamed(NewParlamentComponent.tag);
+    Navigator.of(context).popAndPushNamed(HomePageComponent.tag);
   }
 }
