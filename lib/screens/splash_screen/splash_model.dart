@@ -1,6 +1,4 @@
-import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/screens/login/login_component.dart';
-import 'package:appointnet/screens/update_details/update_details_component.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,17 +23,18 @@ class SplashModel{
 
   Future<void> getCorrectRoute()async{
     if(auth.currentUser == null){
+      print('need to go to the login screen /////////////////////////');
       correctRoute = LoginComponent.tag;
     }
     else{
       bool isExist = await checkIfUserExist();
       if(!isExist){
-        correctRoute = UpdateDetailsComponent.tag;
+        // TODO: push to update details screen
         print('need to update details');
 
       }
       else{
-        correctRoute = HomePageComponent.tag;
+        // TODO: push to home screen
         print('need to gome to home screen');
       }
     }

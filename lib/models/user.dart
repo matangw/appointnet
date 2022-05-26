@@ -8,10 +8,9 @@ class AppointnetUser{
   String name;
   String phoneNumber;
   DateTime birthDate;
-  String? imageUrl;
 
 
-  AppointnetUser({required this.name,required this.phoneNumber, required this.birthDate, this.id,this.imageUrl}){
+  AppointnetUser({required this.name,required this.phoneNumber, required this.birthDate, this.id}){
     id ??= FirebaseAuth.instance.currentUser?.uid as String;
   }
 
@@ -20,19 +19,17 @@ class AppointnetUser{
    return AppointnetUser(
         name: json['name'],
         phoneNumber: json['phone_number'],
-        birthDate: DateTime.parse(json['birth_date']),
-        id: json['id'],
-       imageUrl: json['image_url']?? ''
+        birthDate: json['birth_date'],
+        id: json['id']
     );
   }
 
   Map<String,dynamic> toJson(){
     return {
       'name': name,
-      'birth_date': birthDate.toString(),
+      'birth_date': birthDate,
       'phone_number': phoneNumber,
-      'id': id,
-      'image_url': imageUrl
+      'id': id
     };
   }
 

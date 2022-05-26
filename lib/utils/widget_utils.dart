@@ -31,14 +31,4 @@ class WidgetUtils{
       ),
     );
   }
-
-  Widget loadingWidget(double height,double width){
-    return SizedBox(
-      height: height,
-      width: width,
-      child:  Center(
-        child: CircularProgressIndicator(color: MyColors().mainColor,),
-      ),
-    );
-  }
 }
