@@ -1,7 +1,9 @@
 import 'package:appointnet/main.dart';
+import 'package:appointnet/models/parlament.dart';
 import 'package:appointnet/models/user.dart';
 import 'package:appointnet/screens/home_page/home_page_model.dart';
 import 'package:appointnet/screens/home_page/home_page_view.dart';
+import 'package:appointnet/screens/new_parlament/new_parlament_component.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,11 @@ class HomePageComponent extends StatefulWidget{
 
 class _HomePageComponentState extends State<HomePageComponent> implements HomePageView {
 
+  /// user variables
   late AppointnetUser user;
+  late List<Parlament> userParlaments;
+
+
   late HomePageModel model;
 
   ///loading bools
@@ -120,13 +126,9 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
           Expanded(child: SizedBox()),
           Container(
             height: height*0.95,
+            width: width*0.95,
             child: ListView(
-              children: [
-                parlamentListTile(height, width),
-                parlamentListTile(height, width),
-                parlamentListTile(height, width),
-                parlamentListTile(height, width),
-              ],
+              children: parlamentWidgetList(height*0.15, width*0.8),
             ),
           )
         ],
@@ -134,12 +136,37 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
     );
   }
 
-  Widget parlamentListTile(double height,double width){
-    return Container(
-      height: height*0.15,
-      width: width*0.8,
-      margin: EdgeInsets.symmetric(vertical: height*0.02,horizontal: width*0.05),
-      color: Colors.black,
+  List<Widget> parlamentWidgetList(double tileHeight,double tileWidth){
+    List<Widget> result = [];
+    for(var parlament in model.userParlaments){
+      result.add(parlamentListTile(tileHeight, tileWidth,parlament));
+    }
+    return result;
+  }
+
+  Widget parlamentListTile(double height,double width,Parlament parlament){
+    return Card(
+      elevation: 10,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.2)),
+      child: Container(
+        height: height,
+        width: width,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(height*0.2),
+            gradient: LinearGradient(colors: [MyColors().mainDark,MyColors().mainBright,MyColors().backgroundColor],stops: [0.2,0.5,1])
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(width: width*0.1,),
+            CircleAvatar(backgroundImage: NetworkImage(parlament.imageUrl as String),),
+            SizedBox(width: width*0.05,),
+            WidgetUtils().customText(parlament.name,fontWeight: FontWeight.bold,color: Colors.white)
+          ],
+
+        ),
+      ),
     );
   }
 
@@ -150,13 +177,14 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
       overlayOpacity: 0.5,
       children: [
         SpeedDialChild(
-          child: Icon(Icons.group,color: Colors.white,),
-          backgroundColor: MyColors().mainBright,
+          child: Icon(Icons.group,color: MyColors().mainBright,),
+          backgroundColor: Colors.white,
           label: ('parlament'),
+          onTap: ()=>Navigator.of(context).pushNamed(NewParlamentComponent.tag)
         ),
         SpeedDialChild(
-          child: Icon(Icons.person,color: Colors.white,),
-          backgroundColor: MyColors().mainDark,
+          child: Icon(Icons.person,color: MyColors().mainDark,),
+          backgroundColor: Colors.white,
           label: ('friend'),
         )
       ],
@@ -170,13 +198,14 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
 
 
   @override
-  void onFinishedLoading(AppointnetUser user) {
+  void onFinishedLoading() {
     setState(() {
       setState(() {
         print('SETTING NEW STATE');
       });
       isLoading = false;
-      this.user = user;
+      user = model.user;
+      userParlaments = model.userParlaments;
     });
   }
 
