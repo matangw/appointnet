@@ -15,6 +15,7 @@ class SplashModel{
   String correctRoute = '';
 
   SplashModel(){
+    print('user phone number is '+ auth.currentUser!.phoneNumber.toString());
     setStartingRoute();
   }
 
