@@ -2,8 +2,6 @@ class GeneralUtils{
 
 
 
-
-
   String? phoneValidationError(String userInput){
     if(userInput.length!=10){return 'Not in the correct length';}
     else if(userInput.startsWith('05')==false){return 'Not valid number';}
