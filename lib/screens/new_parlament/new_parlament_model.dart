@@ -5,6 +5,7 @@ import 'package:appointnet/repositories/parlaments_repository.dart';
 import 'package:appointnet/screens/new_parlament/new_parlament_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+
 class NewParlamentModel{
 
   NewParlamentView view;
