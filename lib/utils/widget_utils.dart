@@ -5,13 +5,14 @@ import 'my_colors.dart';
 class WidgetUtils{
 
 
-  Widget customText(String text,{Color? color,FontWeight? fontWeight,TextAlign? align,double? fontSize,int? maxLines}){
+  Widget customText(String text,{Color? color,FontWeight? fontWeight,TextAlign? align,double? fontSize,int? maxLines,TextOverflow? overflow}){
     return Text(
       text,
+      overflow: overflow,
       maxLines: maxLines?? 1,
       textAlign: align?? TextAlign.center,
       style: TextStyle(
-        color: color,
+        color: color?? MyColors().textColor,
         fontWeight: fontWeight,
         fontSize: fontSize,
       ),

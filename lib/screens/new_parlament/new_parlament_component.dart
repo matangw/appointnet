@@ -45,6 +45,7 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: MyColors().mainColor,
       floatingActionButton: myActionButton(height,width),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SingleChildScrollView(
@@ -69,6 +70,7 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
     return Container(
       height: height,
       width: width,
+      color: MyColors().mainColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,14 +79,14 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
             onTap: ()=> onPickImage(),
             child: CircleAvatar(
               radius: height*0.3,
-              backgroundColor: MyColors().mainColor,
+              backgroundColor: MyColors().backgroundColor,
               backgroundImage: userImage == null? null : FileImage(File(userImage?.path as String )),
-              child: Icon(Icons.image,color: Colors.white,),
+              child: Icon(Icons.image,color: MyColors().mainDark,),
             ),
           ),
           SizedBox(height: height*0.05,),
           Card(
-            elevation: 10,
+            elevation: 5,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.2)),
             child: Container(
               width: width*0.7,
@@ -118,14 +120,14 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
       height: height,
       width: width,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(width*0.25),topRight: Radius.circular(width*0.25)),
-        color: MyColors().mainColor,
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(width*0.1),topRight: Radius.circular(width*0.1)),
+        color: MyColors().backgroundColor,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: height*0.05,child: WidgetUtils().customText('Pick friends',fontWeight: FontWeight.bold)),
+          SizedBox(height: height*0.05,child: WidgetUtils().customText('Pick friends',fontWeight: FontWeight.bold,)),
           Container(height:height*0.1,width: width*0.7,child: Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -163,18 +165,18 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
       margin: EdgeInsets.symmetric(vertical: height*0.15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(height*0.25),
-        color: Colors.white
+        color: MyColors().mainColor
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(width: width*0.1,),
-          CircleAvatar(backgroundColor: MyColors().mainColor,),
+          CircleAvatar(backgroundColor: MyColors().backgroundColor,),
           SizedBox(width: width*0.05,),
-          WidgetUtils().customText('user name', color: MyColors().mainColor,fontWeight: FontWeight.bold),
+          WidgetUtils().customText('user name',fontWeight: FontWeight.bold),
           Expanded(child: SizedBox()),
-          CircleAvatar(backgroundColor: MyColors().mainColor,child: Icon(Icons.add,color: Colors.white,),),
+          CircleAvatar(backgroundColor: MyColors().backgroundColor,child: Icon(Icons.add,color: MyColors().textColor,),),
           SizedBox(width: width*0.1,)
         ],
       ),
@@ -184,7 +186,7 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
   FloatingActionButton myActionButton(double height,double width){
     return FloatingActionButton(
         backgroundColor: needToConfirm? Colors.green : Colors.white,
-        child: Icon(Icons.add,color:needToConfirm?Colors.white :  MyColors().mainColor,),
+        child: Icon(Icons.add,color:needToConfirm?Colors.white :  MyColors().buttonColor,),
         onPressed: ()=> floatingActionButtonFunction(height, width),
     );
   }

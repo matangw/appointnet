@@ -153,7 +153,7 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
         width: width,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(height*0.2),
-            gradient: LinearGradient(colors: [MyColors().mainDark,MyColors().mainBright,MyColors().backgroundColor],stops: [0.2,0.5,1])
+            gradient: LinearGradient(colors: [MyColors().mainColor,MyColors().mainBright],stops: [0.5,1])
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
