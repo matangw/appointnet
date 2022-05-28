@@ -4,6 +4,8 @@ import 'package:appointnet/utils/widget_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/parlament.dart';
+
 class ParlamentScreenComponent extends StatefulWidget{
 
   static const String tag = 'parlament_screen_tag';
@@ -16,22 +18,37 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
   ///controllers
   final PageController _eventController = PageController(initialPage: 0);
 
+  ///modal variables
+    late Parlament parlament;
+
+  /// loading vars
+  bool isLoading = true;
+
   @override
   Widget build(BuildContext context) {
+
+    if(isLoading){
+     setState(() {
+       parlament = ModalRoute.of(context)?.settings.arguments as Parlament;
+       isLoading = false;
+     });
+    }
+
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
     // TODO: implement build
     return Scaffold(
       backgroundColor: MyColors().backgroundColor,
-      body: SingleChildScrollView(
+      body: isLoading? WidgetUtils().loadingWidget(height, width)
+      :SingleChildScrollView(
         child: Container(
           height: height,
           width: width,
           child: Stack(
             children: [
               Positioned(left: 0,right: 0,top: 0,child: titleWidget(height*0.35, width)),
-              Positioned(left:0,right: 0,bottom: 0,child: eventPageView(height*0.7, width)),
+              Positioned(left:0,right: 0,bottom: 0,child: bottomContainer(height*0.7, width)),
             ],
           ),
         ),
@@ -50,7 +67,7 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
             width: width,
             decoration: BoxDecoration(
               color: MyColors().mainDark,
-                //image: DecorationImage(image: NetworkImage())
+                image: DecorationImage(image: NetworkImage(parlament.imageUrl as String),fit: BoxFit.fitWidth)
             ),)),
           Positioned(
               left:0,right: 0,bottom: height*0.25,
@@ -63,10 +80,10 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.5)),
                     child: Center(
                         child: WidgetUtils().customText(
-                            'parlament name',
+                            parlament.name,
                             overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.bold,
-                            color: MyColors().mainBright,
+                            color: MyColors().mainColor,
                             fontSize: height*0.08)),
               ),
                 ),))
@@ -75,7 +92,7 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
     );
   }
 
-  Widget eventPageView(double height,double width){
+  Widget bottomContainer(double height,double width){
     return Container(
       height: height,
       width: width,
@@ -83,10 +100,10 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(height: height*0.1,),
+          SizedBox(height: height*0.05,),
           Container(
             height: height*0.7,
-            width: width*0.8,
+            width: width,
             child: PageView(
               controller: _eventController,
               scrollDirection: Axis.horizontal,
@@ -96,6 +113,9 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
               ],
             ),
           ),
+          SizedBox(height: height*0.025,),
+          Divider(color: MyColors().mainBright,thickness: 1,),
+          SizedBox(height: height*0.025,),
           newEventButton(height*0.1, width*0.6)
         ],
       ),
@@ -118,17 +138,17 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                dataRow(width,'time',Icons.access_time, '8:30'),
-                dataRow(width,'time',Icons.access_time, '8:30'),
-                dataRow(width,'time',Icons.access_time, '8:30'),
-                dataRow(width,'time',Icons.access_time, '8:30'),
+                dataRow(width,'Time',Icons.access_time, '8:30'),
+                dataRow(width,'Location',Icons.location_on_rounded, 'kalay'),
+                dataRow(width,'Attending',Icons.group, '()()() +5 more'),
+                dataRow(width,'Bringings',Icons.shopping_bag, '3/8'),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       height: height*0.1,width: width*0.4,
                     decoration:BoxDecoration(color: MyColors().mainBright,borderRadius: BorderRadius.circular(height*0.25)) ,
-                      child: Center(child:WidgetUtils().customText('I will be there',color: Colors.white)),
+                      child: Center(child:WidgetUtils().customText('Coming',color: Colors.white)),
                   )
                   ],
                 ),
@@ -148,18 +168,19 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            width: width*0.3,
+            width: width*0.5,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(icon,color: MyColors().mainBright,),
-                Text(name)
+                SizedBox(width: width*0.03,),
+                WidgetUtils().customText(name)
               ],
             ),
           ),
           Row(
             children: [
-              Text(data)
+              WidgetUtils().customText(data,fontWeight: FontWeight.bold)
             ],
           )
         ],

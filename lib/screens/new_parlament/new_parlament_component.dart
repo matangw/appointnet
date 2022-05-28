@@ -45,7 +45,7 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: MyColors().mainColor,
+      backgroundColor: MyColors().mainBright,
       floatingActionButton: myActionButton(height,width),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SingleChildScrollView(
@@ -70,7 +70,7 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
     return Container(
       height: height,
       width: width,
-      color: MyColors().mainColor,
+      color: MyColors().mainBright,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -159,34 +159,37 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
   }
   
   Widget freindListTile(double height,double width){
-    return Container(
-      height: height,
-      width: width,
-      margin: EdgeInsets.symmetric(vertical: height*0.15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(height*0.25),
-        color: MyColors().mainColor
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(width: width*0.1,),
-          CircleAvatar(backgroundColor: MyColors().backgroundColor,),
-          SizedBox(width: width*0.05,),
-          WidgetUtils().customText('user name',fontWeight: FontWeight.bold),
-          Expanded(child: SizedBox()),
-          CircleAvatar(backgroundColor: MyColors().backgroundColor,child: Icon(Icons.add,color: MyColors().textColor,),),
-          SizedBox(width: width*0.1,)
-        ],
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.25)),
+      child: Container(
+        height: height,
+        width: width,
+        margin: EdgeInsets.symmetric(vertical: height*0.15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(height*0.25),
+          color: Colors.white
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(width: width*0.1,),
+            CircleAvatar(backgroundColor: MyColors().backgroundColor,),
+            SizedBox(width: width*0.05,),
+            WidgetUtils().customText('user name',fontWeight: FontWeight.bold),
+            Expanded(child: SizedBox()),
+            CircleAvatar(backgroundColor: MyColors().mainColor,child: Icon(Icons.add,color: Colors.white,),),
+            SizedBox(width: width*0.1,)
+          ],
+        ),
       ),
     );
   }
 
   FloatingActionButton myActionButton(double height,double width){
     return FloatingActionButton(
-        backgroundColor: needToConfirm? Colors.green : Colors.white,
-        child: Icon(Icons.add,color:needToConfirm?Colors.white :  MyColors().buttonColor,),
+        backgroundColor: MyColors().mainBright,
+        child: Icon(Icons.check,color:needToConfirm?Colors.white : Colors.white,),
         onPressed: ()=> floatingActionButtonFunction(height, width),
     );
   }

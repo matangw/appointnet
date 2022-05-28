@@ -4,6 +4,7 @@ import 'package:appointnet/models/user.dart';
 import 'package:appointnet/screens/home_page/home_page_model.dart';
 import 'package:appointnet/screens/home_page/home_page_view.dart';
 import 'package:appointnet/screens/new_parlament/new_parlament_component.dart';
+import 'package:appointnet/screens/parlament_screen/parlament_screen_component.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
 import 'package:flutter/material.dart';
@@ -145,26 +146,30 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
   }
 
   Widget parlamentListTile(double height,double width,Parlament parlament){
-    return Card(
-      elevation: 10,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.2)),
-      child: Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(height*0.2),
-            gradient: LinearGradient(colors: [MyColors().mainColor,MyColors().mainBright],stops: [0.5,1])
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(width: width*0.1,),
-            CircleAvatar(backgroundImage: NetworkImage(parlament.imageUrl as String),),
-            SizedBox(width: width*0.05,),
-            WidgetUtils().customText(parlament.name,fontWeight: FontWeight.bold,color: Colors.white)
-          ],
+    return InkWell(
+      onTap: ()=>Navigator.of(context).pushNamed(ParlamentScreenComponent.tag,arguments: parlament),
+      child: Card(
+        elevation: 10,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.2)),
+        child: Container(
+          height: height,
+          width: width,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(height*0.2),
+              color: Colors.white
+              //gradient: LinearGradient(colors: [Colors.white,MyColors().mainBright], stops: [0.15,1],)
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(width: width*0.1,),
+              CircleAvatar(backgroundImage: NetworkImage(parlament.imageUrl as String),),
+              SizedBox(width: width*0.05,),
+              WidgetUtils().customText(parlament.name,fontWeight: FontWeight.bold,color: MyColors().textColor)
+            ],
 
+          ),
         ),
       ),
     );
