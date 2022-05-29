@@ -14,6 +14,7 @@ class _SplashComponentState extends State<SplashComponent> {
 
   @override
   void initState() {
+    Future.delayed(Duration(seconds: 3)).then((value) => Navigator.of(context).pushNamed(model.correctRoute));
     super.initState();
   }
 

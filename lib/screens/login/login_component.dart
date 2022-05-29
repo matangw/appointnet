@@ -1,3 +1,4 @@
+import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/screens/login/login_model.dart';
 import 'package:appointnet/screens/login/login_view.dart';
 import 'package:appointnet/utils/my_colors.dart';
@@ -166,6 +167,7 @@ class _LoginComponentState extends State<LoginComponent> implements LoginView{
   @override
   void loginSucsses(PhoneAuthCredential cred) {
     print('[+] LOGIN SUCCSESSFUL WITH: '+cred.smsCode.toString());
+    Navigator.popAndPushNamed(context, HomePageComponent.tag);
   }
 
   @override

@@ -5,13 +5,14 @@ import 'my_colors.dart';
 class WidgetUtils{
 
 
-  Widget customText(String text,{Color? color,FontWeight? fontWeight,TextAlign? align,double? fontSize,int? maxLines}){
+  Widget customText(String text,{Color? color,FontWeight? fontWeight,TextAlign? align,double? fontSize,int? maxLines,TextOverflow? overflow}){
     return Text(
       text,
+      overflow: overflow,
       maxLines: maxLines?? 1,
       textAlign: align?? TextAlign.center,
       style: TextStyle(
-        color: color,
+        color: color?? MyColors().textColor,
         fontWeight: fontWeight,
         fontSize: fontSize,
       ),
@@ -28,6 +29,16 @@ class WidgetUtils{
       ),
       child: Center(
         child: Text('SUBMIT',style: TextStyle(color: color==null? MyColors().mainColor : Colors.white),),
+      ),
+    );
+  }
+
+  Widget loadingWidget(double height,double width){
+    return SizedBox(
+      height: height,
+      width: width,
+      child:  Center(
+        child: CircularProgressIndicator(color: MyColors().mainColor,),
       ),
     );
   }
