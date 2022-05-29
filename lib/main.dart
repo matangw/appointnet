@@ -1,5 +1,6 @@
 import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/screens/login/login_component.dart';
+import 'package:appointnet/screens/new_event_screen/new_event_component.dart';
 import 'package:appointnet/screens/new_parlament/new_parlament_component.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_component.dart';
 import 'package:appointnet/screens/splash_screen/splash_component.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
 
       title: 'Flutter Demo',
       theme: ThemeData(),
-      home: SplashComponent(),
+      home: NewEventComponent(),
         onGenerateRoute: RouteManager.generateRoute
     );
   }

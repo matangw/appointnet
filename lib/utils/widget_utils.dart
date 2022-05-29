@@ -5,7 +5,7 @@ import 'my_colors.dart';
 class WidgetUtils{
 
 
-  Widget customText(String text,{Color? color,FontWeight? fontWeight,TextAlign? align,double? fontSize,int? maxLines,TextOverflow? overflow}){
+  Widget customText(String text,{Color? color,FontWeight? fontWeight,TextAlign? align,double? fontSize,int? maxLines,TextOverflow? overflow,double? letterSpacing}){
     return Text(
       text,
       overflow: overflow,
@@ -15,6 +15,7 @@ class WidgetUtils{
         color: color?? MyColors().textColor,
         fontWeight: fontWeight,
         fontSize: fontSize,
+        letterSpacing: letterSpacing
       ),
     );
   }
