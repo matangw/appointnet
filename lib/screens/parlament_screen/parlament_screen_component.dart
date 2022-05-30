@@ -1,4 +1,5 @@
 import 'package:appointnet/main.dart';
+import 'package:appointnet/screens/new_event_screen/new_event_component.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -189,14 +190,17 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
   }
 
   Widget newEventButton(double height,double width){
-    return Container(
-      height: height,
-      width: width,
-      decoration: BoxDecoration(
-        color: MyColors().mainColor,
-        borderRadius: BorderRadius.circular(height*0.5),
+    return InkWell(
+      onTap: ()=> Navigator.pushNamed(context, NewEventComponent.tag,arguments: parlament),
+      child: Container(
+        height: height,
+        width: width,
+        decoration: BoxDecoration(
+          color: MyColors().mainColor,
+          borderRadius: BorderRadius.circular(height*0.5),
+        ),
+        child: Center(child: WidgetUtils().customText('NEW EVENT',color: Colors.white,fontWeight: FontWeight.bold)),
       ),
-      child: Center(child: WidgetUtils().customText('NEW EVENT',color: Colors.white,fontWeight: FontWeight.bold)),
     );
   }
 
