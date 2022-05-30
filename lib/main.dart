@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
 
       title: 'Flutter Demo',
       theme: ThemeData(),
-      home: NewEventComponent(),
+      home: SplashComponent(),
         onGenerateRoute: RouteManager.generateRoute
     );
   }

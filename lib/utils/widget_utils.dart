@@ -43,4 +43,16 @@ class WidgetUtils{
       ),
     );
   }
+
+  Widget bottomButton(double width,double height,Widget child){
+    return Container(
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(height*0.5),
+          color: MyColors().mainColor
+      ),
+      child: Center(child: child),
+    );
+  }
 }
