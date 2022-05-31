@@ -37,5 +37,13 @@ class UserRepository{
 
   }
 
+  Future<AppointnetUser?> getUserByPhone(String phone)async{
+    QuerySnapshot snap = await usersCollection.where('phone_number',isEqualTo: phone).get();
+    if(snap.size==0){return null;}
+    else{
+      return AppointnetUser.fromJson(snap.docs[0].data() as Map<String,dynamic>);
+    }
+  }
+
 
 }

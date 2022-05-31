@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:appointnet/models/event.dart';
 import 'package:appointnet/models/parlament.dart';
+import 'package:appointnet/models/user.dart';
+import 'package:appointnet/repositories/user_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -44,6 +47,19 @@ class ParlamentsRepository{
       result.add(Parlament.fromJson(doc.data() as Map<String,dynamic>));
     }
     return result;
+  }
+
+  Future<String?> addUserToParlamentUsingPhone(Parlament parlament,String phoneNumber)async{
+    AppointnetUser? user = await UserRepository().getUserByPhone(phoneNumber);
+    if(user==null){
+      return 'No user with number '+phoneNumber.toString()+' found.';
+    }
+    parlament.usersId.add(user.id as String);
+    bool error = await ParlamentsRepository().updateParlament(parlament).onError((error, stackTrace) => false);
+    if(error){return 'Something went wrong';}
+    else{return null;}
+
+
   }
 
 

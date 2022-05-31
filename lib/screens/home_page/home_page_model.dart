@@ -1,5 +1,7 @@
+import 'package:appointnet/models/event.dart';
 import 'package:appointnet/models/parlament.dart';
 import 'package:appointnet/models/user.dart';
+import 'package:appointnet/repositories/event_repository.dart';
 import 'package:appointnet/repositories/parlaments_repository.dart';
 import 'package:appointnet/repositories/user_repository.dart';
 import 'package:appointnet/screens/home_page/home_page_view.dart';
@@ -12,6 +14,7 @@ class HomePageModel{
   ///user data
   late AppointnetUser user;
   List<Parlament> userParlaments = [];
+  List<Event> userUpcomingEvents = [];
 
   HomePageView view;
   HomePageModel(this.view){
@@ -19,6 +22,7 @@ class HomePageModel{
   }
 
   Future<void> getUserData() async{
+    getUserUpcomingEvents();
     AppointnetUser? user = await UserRepository().getUserData(auth.currentUser?.uid as String);
     if(user== null){
       view.onError('[-] USER NOT FOUND');
@@ -36,7 +40,11 @@ class HomePageModel{
     userParlaments = await ParlamentsRepository().getParlmanetsForUser(auth.currentUser?.uid as String);
   }
 
+  Future<void> getUserUpcomingEvents()async{
+    List<Event> events =await EventRepository(parlamentId: 'noEnd').upcomingUserEvents();
+    userUpcomingEvents = events;
+    view.onGotAllEvents();
 
-  // TODO: GET TOP 5 CLOSE EVENTS
+  }
 
 }
