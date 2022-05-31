@@ -2,6 +2,7 @@ import 'package:appointnet/models/parlament.dart';
 import 'package:appointnet/repositories/event_repository.dart';
 import 'package:appointnet/repositories/parlaments_repository.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_view.dart';
+import 'package:appointnet/utils/general_utils.dart';
 
 import '../../models/event.dart';
 
@@ -28,9 +29,19 @@ class ParlamentScreenModel{
   }
 
   Future<void> addNewUserToParlament(String phone)async{
-    String? error = await ParlamentsRepository().addUserToParlamentUsingPhone(parlament, phone);
+    String? phoneError = GeneralUtils().phoneValidationError(phone);
+    print('[!] USER PHONE NUMBER: '+phone);
+    if(phoneError!=null){
+      view.onError(phoneError);
+      return;
+    }
+
+    String newPhone = GeneralUtils().phoneTemplate(phone);
+    view.startAddingUserToParlament();
+    String? error = await ParlamentsRepository().addUserToParlamentUsingPhone(parlament, newPhone);
     if(error!=null){
       view.onError(error);
     }
+    view.finishedAddingUserToParlament();
   }
 }

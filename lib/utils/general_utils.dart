@@ -1,4 +1,7 @@
+import 'package:appointnet/screens/login/login_component.dart';
+import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class GeneralUtils{
@@ -15,12 +18,22 @@ class GeneralUtils{
   }
 
   String phoneTemplate(String userInput){
-    userInput.substring(1);
+    userInput = userInput.substring(1);
     String phoneNumber = '+972'+userInput;
     return phoneNumber;
   }
 
   void errorSnackBar(String error,BuildContext context){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.white,content: WidgetUtils().customText(error,color: Colors.red)));
+  }
+
+  void successSnackBar(String error,BuildContext context){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.white,content: WidgetUtils().customText(error,color: MyColors().mainColor)));
+  }
+
+  Future<void> signOut(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushNamedAndRemoveUntil(LoginComponent.tag, (Route<dynamic> route) => false);
+
   }
 }

@@ -81,15 +81,13 @@ class _UpdateDetailsComponentState extends State<UpdateDetailsComponent> impleme
         Container(
           child: WidgetUtils().customText(
             'Please fill youre details',
-            color: MyColors().mainColor,
-            fontSize: fontSize,
+              fontSize: fontSize,
             fontWeight: FontWeight.bold
           ),
         ),
         Container(
           child: WidgetUtils().customText(
               'and submit',
-              color: MyColors().mainColor,
               fontSize: fontSize,
               fontWeight: FontWeight.bold
           ),
@@ -101,17 +99,20 @@ class _UpdateDetailsComponentState extends State<UpdateDetailsComponent> impleme
   Widget imageContainer(double radius){
     return Container(
       decoration: BoxDecoration(
-        color: MyColors().mainColor,
         borderRadius: BorderRadius.circular(radius*0.1)
       ),
       padding: EdgeInsets.all(radius*0.1),
       child: InkWell(
         onTap: ()=> pickImage(),
-        child: CircleAvatar(
-          radius: radius,
-          backgroundColor: Colors.white,
-          backgroundImage: userImage==null? null : FileImage(File(userImage?.path as String)),
-          child:userImage==null? Icon(Icons.image,size: radius*0.8,) : Container(),
+        child: Card(
+          elevation: 10,
+          shape: CircleBorder(),
+          child: CircleAvatar(
+            radius: radius,
+            backgroundColor: Colors.white,
+            backgroundImage: userImage==null? null : FileImage(File(userImage?.path as String)),
+            child:userImage==null? Icon(Icons.image,size: radius*0.8,color: MyColors().mainColor,) : Container(),
+          ),
         ),
       ),
     );
@@ -121,7 +122,6 @@ class _UpdateDetailsComponentState extends State<UpdateDetailsComponent> impleme
     return Container(
       padding: EdgeInsets.symmetric(horizontal: width*0.02,vertical:height*0.01),
       decoration: BoxDecoration(
-        color: MyColors().mainColor,
         borderRadius: BorderRadius.circular(height*0.1)
       ),
       child: Card(
@@ -136,7 +136,7 @@ class _UpdateDetailsComponentState extends State<UpdateDetailsComponent> impleme
             children: [
               Icon(icon,color: MyColors().mainColor,),
               SizedBox(width: width*0.05,),
-              WidgetUtils().customText(name,color: MyColors().mainColor,fontWeight: FontWeight.bold),
+              WidgetUtils().customText(name,fontWeight: FontWeight.bold),
               SizedBox(width: width*0.05,),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: width*0.02),
@@ -158,7 +158,6 @@ class _UpdateDetailsComponentState extends State<UpdateDetailsComponent> impleme
     return Container(
       padding: EdgeInsets.symmetric(horizontal: width*0.02,vertical:height*0.01),
       decoration: BoxDecoration(
-          color: MyColors().mainColor,
           borderRadius: BorderRadius.circular(height*0.1)
       ),
       child: Card(
@@ -173,7 +172,7 @@ class _UpdateDetailsComponentState extends State<UpdateDetailsComponent> impleme
             children: [
               Icon(Icons.date_range,color: MyColors().mainColor,),
               SizedBox(width: width*0.05,),
-              WidgetUtils().customText('Birth date:',color: MyColors().mainColor,fontWeight: FontWeight.bold),
+              WidgetUtils().customText('Birth date:',fontWeight: FontWeight.bold),
               SizedBox(width: width*0.08,),
               Container(
                 width: width*0.4,
@@ -215,7 +214,10 @@ class _UpdateDetailsComponentState extends State<UpdateDetailsComponent> impleme
           Container(
             width: width,
             height: height,
-            color: MyColors().mainColor,
+            decoration: BoxDecoration(
+              color: MyColors().mainColor,
+              borderRadius: BorderRadius.circular(height*0.1)
+            ),
               child: Center(child: WidgetUtils().submitButton(height, width,color: MyColors().mainColor))),
         ],
       ),

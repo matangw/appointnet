@@ -1,6 +1,7 @@
 import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/screens/login/login_model.dart';
 import 'package:appointnet/screens/login/login_view.dart';
+import 'package:appointnet/screens/splash_screen/splash_component.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
 import 'package:firebase_auth_platform_interface/src/providers/phone_auth.dart';
@@ -45,11 +46,13 @@ class _LoginComponentState extends State<LoginComponent> implements LoginView{
           height: height,
           width: width,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              title(height*0.2, width*0.6, 'welcome'),
-              SizedBox(height: height*0.1,),
+              SizedBox(height: height*0.15,),
+              title(height*0.1, width*0.8, 'welcome'),
+              hintConaitner(height*0.1, width),
+              SizedBox(height: height*0.05,),
               bottomContainer(height*0.6, width),
 
             ],
@@ -80,23 +83,25 @@ class _LoginComponentState extends State<LoginComponent> implements LoginView{
       ),
     );
   }
+  
+  Widget hintConaitner(double height,double width){
+    return Container(
+      height: height,
+      width: width,
+      child: Center(child: WidgetUtils().customText('Please enter phone number for log in',fontWeight: FontWeight.bold),),
+    );
+  }
 
   Widget bottomContainer(double height,double width){
     return Container(
       height: height,
       width: width,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(color: Colors.grey[400]?? Colors.blue,spreadRadius: 4,blurRadius: 8,offset: Offset.fromDirection(5,5))
-        ],
-        color: MyColors().mainColor,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(width*0.2),topRight: Radius.circular(width*0.2))
-      ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           phoneField(height*0.2, width*0.8),
+          SizedBox(height: height*0.1,),
           submitButton(height*0.2, width*0.4)
         ],
       ),
@@ -105,28 +110,33 @@ class _LoginComponentState extends State<LoginComponent> implements LoginView{
 
   Widget phoneField(double height,double width){
 
-    return Container(
-      height: height,
-      width: width,
-      padding: EdgeInsets.symmetric(horizontal: width*0.05,vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(width*0.05)
-      ),
-      child: Row(
-        children: [
-          Text('phone number: '),
-          Container(
-            width: width*0.5,
-            child: TextField(
-              keyboardType: TextInputType.phone,
-              controller: phoneController,
-              decoration: const InputDecoration(
-                  hintText:  'write here'
+    return Card(
+      elevation: 10,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(width*0.05)),
+      child: Container(
+        height: height,
+        width: width,
+        padding: EdgeInsets.symmetric(horizontal: width*0.05,vertical: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(width*0.05)
+        ),
+        child: Row(
+          children: [
+            WidgetUtils().customText('Phone number: '),
+            SizedBox(width: width*0.02,),
+            Container(
+              width: width*0.5,
+              child: TextField(
+                keyboardType: TextInputType.phone,
+                controller: phoneController,
+                decoration: const InputDecoration(
+                    hintText:  'write here'
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -134,7 +144,7 @@ class _LoginComponentState extends State<LoginComponent> implements LoginView{
   Widget submitButton(double height,double width){
     return InkWell(
       onTap: ()=> model.getCode(phoneController.text),
-      child: WidgetUtils().submitButton(height, width)
+      child: WidgetUtils().submitButton(height, width,color: MyColors().mainColor)
     );
   }
 
@@ -150,6 +160,7 @@ class _LoginComponentState extends State<LoginComponent> implements LoginView{
         InkWell(
           onTap: ()=>model.loginTry(codeController.text),
           child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
             color: MyColors().mainColor,
             child:const  Text('log in'),
           ),
@@ -167,7 +178,7 @@ class _LoginComponentState extends State<LoginComponent> implements LoginView{
   @override
   void loginSucsses(PhoneAuthCredential cred) {
     print('[+] LOGIN SUCCSESSFUL WITH: '+cred.smsCode.toString());
-    Navigator.popAndPushNamed(context, HomePageComponent.tag);
+    Navigator.popAndPushNamed(context, SplashComponent.tag);
   }
 
   @override

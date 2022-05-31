@@ -4,6 +4,8 @@ import 'package:appointnet/utils/widget_utils.dart';
 import 'package:flutter/material.dart';
 
 class SplashComponent extends StatefulWidget {
+
+  static const String tag = 'splash_screen';
   @override
   State<SplashComponent> createState() => _SplashComponentState();
 }

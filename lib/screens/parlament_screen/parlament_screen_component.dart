@@ -255,12 +255,19 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
         ),
       ),
     actions: [
-      Container(
-        height: height*0.08,
-        width: width*0.4,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(height*0.04),color: MyColors().mainColor),
-        child: Center(
-          child: WidgetUtils().customText('ADD',color: Colors.white),
+      InkWell(
+        onTap: ()=> {
+          model.addNewUserToParlament(phoneController.text),
+          phoneController.text = '',
+
+        },
+        child: Container(
+          height: height*0.08,
+          width: width*0.4,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(height*0.04),color: MyColors().mainColor),
+          child: Center(
+            child: WidgetUtils().customText('ADD',color: Colors.white),
+          ),
         ),
       )
     ],
@@ -280,6 +287,26 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
   @override
   void onFinishedLoading() {
     setState(()=> isLoading = false);
+  }
+
+  @override
+  void successFeedBack(String message) {
+   GeneralUtils().successSnackBar(message, context);
+  }
+
+  @override
+  void addingUserToParlament() {
+    Navigator.of(context).pop();
+  }
+
+  @override
+  void finishedAddingUserToParlament() {
+    setState(()=> isLoading =false);
+  }
+
+  @override
+  void startAddingUserToParlament() {
+    setState(()=> isLoading =true);
   }
 
 }

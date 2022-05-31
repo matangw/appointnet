@@ -3,6 +3,7 @@ import 'package:appointnet/screens/login/login_component.dart';
 import 'package:appointnet/screens/new_event_screen/new_event_component.dart';
 import 'package:appointnet/screens/new_parlament/new_parlament_component.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_component.dart';
+import 'package:appointnet/screens/splash_screen/splash_component.dart';
 import 'package:appointnet/screens/update_details/update_details_component.dart';
 import 'package:appointnet/utils/transitions/scale.dart';
 import 'package:appointnet/utils/transitions/slide_right.dart';
@@ -41,6 +42,9 @@ class RouteManager {
         return ScaleRoute(page: screen, routeSettings: settings);
       case NewEventComponent.tag:
         screen = NewEventComponent();
+        return SlideRightRoute(page: screen, routeSettings: settings);
+      case SplashComponent.tag:
+        screen = SplashComponent();
         return SlideRightRoute(page: screen, routeSettings: settings);
       default:
         return _noScreen();
