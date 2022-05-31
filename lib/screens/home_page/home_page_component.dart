@@ -1,4 +1,5 @@
 import 'package:appointnet/main.dart';
+import 'package:appointnet/models/event.dart';
 import 'package:appointnet/models/parlament.dart';
 import 'package:appointnet/models/user.dart';
 import 'package:appointnet/screens/home_page/home_page_model.dart';
@@ -23,6 +24,7 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
   /// user variables
   late AppointnetUser user;
   late List<Parlament> userParlaments;
+  late List<Event> userUpcomingEvents = [];
 
 
   late HomePageModel model;
@@ -96,17 +98,17 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
           SizedBox(height: height*0.1,),
           Container(
             width: width,
+            height: height*0.75,
             child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CircleAvatar(backgroundColor: Colors.black,radius: height*0.4*0.5,),
-                  CircleAvatar(backgroundColor: Colors.black,radius: height*0.4*0.5,),
-                  CircleAvatar(backgroundColor: Colors.black,radius: height*0.4*0.5,),
-                  CircleAvatar(backgroundColor: Colors.black,radius: height*0.4*0.5,),
-                  CircleAvatar(backgroundColor: Colors.black,radius: height*0.4*0.5,),
-                ],
-              ),
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: userUpcomingEvents.length,
+                  itemBuilder:(context,index)=>
+                      Container(margin:EdgeInsets.symmetric(horizontal: width*0.05),
+                          child: CircleAvatar(
+                              backgroundImage:NetworkImage( userUpcomingEvents[index].parlamentImage,)
+                          ),)
+              )
             ),
           )
         ],
@@ -212,6 +214,11 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
       user = model.user;
       userParlaments = model.userParlaments;
     });
+  }
+
+  @override
+  void onGotAllEvents() {
+    setState(()=>userUpcomingEvents = model.userUpcomingEvents);
   }
 
 

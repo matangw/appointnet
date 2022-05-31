@@ -8,10 +8,12 @@ class Event{
   DateTime date;
   TimeOfDay time;
   String location;
+  String  parlamentImage;
   List<String> attendingsIds;
   List<String> invitedIds;
 
   Event({
+    required this.parlamentImage,
     required this.date,required this.time,required this.location,
     required this.attendingsIds,required this.invitedIds ,this.id,
   }){
@@ -22,10 +24,11 @@ class Event{
   Map<String,dynamic> toJson(){
     return {
       'id': id,
-      'date': date,
+      'date': date.toString(),
       'location': location,
       'attendings': attendingsIds,
-      'invited': invitedIds
+      'invited': invitedIds,
+      'parlamentImage': parlamentImage
     };
   }
 
@@ -38,6 +41,7 @@ class Event{
         location: json['location'],
         attendingsIds: json['attendings'] == null ? [] : json['attendings']?.cast<String>(),
         invitedIds: json['invited'] == null ? [] : json['invited']?.cast<String>(),
+        parlamentImage: json['parlamentImage']
     );
   }
 

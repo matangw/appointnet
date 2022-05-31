@@ -18,7 +18,7 @@ class NewEventModel{
   }
 
   Future<void> uploadEvent(DateTime dateTime,TimeOfDay timeOfDay,String location)async{
-    Event event = Event(date: dateTime, time: timeOfDay, location: location, attendingsIds: [],invitedIds: parlament.usersId);
+    Event event = Event(parlamentImage: parlament.imageUrl as String,date: dateTime, time: timeOfDay, location: location, attendingsIds: [],invitedIds: parlament.usersId);
     view.startedUploading();
     bool success = await EventRepository(parlamentId:parlament.id as String).updateEvent(event).catchError((error)=>print(error));
     if(success){

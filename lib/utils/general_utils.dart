@@ -1,3 +1,6 @@
+import 'package:appointnet/utils/widget_utils.dart';
+import 'package:flutter/material.dart';
+
 class GeneralUtils{
 
 
@@ -17,4 +20,7 @@ class GeneralUtils{
     return phoneNumber;
   }
 
+  void errorSnackBar(String error,BuildContext context){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.white,content: WidgetUtils().customText(error,color: Colors.red)));
+  }
 }

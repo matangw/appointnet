@@ -7,6 +7,8 @@ class EventRepository{
   String parlamentId;
   late CollectionReference _eventCollection;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  Query groupCollecion =FirebaseFirestore.instance.collectionGroup('events');
+
 
   EventRepository({required this.parlamentId}){
     _eventCollection = FirebaseFirestore.instance.collection('parlaments').doc(parlamentId).collection('events');
@@ -26,6 +28,35 @@ class EventRepository{
     {return null;}
     var data = snap.data();
     return Event.fromJson(data as Map<String,dynamic>);
+  }
+
+  Future<List<Event>> getParlamentEvents() async{
+    List<Event> result = [];
+    QuerySnapshot snap = await _eventCollection.orderBy('date',descending: false).get();
+    if(snap.size==0){
+      return [];
+    }
+    else{
+      for(var doc in snap.docs){
+        result.add(Event.fromJson(doc.data() as Map<String,dynamic>));
+      }
+    }
+    return result;
+  }
+
+  Future<List<Event>> upcomingUserEvents() async{
+    List<Event> result = [];
+    String userId = _auth.currentUser?.uid as String;
+    QuerySnapshot snap = await groupCollecion.where('invited',arrayContains: userId).orderBy('date').limit(5).get();
+    if(snap.size==0){
+      print('[-] NO UPCOMING EVENTS FOUNDED');
+      return [];
+    }
+    print('[+] FOUND '+snap.size.toString() +' IN COLLECTION GROUP');
+    for(var event in snap.docs){
+      result.add(Event.fromJson(event.data() as Map<String,dynamic>));
+    }
+    return result;
   }
 
 

@@ -1,11 +1,17 @@
 import 'package:appointnet/main.dart';
+import 'package:appointnet/models/event.dart';
 import 'package:appointnet/screens/new_event_screen/new_event_component.dart';
+import 'package:appointnet/screens/parlament_screen/parlament_screen_model.dart';
+import 'package:appointnet/screens/parlament_screen/parlament_screen_view.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:intl/intl.dart';
 
 import '../../models/parlament.dart';
+import '../../utils/general_utils.dart';
 
 class ParlamentScreenComponent extends StatefulWidget{
 
@@ -14,34 +20,48 @@ class ParlamentScreenComponent extends StatefulWidget{
   State<ParlamentScreenComponent> createState() => _ParlamentScreenComponentState();
 }
 
-class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
+class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> implements ParlamentScreenView {
+
+  late ParlamentScreenModel model;
 
   ///controllers
   final PageController _eventController = PageController(initialPage: 0);
 
   ///modal variables
     late Parlament parlament;
+    bool needParlament = true;
 
   /// loading vars
   bool isLoading = true;
+  List<Event> events = [];
+
+  TextEditingController phoneController = TextEditingController();
+
+
+
 
   @override
   Widget build(BuildContext context) {
 
-    if(isLoading){
+
+    if(needParlament){
      setState(() {
        parlament = ModalRoute.of(context)?.settings.arguments as Parlament;
-       isLoading = false;
+       needParlament = false;
+       model = ParlamentScreenModel(this,parlament);
      });
     }
 
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
+    MaterialLocalizations localizations = MaterialLocalizations.of(context);
+
     // TODO: implement build
     return Scaffold(
+      floatingActionButton: myActionButton(height, width),
       backgroundColor: MyColors().backgroundColor,
-      body: isLoading? WidgetUtils().loadingWidget(height, width)
+      body: isLoading? WidgetUtils().loadingWidget(height*0.6, width*0.8)
       :SingleChildScrollView(
         child: Container(
           height: height,
@@ -49,7 +69,7 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
           child: Stack(
             children: [
               Positioned(left: 0,right: 0,top: 0,child: titleWidget(height*0.35, width)),
-              Positioned(left:0,right: 0,bottom: 0,child: bottomContainer(height*0.7, width)),
+              Positioned(left:0,right: 0,bottom: 0,child: bottomContainer(height*0.7, width,localizations)),
             ],
           ),
         ),
@@ -93,7 +113,7 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
     );
   }
 
-  Widget bottomContainer(double height,double width){
+  Widget bottomContainer(double height,double width,MaterialLocalizations localizations){
     return Container(
       height: height,
       width: width,
@@ -108,10 +128,7 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
             child: PageView(
               controller: _eventController,
               scrollDirection: Axis.horizontal,
-              children: [
-                eventContainer(height*0.8, width*0.8),
-                eventContainer(height*0.8, width*0.8),
-              ],
+              children: eventContainerList(height*0.8, width*0.9, localizations),
             ),
           ),
           SizedBox(height: height*0.025,),
@@ -123,7 +140,16 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
     );
   }
 
-  Widget eventContainer(double height,double width){
+  List<Widget> eventContainerList(double height,double width,MaterialLocalizations localizations){
+    List<Widget> result = [];
+    if(events.isEmpty){return [];}
+    for(var e in events){
+      result.add(eventContainer(height, width, e, localizations));
+    }
+    return result;
+  }
+
+  Widget eventContainer(double height,double width,Event event,MaterialLocalizations localizations){
     return Container(
       height: height,
       width: width,
@@ -131,7 +157,7 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          WidgetUtils().customText('Event at: 21/9/2000',color: Colors.black,fontWeight: FontWeight.bold),
+          WidgetUtils().customText('Event at: '+DateFormat.yMMMd().format(event.date),color: Colors.black,fontWeight: FontWeight.bold),
           Container(
             height: height*0.8,
             width: width*0.8,
@@ -139,8 +165,8 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                dataRow(width,'Time',Icons.access_time, '8:30'),
-                dataRow(width,'Location',Icons.location_on_rounded, 'kalay'),
+                dataRow(width,'Time',Icons.access_time, localizations.formatTimeOfDay(event.time)),
+                dataRow(width,'Location',Icons.location_on_rounded, event.location),
                 dataRow(width,'Attending',Icons.group, '()()() +5 more'),
                 dataRow(width,'Bringings',Icons.shopping_bag, '3/8'),
                 Row(
@@ -202,6 +228,58 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> {
         child: Center(child: WidgetUtils().customText('NEW EVENT',color: Colors.white,fontWeight: FontWeight.bold)),
       ),
     );
+  }
+
+ FloatingActionButton myActionButton(double height,double width){
+    return FloatingActionButton(
+      onPressed: ()=>showDialog(context: context, builder: (_)=>myAlertDialog(height, width)),
+      backgroundColor: MyColors().mainColor,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.person_add,color: Colors.white,)
+        ],
+      ),
+    );
+ }
+
+ AlertDialog myAlertDialog(double height,double width){
+    return AlertDialog(
+      title: WidgetUtils().customText('Insert user phone number.'),
+      content: Container(
+        width: width*0.6,
+        child: TextField(
+          controller: phoneController,
+          decoration: InputDecoration(hintText: '1234567890'),
+        ),
+      ),
+    actions: [
+      Container(
+        height: height*0.08,
+        width: width*0.4,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(height*0.04),color: MyColors().mainColor),
+        child: Center(
+          child: WidgetUtils().customText('ADD',color: Colors.white),
+        ),
+      )
+    ],
+    );
+ }
+
+  @override
+  void gotAllEvents(List<Event> events) {
+    this.events = events;
+  }
+
+  @override
+  void onError(String error) {
+    GeneralUtils().errorSnackBar(error, context);
+  }
+
+  @override
+  void onFinishedLoading() {
+    setState(()=> isLoading = false);
   }
 
 }
