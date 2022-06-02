@@ -52,15 +52,25 @@ class ParlamentsRepository{
   Future<String?> addUserToParlamentUsingPhone(Parlament parlament,String phoneNumber)async{
     AppointnetUser? user = await UserRepository().getUserByPhone(phoneNumber);
     if(user==null){
+      print('No user with number '+phoneNumber.toString()+' found.');
       return 'No user with number '+phoneNumber.toString()+' found.';
     }
     parlament.usersId.add(user.id as String);
-    bool error = await ParlamentsRepository().updateParlament(parlament).onError((error, stackTrace) => false);
+    bool error = await ParlamentsRepository().updateParlament(parlament).onError((error, stackTrace) =>true);
     if(error){return 'Something went wrong';}
     else{return null;}
-
-
   }
 
+
+  Future<List<AppointnetUser>> getParlamentUsers(Parlament parlament)async{
+    List<AppointnetUser> result = [];
+    for(var id in parlament.usersId){
+      AppointnetUser? user = await UserRepository().getUserData(id);
+      if(user!=null){
+        result.add(user);
+      }
+    }
+    return result;
+  }
 
 }

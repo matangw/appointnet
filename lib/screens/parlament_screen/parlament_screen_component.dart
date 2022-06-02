@@ -1,5 +1,6 @@
 import 'package:appointnet/main.dart';
 import 'package:appointnet/models/event.dart';
+import 'package:appointnet/models/user.dart';
 import 'package:appointnet/screens/new_event_screen/new_event_component.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_model.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_view.dart';
@@ -33,6 +34,7 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
 
   /// loading vars
   bool isLoading = true;
+  bool isLoadingUsers = true;
   List<Event> events = [];
 
   TextEditingController phoneController = TextEditingController();
@@ -167,16 +169,28 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
               children: [
                 dataRow(width,'Time',Icons.access_time, localizations.formatTimeOfDay(event.time)),
                 dataRow(width,'Location',Icons.location_on_rounded, event.location),
-                dataRow(width,'Attending',Icons.group, '()()() +5 more'),
+                dataRow(
+                    width,'Attending',Icons.group, '()()() +5 more',
+                    usersComingWidget: eventComingWidget(height*0.1, width*0.2, event)
+                ),
                 dataRow(width,'Bringings',Icons.shopping_bag, '3/8'),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      height: height*0.1,width: width*0.4,
-                    decoration:BoxDecoration(color: MyColors().mainBright,borderRadius: BorderRadius.circular(height*0.25)) ,
-                      child: Center(child:WidgetUtils().customText('Coming',color: Colors.white)),
-                  )
+                    InkWell(
+                      onTap:()=> model.isUserAttending(event)?model.cancelAttend(event) : model.confirmAttend(event),
+                      child: Container(
+                        height: height*0.1,width: width*0.4,
+                      decoration:BoxDecoration(
+                          color:model.isUserAttending(event)? MyColors().mainBright : Colors.white,
+                          borderRadius: BorderRadius.circular(height*0.25)) ,
+                        child: Center(
+                            child:WidgetUtils().customText(
+                                model.isUserAttending(event)? 'Coming' : 'Not coming',
+                                color: model.isUserAttending(event)? Colors.white : Colors.red)
+                        ),
+                  ),
+                    )
                   ],
                 ),
 
@@ -188,7 +202,7 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
     );
   }
 
-  Widget dataRow(double width,String name,IconData icon,String data){
+  Widget dataRow(double width,String name,IconData icon,String data,{Widget? usersComingWidget}){
     return Container(
       width: width,
       child: Row(
@@ -207,9 +221,50 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
           ),
           Row(
             children: [
-              WidgetUtils().customText(data,fontWeight: FontWeight.bold)
+              usersComingWidget?? WidgetUtils().customText(data,fontWeight: FontWeight.bold)
             ],
           )
+        ],
+      ),
+    );
+  }
+
+  Widget eventComingWidget(double height,double width,Event event){
+    List<AppointnetUser> usersComing =isLoadingUsers? [] :  model.comingToEventUserList(event);
+    return Container(
+      height: height,
+      width: width,
+      child: isLoadingUsers? Center(child: CircularProgressIndicator(color: MyColors().mainColor,),) :
+      Row(
+        children: [
+          Container(
+            width: width*0.6,
+            child: Stack(
+              children: [
+                Positioned(
+                  bottom: height*0.1,
+                  left: width*0.4,
+                    child: usersComing.length>2?CircleAvatar(radius: height*0.3,backgroundImage: NetworkImage(usersComing[2].imageUrl as String),)
+                        : Container()
+                ),
+                Positioned(
+                    bottom: height*0.1,
+                    left: width*0.2,
+                    child: usersComing.length>1 ? CircleAvatar(radius: height*0.3,backgroundImage: NetworkImage(usersComing[1].imageUrl as String),)
+                        :Container()
+                ),
+                Positioned(
+                    bottom: height*0.1,
+                    left: 0,
+                    child:usersComing.isNotEmpty? CircleAvatar(
+                      radius: height*0.3,backgroundImage: NetworkImage(usersComing[0].imageUrl as String),)
+                        :Container()
+                ),
+              ],
+            ),
+          ),
+          model.comingToEventUserList(event).length>3?WidgetUtils().customText('  +'+ model.comingToEventUserList(event).length.toString())
+              :Container()
         ],
       ),
     );
@@ -250,17 +305,25 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
       content: Container(
         width: width*0.6,
         child: TextField(
+          keyboardType: TextInputType.phone,
           controller: phoneController,
-          decoration: InputDecoration(hintText: '1234567890'),
+          decoration: InputDecoration(hintText: '0501234567'),
         ),
       ),
     actions: [
-      Container(
-        height: height*0.08,
-        width: width*0.4,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(height*0.04),color: MyColors().mainColor),
-        child: Center(
-          child: WidgetUtils().customText('ADD',color: Colors.white),
+      InkWell(
+        onTap: ()=> {
+          model.addNewUserToParlament(phoneController.text),
+          phoneController.text = '',
+
+        },
+        child: Container(
+          height: height*0.08,
+          width: width*0.4,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(height*0.04),color: MyColors().mainColor),
+          child: Center(
+            child: WidgetUtils().customText('ADD',color: Colors.white),
+          ),
         ),
       )
     ],
@@ -280,6 +343,34 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
   @override
   void onFinishedLoading() {
     setState(()=> isLoading = false);
+  }
+
+  @override
+  void successFeedBack(String message) {
+    setState(()=> null);
+   GeneralUtils().successSnackBar(message, context);
+  }
+
+  @override
+  void addingUserToParlament() {
+    Navigator.of(context).pop();
+  }
+
+  @override
+  void finishedAddingUserToParlament() {
+    setState(()=> isLoading =false);
+  }
+
+  @override
+  void startAddingUserToParlament() {
+    Navigator.of(context).pop();
+    setState(()=> isLoading =true);
+  }
+
+  @override
+  void finishedLoadingUsers() {
+    print('[!] NEED TO STOP LOADING');
+   setState(()=>isLoadingUsers = false);
   }
 
 }

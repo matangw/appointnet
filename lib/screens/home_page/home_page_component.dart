@@ -6,6 +6,7 @@ import 'package:appointnet/screens/home_page/home_page_model.dart';
 import 'package:appointnet/screens/home_page/home_page_view.dart';
 import 'package:appointnet/screens/new_parlament/new_parlament_component.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_component.dart';
+import 'package:appointnet/utils/general_utils.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +77,14 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(radius: height*0.3,backgroundColor: MyColors().mainColor,backgroundImage: NetworkImage(user.imageUrl as String),),
+          InkWell(
+            onTap: ()=>GeneralUtils().signOut(context),
+              child: CircleAvatar(
+                radius: height*0.3,
+                backgroundColor: MyColors().mainColor,
+                backgroundImage: NetworkImage(user.imageUrl as String),
+              )
+          ),
           SizedBox(height: height*0.1,),
           WidgetUtils().customText(user.name,fontWeight: FontWeight.bold)
         ],
