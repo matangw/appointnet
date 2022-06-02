@@ -1,8 +1,10 @@
 import 'package:appointnet/models/parlament.dart';
+import 'package:appointnet/models/user.dart';
 import 'package:appointnet/repositories/event_repository.dart';
 import 'package:appointnet/repositories/parlaments_repository.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_view.dart';
 import 'package:appointnet/utils/general_utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../models/event.dart';
 
@@ -10,14 +12,20 @@ class ParlamentScreenModel{
 
   Parlament parlament;
   ParlamentScreenView view;
+  late List<AppointnetUser> parlamentUsers;
+  late EventRepository eventRepository ;
+  
   ParlamentScreenModel(this.view,this.parlament){
+    eventRepository = EventRepository(parlamentId: parlament.id as String);
     loadAllData();
   }
-
+  
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
 
   Future<void> loadAllData()async{
     await getParlamentEvents(); //.catchError((error)=> view.onError(error.toString()));
+    getParlamentUsers();
     view.onFinishedLoading();
   }
 
@@ -43,5 +51,31 @@ class ParlamentScreenModel{
       view.onError(error);
     }
     view.finishedAddingUserToParlament();
+  }
+
+  Future<void> confirmAttend(Event event)async{
+    event.attendingsIds.add(_auth.currentUser?.uid as String);
+    eventRepository.updateEvent(event);
+    view.successFeedBack('Your attending updated successfully ');
+  }
+
+  Future<void> cancelAttend(Event event)  async {
+    event.attendingsIds.remove(_auth.currentUser?.uid as String);
+    eventRepository.updateEvent(event);
+    view.successFeedBack('You successfully canceld your attending');
+  }
+
+  bool isUserAttending(Event event){
+    return event.attendingsIds.contains(_auth.currentUser?.uid as String);
+  }
+
+  Future<void> getParlamentUsers() async{
+    List<AppointnetUser> users = await ParlamentsRepository().getParlamentUsers(parlament);
+    parlamentUsers = users;
+    view.finishedLoadingUsers();
+  }
+
+  List<AppointnetUser> comingToEventUserList(Event event){
+     return parlamentUsers.where((user) => event.attendingsIds.contains(user.id)).toList();
   }
 }

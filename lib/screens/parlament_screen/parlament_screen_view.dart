@@ -7,5 +7,6 @@ abstract class ParlamentScreenView{
   void successFeedBack(String message);
   void startAddingUserToParlament();
   void finishedAddingUserToParlament();
+  void finishedLoadingUsers();
   void onError(String error);
 }
