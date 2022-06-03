@@ -6,8 +6,6 @@ import 'package:appointnet/screens/parlament_screen/parlament_screen_view.dart';
 import 'package:appointnet/utils/general_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:add_2_calendar/add_2_calendar.dart' as calendar;
-
-
 import '../../models/event.dart';
 
 class ParlamentScreenModel{

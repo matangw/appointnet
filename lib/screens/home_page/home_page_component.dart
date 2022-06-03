@@ -6,6 +6,7 @@ import 'package:appointnet/screens/home_page/home_page_model.dart';
 import 'package:appointnet/screens/home_page/home_page_view.dart';
 import 'package:appointnet/screens/new_parlament/new_parlament_component.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_component.dart';
+import 'package:appointnet/screens/profile_screen/profile_screen_component.dart';
 import 'package:appointnet/utils/general_utils.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
@@ -78,7 +79,7 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           InkWell(
-            onTap: ()=>GeneralUtils().signOut(context),
+            onTap: ()=>Navigator.of(context).pushNamed(ProfileScreenComponent.tag,arguments: user),
               child: CircleAvatar(
                 radius: height*0.3,
                 backgroundColor: MyColors().mainColor,

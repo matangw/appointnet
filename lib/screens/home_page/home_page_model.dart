@@ -5,6 +5,7 @@ import 'package:appointnet/repositories/event_repository.dart';
 import 'package:appointnet/repositories/parlaments_repository.dart';
 import 'package:appointnet/repositories/user_repository.dart';
 import 'package:appointnet/screens/home_page/home_page_view.dart';
+import 'package:appointnet/utils/shared_reffrencess_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePageModel{
@@ -38,6 +39,7 @@ class HomePageModel{
 
   Future<void> getUserParlaments()async{
     userParlaments = await ParlamentsRepository().getParlmanetsForUser(auth.currentUser?.uid as String);
+    SharedPreferencesUtils().setUserParlamentsNumber(userParlaments.length);
   }
 
   Future<void> getUserUpcomingEvents()async{
