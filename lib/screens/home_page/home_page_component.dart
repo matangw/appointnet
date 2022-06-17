@@ -2,6 +2,7 @@ import 'package:appointnet/main.dart';
 import 'package:appointnet/models/event.dart';
 import 'package:appointnet/models/parlament.dart';
 import 'package:appointnet/models/user.dart';
+import 'package:appointnet/screens/add_friend_screen/add_friend_component.dart';
 import 'package:appointnet/screens/home_page/home_page_model.dart';
 import 'package:appointnet/screens/home_page/home_page_view.dart';
 import 'package:appointnet/screens/new_parlament/new_parlament_component.dart';
@@ -202,6 +203,7 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
           child: Icon(Icons.person,color: MyColors().mainDark,),
           backgroundColor: Colors.white,
           label: ('friend'),
+          onTap: ()=>Navigator.of(context).pushNamed(AddFriendComponent.tag)
         )
       ],
     );

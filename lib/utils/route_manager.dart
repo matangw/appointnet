@@ -1,3 +1,4 @@
+import 'package:appointnet/screens/add_friend_screen/add_friend_component.dart';
 import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/screens/login/login_component.dart';
 import 'package:appointnet/screens/new_event_screen/new_event_component.dart';
@@ -50,6 +51,9 @@ class RouteManager {
         return SlideRightRoute(page: screen, routeSettings: settings);
       case ProfileScreenComponent.tag:
         screen = ProfileScreenComponent();
+        return SizeRoute(page: screen, routeSettings: settings);
+      case AddFriendComponent.tag:
+        screen = AddFriendComponent();
         return SizeRoute(page: screen, routeSettings: settings);
       default:
         return _noScreen();
