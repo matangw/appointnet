@@ -32,7 +32,7 @@ class EventRepository{
 
   Future<List<Event>> getParlamentEvents() async{
     List<Event> result = [];
-    QuerySnapshot snap = await _eventCollection.orderBy('date',descending: false).get();
+    QuerySnapshot snap = await _eventCollection.where('date',isGreaterThan: DateTime.now().subtract(Duration(days: 1)).toString()).orderBy('date',descending: false).get();
     if(snap.size==0){
       return [];
     }
@@ -47,7 +47,9 @@ class EventRepository{
   Future<List<Event>> upcomingUserEvents() async{
     List<Event> result = [];
     String userId = _auth.currentUser?.uid as String;
-    QuerySnapshot snap = await groupCollecion.where('invited',arrayContains: userId).orderBy('date').limit(5).get();
+    QuerySnapshot snap = await groupCollecion.where('invited',arrayContains: userId)
+        .where('date',isGreaterThan: DateTime.now().subtract(Duration(days: 1)).toString())
+        .orderBy('date').limit(5).get();
     if(snap.size==0){
       print('[-] NO UPCOMING EVENTS FOUNDED');
       return [];

@@ -5,7 +5,7 @@ import 'package:appointnet/repositories/parlaments_repository.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_view.dart';
 import 'package:appointnet/utils/general_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:add_2_calendar/add_2_calendar.dart' as calendar;
 import '../../models/event.dart';
 
 class ParlamentScreenModel{
@@ -77,5 +77,16 @@ class ParlamentScreenModel{
 
   List<AppointnetUser> comingToEventUserList(Event event){
      return parlamentUsers.where((user) => event.attendingsIds.contains(user.id)).toList();
+  }
+
+  void addEventToCalendar(Event event){
+    final calendar.Event calendarEvent = calendar.Event(
+      title: parlament.name,
+      description: '',
+      location: event.location,
+      startDate: event.date,
+      endDate: event.date.add(Duration(hours: 2)),
+    );
+    calendar.Add2Calendar.addEvent2Cal(calendarEvent);
   }
 }

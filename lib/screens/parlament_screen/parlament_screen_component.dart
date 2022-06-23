@@ -175,8 +175,9 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
                 ),
                 dataRow(width,'Bringings',Icons.shopping_bag, '3/8'),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    SizedBox(width: width*0.2,),
                     InkWell(
                       onTap:()=> model.isUserAttending(event)?model.cancelAttend(event) : model.confirmAttend(event),
                       child: Container(
@@ -190,9 +191,19 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
                                 color: model.isUserAttending(event)? Colors.white : Colors.red)
                         ),
                   ),
+                    ),
+                    SizedBox(width: width*0.05,),
+                    InkWell(
+                      onTap: ()=> model.addEventToCalendar(event),
+                      child: CircleAvatar(
+                        radius: width*0.05,
+                        backgroundColor: MyColors().buttonColor,
+                        child: Icon(Icons.event,color: Colors.white,),
+                      ),
                     )
                   ],
                 ),
+
 
               ],
             ),

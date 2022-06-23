@@ -1,11 +1,14 @@
+import 'package:appointnet/screens/add_friend_screen/add_friend_component.dart';
 import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/screens/login/login_component.dart';
 import 'package:appointnet/screens/new_event_screen/new_event_component.dart';
 import 'package:appointnet/screens/new_parlament/new_parlament_component.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_component.dart';
+import 'package:appointnet/screens/profile_screen/profile_screen_component.dart';
 import 'package:appointnet/screens/splash_screen/splash_component.dart';
 import 'package:appointnet/screens/update_details/update_details_component.dart';
 import 'package:appointnet/utils/transitions/scale.dart';
+import 'package:appointnet/utils/transitions/size.dart';
 import 'package:appointnet/utils/transitions/slide_right.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,6 +49,12 @@ class RouteManager {
       case SplashComponent.tag:
         screen = SplashComponent();
         return SlideRightRoute(page: screen, routeSettings: settings);
+      case ProfileScreenComponent.tag:
+        screen = ProfileScreenComponent();
+        return SizeRoute(page: screen, routeSettings: settings);
+      case AddFriendComponent.tag:
+        screen = AddFriendComponent();
+        return SizeRoute(page: screen, routeSettings: settings);
       default:
         return _noScreen();
     }

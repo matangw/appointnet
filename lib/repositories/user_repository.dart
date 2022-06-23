@@ -45,5 +45,9 @@ class UserRepository{
     }
   }
 
+  Future<bool> addFriend(String templatePhoneNumber)async{
+    return true;
+  }
+
 
 }

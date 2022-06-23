@@ -23,6 +23,12 @@ class GeneralUtils{
     return phoneNumber;
   }
 
+  String reversePhoneTemplate(String templatedPhoned){
+    templatedPhoned = templatedPhoned.substring(4);
+    templatedPhoned = '0'+templatedPhoned;
+    return templatedPhoned;
+  }
+
   void errorSnackBar(String error,BuildContext context){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.white,content: WidgetUtils().customText(error,color: Colors.red)));
   }
