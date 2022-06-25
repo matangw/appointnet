@@ -129,7 +129,7 @@ class _ParlamentProfileComponentState extends State<ParlamentProfileComponent> i
               SizedBox(width: width*0.25,),
               /// todo: whatssapp link does not work
               InkWell(
-                onTap: ()=>model.openWhatsappGroup(parlament.whatsappLink as String),
+                onTap: ()=>model.openWhatsappGroup(parlament.whatsappLink),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
@@ -273,6 +273,6 @@ class _ParlamentProfileComponentState extends State<ParlamentProfileComponent> i
 
   @override
   void onError(String error) {
-    // TODO: implement onError
+    GeneralUtils().errorSnackBar(error, context);
   }
 }

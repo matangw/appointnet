@@ -49,7 +49,11 @@ class ParlamentProfileModel{
     }
   }
 
-  openWhatsappGroup(String link) async{
+  openWhatsappGroup(String? link) async{
+    if(link ==null){
+      view.onError('No link for this group');
+      return;
+    }
     var whatsapp =link;
     if(Platform.isIOS){
       // for iOS phone only
