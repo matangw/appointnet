@@ -2,6 +2,7 @@ import 'package:appointnet/main.dart';
 import 'package:appointnet/models/event.dart';
 import 'package:appointnet/models/user.dart';
 import 'package:appointnet/screens/new_event_screen/new_event_component.dart';
+import 'package:appointnet/screens/parlament_profile_screen/parlament_profile_component.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_model.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_view.dart';
 import 'package:appointnet/utils/my_colors.dart';
@@ -31,11 +32,13 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
   ///modal variables
     late Parlament parlament;
     bool needParlament = true;
+    bool needToJumpToCertinEvent = false;
 
   /// loading vars
   bool isLoading = true;
   bool isLoadingUsers = true;
   List<Event> events = [];
+  Event? eventToJump;
 
   TextEditingController phoneController = TextEditingController();
 
@@ -48,7 +51,13 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
 
     if(needParlament){
      setState(() {
-       parlament = ModalRoute.of(context)?.settings.arguments as Parlament;
+       List<dynamic> arguments = ModalRoute.of(context)?.settings.arguments as List<dynamic>;
+       parlament = arguments[0];
+       if(arguments.length>1)
+       {
+         needToJumpToCertinEvent = true;
+         eventToJump = arguments[1];
+       }
        needParlament = false;
        model = ParlamentScreenModel(this,parlament);
      });
@@ -56,6 +65,14 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
 
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+
+    if(needToJumpToCertinEvent && !isLoading ){
+      int pageToJump = events.indexWhere((event) => event.id==eventToJump?.id);
+          print('[!] NEED TO JUMP TO EVENT : '+pageToJump.toString());
+          Future.delayed(Duration(milliseconds: 500)).then((value) =>
+              _eventController.animateToPage(pageToJump,curve: Curves.easeInOut,duration: Duration(milliseconds: 500)));
+
+    }
 
     MaterialLocalizations localizations = MaterialLocalizations.of(context);
 
@@ -98,17 +115,22 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
                 child: Container(
                   height: height*0.25,
                   width: width*0.6,
-                  child: Card(
-                    elevation: 10,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.5)),
-                    child: Center(
-                        child: WidgetUtils().customText(
-                            parlament.name,
-                            overflow: TextOverflow.ellipsis,
-                            fontWeight: FontWeight.bold,
-                            color: MyColors().mainColor,
-                            fontSize: height*0.08)),
+                  child: InkWell(
+                    onTap: ()=>Navigator.of(context).pushNamed(ParlamentProfileComponent.tag,
+                      arguments: [model.parlamentUsers,parlament]
+                    ),
+                    child: Card(
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.5)),
+                      child: Center(
+                          child: WidgetUtils().customText(
+                              parlament.name,
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.bold,
+                              color: MyColors().mainColor,
+                              fontSize: height*0.08)),
               ),
+                  ),
                 ),))
         ],
       ),
@@ -173,7 +195,7 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
                     width,'Attending',Icons.group, '()()() +5 more',
                     usersComingWidget: eventComingWidget(height*0.1, width*0.2, event)
                 ),
-                dataRow(width,'Bringings',Icons.shopping_bag, '3/8'),
+                //dataRow(width,'Bringings',Icons.shopping_bag, '3/8'),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -342,7 +364,7 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
  }
 
   @override
-  void gotAllEvents(List<Event> events) {
+  void gotUpcomingEvents(List<Event> events) {
     this.events = events;
   }
 

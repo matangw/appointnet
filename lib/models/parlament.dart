@@ -7,8 +7,9 @@ class Parlament{
   String managerId;
   List<String> usersId;
   String? imageUrl;
+  String? whatsappLink;
 
-  Parlament({required this.name,required this.managerId,required this.usersId,this.imageUrl,this.id})
+  Parlament({required this.name,required this.managerId,required this.usersId,this.whatsappLink,this.imageUrl,this.id})
   {
     if(id==null){
       id = Uuid().v4();
@@ -21,7 +22,8 @@ class Parlament{
       'name': name,
       'manager_id': managerId,
       'users_id': usersId,
-      'image_url': imageUrl
+      'image_url': imageUrl,
+      'whatsapp_link': whatsappLink
     };
   }
 
@@ -31,7 +33,8 @@ class Parlament{
         managerId: json['manager_id'],
         usersId: json['users_id'] == null ? [] : json['users_id'].cast<String>(),
         imageUrl: json['image_url'],
-        id: json['id']
+        id: json['id'],
+        whatsappLink: json['whatsapp_link']
     );
   }
 

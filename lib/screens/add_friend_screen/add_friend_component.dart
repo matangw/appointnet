@@ -5,9 +5,6 @@ import 'package:appointnet/utils/widget_utils.dart';
 import 'package:flutter/material.dart';
 
 class AddFriendComponent extends StatefulWidget{
-
-  static const String tag = '/add_friend_screen';
-
   @override
   State<AddFriendComponent> createState() => _AddFriendComponentState();
 }

@@ -12,6 +12,7 @@ class Event{
   List<String> attendingsIds;
   List<String> invitedIds;
 
+
   Event({
     required this.parlamentImage,
     required this.date,required this.time,required this.location,

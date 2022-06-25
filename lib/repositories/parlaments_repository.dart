@@ -73,4 +73,9 @@ class ParlamentsRepository{
     return result;
   }
 
+  Future<void> removeUserFromParlament(Parlament parlament)async{
+    parlament.usersId.remove(FirebaseAuth.instance.currentUser?.uid as String);
+    updateParlament(parlament);
+  }
+
 }

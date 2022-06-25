@@ -24,16 +24,16 @@ class ParlamentScreenModel{
 
 
   Future<void> loadAllData()async{
-    await getParlamentEvents(); //.catchError((error)=> view.onError(error.toString()));
+    await getUpcomingParlamentEvents(); //.catchError((error)=> view.onError(error.toString()));
     getParlamentUsers();
     view.onFinishedLoading();
   }
 
 
-  Future<void> getParlamentEvents()async{
+  Future<void> getUpcomingParlamentEvents()async{
     String parlamentId = parlament.id as String;
-    List<Event> events = await EventRepository(parlamentId: parlamentId).getParlamentEvents();
-    view.gotAllEvents(events);
+    List<Event> events = await EventRepository(parlamentId: parlamentId).getUpcomingParlamentEvents();
+    view.gotUpcomingEvents(events);
   }
 
   Future<void> addNewUserToParlament(String phone)async{

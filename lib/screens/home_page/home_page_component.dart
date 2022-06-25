@@ -45,28 +45,31 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height- MediaQuery.of(context).padding.top;
     double width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: MyColors().backgroundColor,
-      floatingActionButton: myFloatingActionButton(),
-      body: isLoading? WidgetUtils().loadingWidget(height, width)
-      :SingleChildScrollView(
-        child: Container(
-          height: height,
-          width: width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(height: height*0.07,),
-                profileContainer(height*0.2, width),
-                SizedBox(height: height*0.03,),
-                nextEventsContainer(height*0.15, width),
-                parlamentContainer(height*0.55, width)
-            ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: MyColors().backgroundColor,
+        floatingActionButton: myFloatingActionButton(),
+        body: isLoading? WidgetUtils().loadingWidget(height, width)
+        :SingleChildScrollView(
+          child: Container(
+            height: height,
+            width: width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(height: height*0.07,),
+                  profileContainer(height*0.2, width),
+                  SizedBox(height: height*0.03,),
+                  nextEventsContainer(height*0.15, width),
+                  parlamentContainer(height*0.55, width)
+              ],
+            ),
           ),
         ),
-      ),
 
+      ),
     );
   }
 
@@ -114,10 +117,7 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
                   scrollDirection: Axis.horizontal,
                   itemCount: userUpcomingEvents.length,
                   itemBuilder:(context,index)=>
-                      Container(margin:EdgeInsets.symmetric(horizontal: width*0.05),
-                          child: CircleAvatar(
-                              backgroundImage:NetworkImage( userUpcomingEvents[index].parlamentImage,)
-                          ),)
+                      eventCricle(height, width, index)
               )
             ),
           )
@@ -125,8 +125,18 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
       ),
     );
   }
-
-
+  Widget eventCricle(double height,double width,int index) {
+    return InkWell(
+      onTap: ()=> eventPressed(model.userUpcomingEvents[index]),
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: width * 0.05),
+        child: CircleAvatar(
+            backgroundImage: NetworkImage(
+              userUpcomingEvents[index].parlamentImage,)
+        ),
+      ),
+    );
+  }
   Widget parlamentContainer(double height,double width){
     return Container(
       height: height,
@@ -159,7 +169,7 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
 
   Widget parlamentListTile(double height,double width,Parlament parlament){
     return InkWell(
-      onTap: ()=>Navigator.of(context).pushNamed(ParlamentScreenComponent.tag,arguments: parlament),
+      onTap: ()=>Navigator.of(context).pushNamed(ParlamentScreenComponent.tag,arguments: [parlament]),
       child: Card(
         elevation: 10,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.2)),
@@ -199,12 +209,6 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
           label: ('parlament'),
           onTap: ()=>Navigator.of(context).pushNamed(NewParlamentComponent.tag)
         ),
-        SpeedDialChild(
-          child: Icon(Icons.person,color: MyColors().mainDark,),
-          backgroundColor: Colors.white,
-          label: ('friend'),
-          onTap: ()=>Navigator.of(context).pushNamed(AddFriendComponent.tag)
-        )
       ],
     );
   }
@@ -230,6 +234,12 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
   @override
   void onGotAllEvents() {
     setState(()=>userUpcomingEvents = model.userUpcomingEvents);
+  }
+
+  @override
+  void eventPressed(Event event) {
+    Parlament wantedParlament = model.userParlaments.firstWhere((element) => element.imageUrl==event.parlamentImage);
+    Navigator.of(context).pushNamed(ParlamentScreenComponent.tag,arguments: [wantedParlament,event]);
   }
 
 

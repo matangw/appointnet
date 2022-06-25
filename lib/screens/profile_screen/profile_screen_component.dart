@@ -82,7 +82,7 @@ class _ProfileScreenComponentState extends State<ProfileScreenComponent> impleme
             backgroundImage:NetworkImage(user.imageUrl as String),
           ),
           SizedBox(width: width*0.1,),
-          WidgetUtils().customText(user.name)
+         // WidgetUtils().customText(user.name)
         ],
       ),
     );
@@ -95,11 +95,10 @@ class _ProfileScreenComponentState extends State<ProfileScreenComponent> impleme
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+          dataRow(width, 'Name', Icons.person, user.name),
           dataRow(width, 'Phone number', Icons.phone,GeneralUtils().reversePhoneTemplate(user.phoneNumber)),
           dataRow(width, 'Parlaments', Icons.group,numberOfParlaments==0?'no data' : numberOfParlaments.toString()),
-          dataRow(width, 'Friends', Icons.person, 'number'),
-          dataRow(width, 'Events attended', Icons.event_available, 'number'),
-          dataRow(width, 'Favorite parlament', Icons.favorite, 'parlamentName'),
+          dataRow(width, 'Age', Icons.calendar_month,GeneralUtils().ageCalculator(user).toString()),
         ],
       ),
     );

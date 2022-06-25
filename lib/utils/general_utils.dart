@@ -1,3 +1,4 @@
+import 'package:appointnet/models/user.dart';
 import 'package:appointnet/screens/login/login_component.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
@@ -41,5 +42,22 @@ class GeneralUtils{
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).pushNamedAndRemoveUntil(LoginComponent.tag, (Route<dynamic> route) => false);
 
+  }
+
+  int ageCalculator(AppointnetUser user){
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - user.birthDate.year;
+    int month1 = currentDate.month;
+    int month2 = user.birthDate.month;
+    if (month2 > month1) {
+      age--;
+    } else if (month1 == month2) {
+      int day1 = currentDate.day;
+      int day2 = user.birthDate.day;
+      if (day2 > day1) {
+        age--;
+      }
+    }
+    return age;
   }
 }

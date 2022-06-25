@@ -49,4 +49,8 @@ class HomePageModel{
 
   }
 
+  Future<void> getEventParlament(Event event)async{
+
+  }
+
 }
