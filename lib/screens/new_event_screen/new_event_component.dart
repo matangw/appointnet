@@ -31,6 +31,7 @@ class _NewEventComponentState extends State<NewEventComponent> implements NewEve
   TimeOfDay? time;
   TextEditingController locationController = TextEditingController();
 
+
   @override
   void initState() {
     model = NewEventModel(this);
@@ -91,7 +92,7 @@ class _NewEventComponentState extends State<NewEventComponent> implements NewEve
               ),
           ),
           Positioned(top:0,right: width*0.05,child: Icon(Icons.event,size: height*0.4,color: MyColors().mainColor,)),
-          Positioned(top:height*0.4,left:width*0.05,child: WidgetUtils().customText('PARLAMENT NAME',fontSize: height*0.15))
+          Positioned(top:height*0.4,left:width*0.05,child: WidgetUtils().customText(parlament.name,fontSize: height*0.15))
         ],
       ),
     );

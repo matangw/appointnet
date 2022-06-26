@@ -20,9 +20,9 @@ class NewParlamentModel{
     else{return true;}
   }
 
-  Future<void> uploadParlament(String name,List<String> friendsIds,File parlamentImage) async{
+  Future<void> uploadParlament(String name,File parlamentImage,String? whatsappLink) async{
     view.onSubmit();
-    Parlament parlament = Parlament(name: name, managerId:auth.currentUser?.uid as String , usersId: friendsIds);
+    Parlament parlament = Parlament(name: name, managerId:auth.currentUser?.uid as String , usersId: [],whatsappLink: whatsappLink);
     String imageUrl = await repo.uploadPhoto(parlamentImage, parlament);
     parlament.usersId.add(auth.currentUser?.uid as String);
     parlament.imageUrl = imageUrl;

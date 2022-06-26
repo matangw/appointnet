@@ -1,6 +1,9 @@
 import 'package:appointnet/models/event.dart';
+import 'package:appointnet/repositories/parlaments_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../models/parlament.dart';
 
 class EventRepository{
 
@@ -30,7 +33,7 @@ class EventRepository{
     return Event.fromJson(data as Map<String,dynamic>);
   }
 
-  Future<List<Event>> getParlamentEvents() async{
+  Future<List<Event>> getUpcomingParlamentEvents() async{
     List<Event> result = [];
     QuerySnapshot snap = await _eventCollection.where('date',isGreaterThan: DateTime.now().subtract(Duration(days: 1)).toString()).orderBy('date',descending: false).get();
     if(snap.size==0){
@@ -42,6 +45,11 @@ class EventRepository{
       }
     }
     return result;
+  }
+
+  Future<int> getNumberOfAllEvents()async{
+    QuerySnapshot snap = await _eventCollection.get();
+    return snap.size;
   }
 
   Future<List<Event>> upcomingUserEvents() async{
@@ -60,6 +68,8 @@ class EventRepository{
     }
     return result;
   }
+
+
 
 
 

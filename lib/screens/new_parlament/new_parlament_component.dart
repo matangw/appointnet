@@ -23,6 +23,8 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
   /// USER INPUT VARIABLES
   TextEditingController nameController = TextEditingController();
   TextEditingController friendsSearchingBar = TextEditingController();
+  TextEditingController whatsappLinkController = TextEditingController();
+
   List<String> friendsIds = [];
   CroppedFile? userImage;
   bool needToConfirm = false;
@@ -45,7 +47,7 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: MyColors().mainBright,
+      backgroundColor: MyColors().backgroundColor,
       floatingActionButton: myActionButton(height,width),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SingleChildScrollView(
@@ -53,11 +55,11 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
           height: height,
           width: width,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-                titleWidget(height*0.3, width),
-              friendsContainer(height*0.6, width)
+                titleWidget(height*0.5, width),
+              //friendsContainer(height*0.6, width)
                 
             ],
           ),
@@ -70,7 +72,6 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
     return Container(
       height: height,
       width: width,
-      color: MyColors().mainBright,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -78,10 +79,10 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
           InkWell(
             onTap: ()=> onPickImage(),
             child: CircleAvatar(
-              radius: height*0.3,
-              backgroundColor: MyColors().backgroundColor,
+              radius: height*0.2,
+              backgroundColor: MyColors().mainBright,
               backgroundImage: userImage == null? null : FileImage(File(userImage?.path as String )),
-              child: Icon(Icons.image,color: MyColors().mainDark,),
+              child: Icon(Icons.image,color: Colors.white,),
             ),
           ),
           SizedBox(height: height*0.05,),
@@ -89,32 +90,69 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
             elevation: 5,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.2)),
             child: Container(
-              width: width*0.7,
+              width: width*0.9,
               padding: EdgeInsets.symmetric(vertical: height*0.03),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(height*0.2),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  SizedBox(width: width*0.05,),
                   Icon(Icons.group,color: MyColors().mainColor,),
                   SizedBox(width: width*0.05,),
-                  WidgetUtils().customText('name: ',fontWeight: FontWeight.bold),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                      width:width*0.25,child: WidgetUtils().customText('Name: ',fontWeight: FontWeight.bold)
+                  ),
                   Container(
                     width: width*0.4,
                     child: TextField(
+                      decoration: InputDecoration(hintText: ' must*'),
                       controller: nameController,
                     ),
                   )
                 ],
               ),
             ),
-          )
+          ),
+          SizedBox(height: height*0.05,),
+          Card(
+            elevation: 5,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.2)),
+            child: Container(
+              width: width*0.9,
+              padding: EdgeInsets.symmetric(vertical: height*0.03),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(height*0.2),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(width: width*0.05,),
+                  Icon(Icons.whatsapp_sharp,color: MyColors().mainColor,),
+                  SizedBox(width: width*0.05,),
+                  Container(
+                      alignment: Alignment.centerLeft,
+                      width: width*0.25,child: WidgetUtils().customText('whatsapp link: ',fontWeight: FontWeight.bold)
+                  ),
+                  Container(
+                    width: width*0.4,
+                    child: TextField(
+                      decoration: InputDecoration(hintText: 'mandetory'),
+                      controller: whatsappLinkController,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
+  /*
   Widget friendsContainer(double height,double width){
     return Container(
       height: height,
@@ -152,7 +190,7 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
         ],
       ),
     );
-  }
+  }*/
   
   List<Widget> friendsList(double tileHeight,double tileWidth,String search){
     return [];
@@ -199,7 +237,7 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
       title: Text('Are you sure you want to create the group '+nameController.text),
       actions: [
         InkWell(
-          onTap: ()=>model.uploadParlament(nameController.text, friendsIds, File(userImage?.path as String)),
+          onTap: ()=>model.uploadParlament(nameController.text,File(userImage?.path as String),whatsappLinkController.text),
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: width*0.05,vertical: height*0.01),
             color: MyColors().mainColor,

@@ -3,6 +3,7 @@ import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/screens/login/login_component.dart';
 import 'package:appointnet/screens/new_event_screen/new_event_component.dart';
 import 'package:appointnet/screens/new_parlament/new_parlament_component.dart';
+import 'package:appointnet/screens/parlament_profile_screen/parlament_profile_component.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_component.dart';
 import 'package:appointnet/screens/profile_screen/profile_screen_component.dart';
 import 'package:appointnet/screens/splash_screen/splash_component.dart';
@@ -52,9 +53,9 @@ class RouteManager {
       case ProfileScreenComponent.tag:
         screen = ProfileScreenComponent();
         return SizeRoute(page: screen, routeSettings: settings);
-      case AddFriendComponent.tag:
-        screen = AddFriendComponent();
-        return SizeRoute(page: screen, routeSettings: settings);
+      case ParlamentProfileComponent.tag:
+        screen = ParlamentProfileComponent();
+        return SlideRightRoute(page: screen,routeSettings: settings);
       default:
         return _noScreen();
     }
