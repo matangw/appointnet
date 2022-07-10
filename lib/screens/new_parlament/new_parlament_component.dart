@@ -55,10 +55,14 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
           height: height,
           width: width,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-                titleWidget(height*0.5, width),
+              SizedBox(height: height*0.1,),
+              Row(mainAxisAlignment: MainAxisAlignment.start,
+                children: [SizedBox(width: width*0.05,), WidgetUtils().goBackButton(width*0.2, height*0.05, context)],),
+              SizedBox(height: height*0.1,),
+              titleWidget(height*0.5, width),
               //friendsContainer(height*0.6, width)
                 
             ],

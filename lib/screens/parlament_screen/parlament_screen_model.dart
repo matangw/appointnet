@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:appointnet/models/parlament.dart';
 import 'package:appointnet/models/user.dart';
 import 'package:appointnet/repositories/event_repository.dart';
@@ -6,6 +8,7 @@ import 'package:appointnet/screens/parlament_screen/parlament_screen_view.dart';
 import 'package:appointnet/utils/general_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:add_2_calendar/add_2_calendar.dart' as calendar;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/event.dart';
 
 class ParlamentScreenModel{
@@ -14,6 +17,8 @@ class ParlamentScreenModel{
   ParlamentScreenView view;
   late List<AppointnetUser> parlamentUsers;
   late EventRepository eventRepository ;
+
+  late SharedPreferences sh;
   
   ParlamentScreenModel(this.view,this.parlament){
     eventRepository = EventRepository(parlamentId: parlament.id as String);
@@ -88,5 +93,12 @@ class ParlamentScreenModel{
       endDate: event.date.add(Duration(hours: 2)),
     );
     calendar.Add2Calendar.addEvent2Cal(calendarEvent);
+  }
+
+  Future<void> deleteEvent(Event event)async{
+    await eventRepository.deleteEvent(event);
+    SharedPreferences sh = await SharedPreferences.getInstance();
+    sh.setBool('home_screen_update', true);
+    view.deleteEvent(event);
   }
 }

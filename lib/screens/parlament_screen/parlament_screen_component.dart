@@ -1,16 +1,18 @@
-import 'package:appointnet/main.dart';
 import 'package:appointnet/models/event.dart';
 import 'package:appointnet/models/user.dart';
+import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/screens/new_event_screen/new_event_component.dart';
 import 'package:appointnet/screens/parlament_profile_screen/parlament_profile_component.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_model.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_view.dart';
+import 'package:appointnet/screens/parlament_screen/show_event_attendings.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/parlament.dart';
 import '../../utils/general_utils.dart';
@@ -89,6 +91,12 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
             children: [
               Positioned(left: 0,right: 0,top: 0,child: titleWidget(height*0.35, width)),
               Positioned(left:0,right: 0,bottom: 0,child: bottomContainer(height*0.7, width,localizations)),
+              Positioned(
+                left: height*0.03,
+                top: height*0.05,
+                child: InkWell(
+                    child: WidgetUtils().goBackButton(width, height*0.05, context)
+                ),),
             ],
           ),
         ),
@@ -131,7 +139,8 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
                               fontSize: height*0.08)),
               ),
                   ),
-                ),))
+                ),)),
+
         ],
       ),
     );
@@ -149,10 +158,12 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
           Container(
             height: height*0.7,
             width: width,
-            child: PageView(
+            child: events.isEmpty?
+            WidgetUtils().noDataWidget(height: height*0.5, width: width*0.3, icon: Icons.group, text: 'No events')
+            :PageView(
               controller: _eventController,
               scrollDirection: Axis.horizontal,
-              children: eventContainerList(height*0.8, width*0.9, localizations),
+              children: eventContainerList(height*0.8, width*0.95, localizations),
             ),
           ),
           SizedBox(height: height*0.025,),
@@ -199,7 +210,18 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SizedBox(width: width*0.2,),
+                    parlament.managerId==FirebaseAuth.instance.currentUser?.uid ?
+                    InkWell(
+                      onTap:()=>showDialog(context: context,
+                          builder:(context)=> deleteEventDialog(height,width,event)),
+                      child: CircleAvatar(
+                        radius: width*0.05,
+                        backgroundColor: Colors.red,
+                        child: Icon(Icons.delete,color: Colors.white,),
+                      ),
+                    )
+                        : SizedBox(width: width*0.1,),
+                    SizedBox(width: width*0.1,),
                     InkWell(
                       onTap:()=> model.isUserAttending(event)?model.cancelAttend(event) : model.confirmAttend(event),
                       child: Container(
@@ -264,41 +286,44 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
 
   Widget eventComingWidget(double height,double width,Event event){
     List<AppointnetUser> usersComing =isLoadingUsers? [] :  model.comingToEventUserList(event);
-    return Container(
-      height: height,
-      width: width,
-      child: isLoadingUsers? Center(child: CircularProgressIndicator(color: MyColors().mainColor,),) :
-      Row(
-        children: [
-          Container(
-            width: width*0.6,
-            child: Stack(
-              children: [
-                Positioned(
-                  bottom: height*0.1,
-                  left: width*0.4,
-                    child: usersComing.length>2?CircleAvatar(radius: height*0.3,backgroundImage: NetworkImage(usersComing[2].imageUrl as String),)
-                        : Container()
-                ),
-                Positioned(
+    return InkWell(
+      onTap: ()=> Navigator.pushNamed(context, ShowEventAttendings.tag,arguments:[event,model.parlamentUsers]),
+      child: Container(
+        height: height,
+        width: width,
+        child: isLoadingUsers? Center(child: CircularProgressIndicator(color: MyColors().mainColor,),) :
+        Row(
+          children: [
+            Container(
+              width: width*0.6,
+              child: Stack(
+                children: [
+                  Positioned(
                     bottom: height*0.1,
-                    left: width*0.2,
-                    child: usersComing.length>1 ? CircleAvatar(radius: height*0.3,backgroundImage: NetworkImage(usersComing[1].imageUrl as String),)
-                        :Container()
-                ),
-                Positioned(
-                    bottom: height*0.1,
-                    left: 0,
-                    child:usersComing.isNotEmpty? CircleAvatar(
-                      radius: height*0.3,backgroundImage: NetworkImage(usersComing[0].imageUrl as String),)
-                        :Container()
-                ),
-              ],
+                    left: width*0.4,
+                      child: usersComing.length>2?CircleAvatar(radius: height*0.3,backgroundImage: NetworkImage(usersComing[2].imageUrl as String),)
+                          : Container()
+                  ),
+                  Positioned(
+                      bottom: height*0.1,
+                      left: width*0.2,
+                      child: usersComing.length>1 ? CircleAvatar(radius: height*0.3,backgroundImage: NetworkImage(usersComing[1].imageUrl as String),)
+                          :Container()
+                  ),
+                  Positioned(
+                      bottom: height*0.1,
+                      left: 0,
+                      child:usersComing.isNotEmpty? CircleAvatar(
+                        radius: height*0.3,backgroundImage: NetworkImage(usersComing[0].imageUrl as String),)
+                          :Container()
+                  ),
+                ],
+              ),
             ),
-          ),
-          model.comingToEventUserList(event).length>3?WidgetUtils().customText('  +'+ model.comingToEventUserList(event).length.toString())
-              :Container()
-        ],
+            model.comingToEventUserList(event).length>3?WidgetUtils().customText('  +'+ model.comingToEventUserList(event).length.toString())
+                :Container()
+          ],
+        ),
       ),
     );
   }
@@ -340,7 +365,7 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
         child: TextField(
           keyboardType: TextInputType.phone,
           controller: phoneController,
-          decoration: InputDecoration(hintText: '0501234567'),
+          decoration: InputDecoration(hintText: 'Example: 050-1234567'),
         ),
       ),
     actions: [
@@ -362,6 +387,28 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
     ],
     );
  }
+  AlertDialog deleteEventDialog(double height,double width,event){
+    return AlertDialog(
+      title: WidgetUtils().customText('Are you sure you want to delete the event?',maxLines: 5),
+      actions: [
+        InkWell(
+          onTap: ()=> {
+            model.deleteEvent(event),
+            Navigator.pop(context)
+          },
+          child: Container(
+            height: height*0.1,
+            width: width*0.4,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(height*0.04),color: Colors.red),
+            child: Center(
+              child: WidgetUtils().customText('DELETE',color: Colors.white),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
 
   @override
   void gotUpcomingEvents(List<Event> events) {
@@ -404,6 +451,18 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
   void finishedLoadingUsers() {
     print('[!] NEED TO STOP LOADING');
    setState(()=>isLoadingUsers = false);
+  }
+
+  @override
+  void deleteEvent(Event event) {
+    events.remove(event);
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: WidgetUtils().customText('Event deleted succsessfuly',color: Colors.white),
+            backgroundColor: MyColors().mainBright,
+        )
+    );
+    setState(()=>{null});
   }
 
 }

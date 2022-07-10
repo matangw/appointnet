@@ -62,7 +62,10 @@ class _NewEventComponentState extends State<NewEventComponent> implements NewEve
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: height*0.15,),
+              SizedBox(height: height*0.05,),
+              Row(mainAxisAlignment: MainAxisAlignment.start,
+                children: [SizedBox(width: width*0.05,), WidgetUtils().goBackButton(width*0.2, height*0.05, context)],),
+              SizedBox(height: height*0.05,),
               titleWidget(height*0.3, width),
               dataRow(height*0.1, width*0.9, Icons.date_range, 'Date',datePickButton(height*0.06, width*0.25)),
               dataRow(height*0.1, width*0.9, Icons.timer, 'Time',timePickButton(height*0.06, width*0.25,localizations)),
