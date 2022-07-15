@@ -1,10 +1,12 @@
 import 'package:appointnet/screens/add_friend_screen/add_friend_component.dart';
+import 'package:appointnet/screens/edit_parlament/edit_parlament_component.dart';
 import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/screens/login/login_component.dart';
 import 'package:appointnet/screens/new_event_screen/new_event_component.dart';
 import 'package:appointnet/screens/new_parlament/new_parlament_component.dart';
 import 'package:appointnet/screens/parlament_profile_screen/parlament_profile_component.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_component.dart';
+import 'package:appointnet/screens/parlament_screen/show_event_attendings.dart';
 import 'package:appointnet/screens/profile_screen/profile_screen_component.dart';
 import 'package:appointnet/screens/splash_screen/splash_component.dart';
 import 'package:appointnet/screens/update_details/update_details_component.dart';
@@ -56,8 +58,14 @@ class RouteManager {
       case ParlamentProfileComponent.tag:
         screen = ParlamentProfileComponent();
         return SlideRightRoute(page: screen,routeSettings: settings);
+      case ShowEventAttendings.tag:
+        screen = ShowEventAttendings();
+        return SlideRightRoute(page: screen,routeSettings: settings);
+      case EditParlamentComponent.tag:
+        screen = EditParlamentComponent();
+        return SlideRightRoute(page: screen,routeSettings: settings);
       default:
-        return _noScreen();
+        return SlideRightRoute(page: HomePageComponent(),routeSettings: settings);;
     }
   }
 }

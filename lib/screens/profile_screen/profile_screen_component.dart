@@ -54,7 +54,15 @@ class _ProfileScreenComponentState extends State<ProfileScreenComponent> impleme
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-                SizedBox(height: height*0.1,),
+              SizedBox(height: height*0.03,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(width: width*0.1,),
+                  WidgetUtils().goBackButton(width, height*0.05, context),
+                ],
+              ),
+                SizedBox(height: height*0.03,),
               titleWidget(height*0.2, width),
               SizedBox(height: height*0.05,),
               bottomContainer(height*0.4, width*0.8),

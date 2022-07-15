@@ -1,14 +1,11 @@
-import 'package:appointnet/main.dart';
 import 'package:appointnet/models/event.dart';
 import 'package:appointnet/models/parlament.dart';
 import 'package:appointnet/models/user.dart';
-import 'package:appointnet/screens/add_friend_screen/add_friend_component.dart';
 import 'package:appointnet/screens/home_page/home_page_model.dart';
 import 'package:appointnet/screens/home_page/home_page_view.dart';
 import 'package:appointnet/screens/new_parlament/new_parlament_component.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_component.dart';
 import 'package:appointnet/screens/profile_screen/profile_screen_component.dart';
-import 'package:appointnet/utils/general_utils.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +31,7 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
 
   ///loading bools
   bool isLoading = true;
-
+  bool dataFetched = false;
   @override
   void initState() {
     model = HomePageModel(this);
@@ -43,6 +40,10 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
 
   @override
   Widget build(BuildContext context) {
+    if(!dataFetched){
+      model.getUserUpcomingEvents();
+      dataFetched = true;
+    }
     double height = MediaQuery.of(context).size.height- MediaQuery.of(context).padding.top;
     double width = MediaQuery.of(context).size.width;
     return WillPopScope(
@@ -106,7 +107,13 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
           Container(
             height: height*0.15,
             width: width,
-            child: Center(child: Text('my next events')),
+            child: Row(
+              children: [
+                SizedBox(width: width*0.3,),
+                Container(width: width*0.4,child: WidgetUtils().customText('My next event'),),
+                SizedBox(width: width*0.15,),
+              ],
+            ),
           ),
           SizedBox(height: height*0.1,),
           Container(
@@ -169,7 +176,8 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
 
   Widget parlamentListTile(double height,double width,Parlament parlament){
     return InkWell(
-      onTap: ()=>Navigator.of(context).pushNamed(ParlamentScreenComponent.tag,arguments: [parlament]),
+      onTap: ()=>Navigator.of(context).pushNamed(ParlamentScreenComponent.tag,arguments: [parlament])
+      .then((value) => setState(()=>dataFetched = false)),
       child: Card(
         elevation: 10,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.2)),
@@ -239,7 +247,8 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
   @override
   void eventPressed(Event event) {
     Parlament wantedParlament = model.userParlaments.firstWhere((element) => element.imageUrl==event.parlamentImage);
-    Navigator.of(context).pushNamed(ParlamentScreenComponent.tag,arguments: [wantedParlament,event]);
+    Navigator.of(context).pushNamed(ParlamentScreenComponent.tag,arguments: [wantedParlament,event])
+        .then((value) => setState(()=>dataFetched = false));
   }
 
 

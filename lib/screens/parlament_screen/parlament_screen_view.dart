@@ -9,4 +9,5 @@ abstract class ParlamentScreenView{
   void finishedAddingUserToParlament();
   void finishedLoadingUsers();
   void onError(String error);
+  void deleteEvent(Event event);
 }

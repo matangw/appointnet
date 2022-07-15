@@ -9,6 +9,7 @@ import 'package:appointnet/models/user.dart';
 
 
 import '../../utils/widget_utils.dart';
+import '../edit_parlament/edit_parlament_component.dart';
 
 class ParlamentProfileComponent extends StatefulWidget{
 
@@ -81,21 +82,34 @@ class _ParlamentProfileComponentState extends State<ParlamentProfileComponent> i
                 child: Container(
                   height: height*0.25,
                   width: width*0.6,
-                  child: InkWell(
-                    onTap: ()=>Navigator.of(context).pushNamed(ParlamentProfileComponent.tag),
-                    child: Card(
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.5)),
-                      child: Center(
-                          child: WidgetUtils().customText(
-                              parlament.name,
-                              overflow: TextOverflow.ellipsis,
-                              fontWeight: FontWeight.bold,
-                              color: MyColors().mainColor,
-                              fontSize: height*0.08)),
-                    ),
+                  child: Card(
+                    elevation: 10,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.5)),
+                    child: Center(
+                        child: WidgetUtils().customText(
+                            parlament.name,
+                            overflow: TextOverflow.ellipsis,
+                            fontWeight: FontWeight.bold,
+                            color: MyColors().mainColor,
+                            fontSize: height*0.08)),
                   ),
-                ),))
+                ),)),
+          Positioned(
+            right: height*0.1,
+            top: height*0.15,
+            child: InkWell(
+              onTap: ()=> Navigator.pushNamed(context, EditParlamentComponent.tag,arguments: parlament),
+              child: CircleAvatar(
+                backgroundColor: MyColors().backgroundColor,
+                child: Icon(Icons.edit,color: MyColors().mainColor,),
+              ),
+            ),),
+          Positioned(
+            left: height*0.1,
+            top: height*0.15,
+            child: InkWell(
+              child: WidgetUtils().goBackButton(width, height*0.15, context)
+            ),),
         ],
       ),
     );
@@ -108,9 +122,10 @@ class _ParlamentProfileComponentState extends State<ParlamentProfileComponent> i
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+          dataRow(width*0.9, 'Manager', Icons.event, members.firstWhere((m) =>m.id==parlament.managerId).name),
           dataRow(width*0.9, 'Members', Icons.group,  members.length.toString()),
           dataRow(width*0.9, 'Events', Icons.event, eventNumber.toString()),
-        Container(
+          Container(
           width: width*0.9,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -164,8 +179,10 @@ class _ParlamentProfileComponentState extends State<ParlamentProfileComponent> i
               ],
             ),
           ),
-          SizedBox(width: width*0.3,),
-          WidgetUtils().customText(data)
+          SizedBox(width: width*0.1,),
+          Container(width:width*0.3,
+              alignment: Alignment.centerRight,
+              child: WidgetUtils().customText(data,overflow: TextOverflow.clip))
         ],
       ),
     );

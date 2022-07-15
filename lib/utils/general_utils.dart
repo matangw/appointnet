@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:appointnet/models/user.dart';
 import 'package:appointnet/screens/login/login_component.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GeneralUtils{
 
@@ -60,4 +63,57 @@ class GeneralUtils{
     }
     return age;
   }
+
+  openWhatsappGroup(String? link,dynamic view) async{
+    if(link ==null){
+      view.onError('No link for this group');
+      return;
+    }
+    var whatsapp =link;
+    if(Platform.isIOS){
+      // for iOS phone only
+      if( await canLaunch(link)){
+        await launch(link, forceSafariVC: false);
+      }else{
+        print('[!] WHATSAPP NOT INSTALLED');
+      }
+
+    }else{
+      // android , web
+      if( await canLaunch(link)){
+        await launch(link);
+      }else{
+        print('[!] WHATSAPP NOT INSTALLED');
+
+      }
+    }
+  }
+  openWhatsappContact(String phoneNumber,dynamic view) async{
+    var whatsapp =phoneNumber;
+    var whatsappURl_android = "whatsapp://send?phone="+whatsapp+"&text=hello";
+    var whatappURL_ios ="https://wa.me/$whatsapp?text=${Uri.parse("hello")}";
+    if(Platform.isIOS){
+      // for iOS phone only
+      if( await canLaunch(whatappURL_ios)){
+        await launch(whatappURL_ios, forceSafariVC: false);
+      }else{
+        view.onError('[!] WHATSAPP NOT INSTALLED');
+      }
+
+    }else{
+      // android , web
+      if( await canLaunch(whatsappURl_android)){
+        await launch(whatsappURl_android);
+      }else{
+        view.onError('[!] WHATSAPP NOT INSTALLED');
+
+      }
+    }
+  }
+
+
+  Future<void> launchPhone(String phoneNumber) async{
+    await launchUrl(Uri.parse('tel://$phoneNumber'));
+  }
+
 }
