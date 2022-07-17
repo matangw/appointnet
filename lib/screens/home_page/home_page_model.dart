@@ -7,11 +7,14 @@ import 'package:appointnet/repositories/user_repository.dart';
 import 'package:appointnet/screens/home_page/home_page_view.dart';
 import 'package:appointnet/utils/shared_reffrencess_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+//import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePageModel{
 
   FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   ///user data
   late AppointnetUser user;
@@ -36,8 +39,10 @@ class HomePageModel{
       print('[+] FOUND USER');
       await getUserParlaments();
       this.user = user;
-      view.onFinishedLoading()
-      ;
+      view.onFinishedLoading();
+      for(var p in userParlaments){
+        messaging.subscribeToTopic(p.id as String);
+      }
     }
   }
 
@@ -63,8 +68,11 @@ class HomePageModel{
     }
   }
 
-  Future<void> getEventParlament(Event event)async{
-
+  Future<void> subscribeToParlaments()async{
+    for(var p in userParlaments){
+      String id = p.id as String;
+      //FirebaseMessaging.instance.subscribeToTopic(id);
+      print('[!] Subscribed to '+id);
+    }
   }
-
-}
+ }
