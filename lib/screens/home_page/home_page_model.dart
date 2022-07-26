@@ -40,9 +40,15 @@ class HomePageModel{
       await getUserParlaments();
       this.user = user;
       view.onFinishedLoading();
+
+      /// listen for every parlament topic
+      NotificationSettings notificationSettings = await messaging.requestPermission();
+      print('Auth notification status: '+notificationSettings.authorizationStatus.toString());
       for(var p in userParlaments){
         messaging.subscribeToTopic(p.id as String);
+        print('[!] Subscribed to ${p.id as String}');
       }
+     messaging.subscribeToTopic(user.id as String);
     }
   }
 
@@ -70,9 +76,8 @@ class HomePageModel{
 
   Future<void> subscribeToParlaments()async{
     for(var p in userParlaments){
-      String id = p.id as String;
-      //FirebaseMessaging.instance.subscribeToTopic(id);
-      print('[!] Subscribed to '+id);
+      messaging.subscribeToTopic(p.id as String);
+      print('[!] Subscribed to ${p.id as String}');
     }
   }
  }

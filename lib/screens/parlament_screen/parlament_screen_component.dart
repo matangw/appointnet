@@ -438,6 +438,12 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
 
   @override
   void finishedAddingUserToParlament() {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: WidgetUtils().customText('User added successfully!',color: Colors.white),
+          backgroundColor: MyColors().mainBright,
+        )
+    );
     setState(()=> isLoading =false);
   }
 
