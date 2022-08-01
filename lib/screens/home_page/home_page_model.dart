@@ -43,7 +43,6 @@ class HomePageModel{
 
       /// listen for every parlament topic
       NotificationSettings notificationSettings = await messaging.requestPermission();
-      print('Auth notification status: '+notificationSettings.authorizationStatus.toString());
       for(var p in userParlaments){
         messaging.subscribeToTopic(p.id as String);
         print('[!] Subscribed to ${p.id as String}');

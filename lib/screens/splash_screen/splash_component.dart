@@ -53,7 +53,15 @@ class _SplashComponentState extends State<SplashComponent> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(Icons.group,color: MyColors().mainColor,size: height*0.3,),
+          Container(
+            height: height*0.3,
+            width: width*0.3,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/logoPng.png')
+              )
+            ),
+          ),
           WidgetUtils().customText('appointnet',maxLines: 10,color: MyColors().mainColor,fontSize: height*0.1)
         ],
       ),
