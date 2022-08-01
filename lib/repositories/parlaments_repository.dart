@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:appointnet/models/event.dart';
 import 'package:appointnet/models/parlament.dart';
 import 'package:appointnet/models/user.dart';
+import 'package:appointnet/repositories/notification_repository.dart';
 import 'package:appointnet/repositories/user_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -55,10 +56,18 @@ class ParlamentsRepository{
       print('No user with number '+phoneNumber.toString()+' found.');
       return 'No user with number '+phoneNumber.toString()+' found.';
     }
+    if(parlament.usersId.contains(user.id)){
+      return 'User already in the parlament';
+    }
     parlament.usersId.add(user.id as String);
-    bool error = await ParlamentsRepository().updateParlament(parlament).onError((error, stackTrace) =>true);
-    if(error){return 'Something went wrong';}
-    else{return null;}
+    bool successes = await ParlamentsRepository().updateParlament(parlament);
+    if(!successes){
+      print('something went wrong');
+      return 'something went wrong' ;
+    }
+    else{
+      NotificationRepository().createNotification(user.id as String, parlament.name, 'You have been added to the parlament ${parlament.name}');
+      return null;}
   }
 
 

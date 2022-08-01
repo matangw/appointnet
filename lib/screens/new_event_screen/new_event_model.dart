@@ -1,6 +1,7 @@
 import 'package:appointnet/models/event.dart';
 import 'package:appointnet/models/parlament.dart';
 import 'package:appointnet/repositories/event_repository.dart';
+import 'package:appointnet/repositories/notification_repository.dart';
 import 'package:appointnet/screens/new_event_screen/new_event_view.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +24,7 @@ class NewEventModel{
     bool success = await EventRepository(parlamentId:parlament.id as String).updateEvent(event).catchError((error)=>print(error));
     if(success){
       print('[+] UPLOAD SUCCESSFUL');
+      NotificationRepository().createNotification(parlament.id as String, parlament.name, 'New event added for ${parlament.name}!');
       view.onComplete();
     }
     else

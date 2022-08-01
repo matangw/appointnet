@@ -82,6 +82,5 @@ class ParlamentProfileModel{
   Future<void> exitGroup()async{
     await ParlamentsRepository().removeUserFromParlament(parlament);
     view.exitGroup();
-
   }
 }

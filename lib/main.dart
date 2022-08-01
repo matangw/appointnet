@@ -1,15 +1,14 @@
-import 'package:appointnet/screens/home_page/home_page_component.dart';
-import 'package:appointnet/screens/login/login_component.dart';
-import 'package:appointnet/screens/new_event_screen/new_event_component.dart';
-import 'package:appointnet/screens/new_parlament/new_parlament_component.dart';
-import 'package:appointnet/screens/parlament_screen/parlament_screen_component.dart';
 import 'package:appointnet/screens/splash_screen/splash_component.dart';
-import 'package:appointnet/screens/update_details/update_details_component.dart';
 import 'package:appointnet/utils/route_manager.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'firebase_options.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.messageId}");
+}
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

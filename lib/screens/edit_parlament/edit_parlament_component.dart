@@ -67,7 +67,7 @@ class _EditParlamentComponentState extends State<EditParlamentComponent> impleme
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [SizedBox(width: width*0.1,),WidgetUtils().goBackButton(width, height*0.05, context)],
               ),
-              SizedBox(height: height*0.1,),
+              SizedBox(height:0 ,),
               titleWidget(height*0.5, width)
             ],
           ),

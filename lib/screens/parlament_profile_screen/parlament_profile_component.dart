@@ -240,30 +240,33 @@ class _ParlamentProfileComponentState extends State<ParlamentProfileComponent> i
   }
   
   Widget exitGroupButton(double containerHeight,double containerWidth,double height,double width){
-    return Container(
-      decoration: BoxDecoration(
-        color: MyColors().backgroundColor,
-        boxShadow: [BoxShadow(
-          offset: Offset.fromDirection(0,5),
-          spreadRadius: 1,
-          blurRadius: 5,
-          color: Colors.grey[600]?? Colors.grey
+    return InkWell(
+      onTap: ()=> model.exitGroup(),
+      child: Container(
+        decoration: BoxDecoration(
+          color: MyColors().backgroundColor,
+          boxShadow: [BoxShadow(
+            offset: Offset.fromDirection(0,5),
+            spreadRadius: 1,
+            blurRadius: 5,
+            color: Colors.grey[600]?? Colors.grey
 
-        )]
-      ),
-      child: SizedBox(
-        width: containerWidth,
-        height: containerHeight,
-        child: Center(
-          child: Container(
-            height: height,
-            width: width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(height*0.5),
-              color: Colors.red
-            ),
-            child: Center(
-              child: WidgetUtils().customText('EXIT GROUP',color: Colors.white,fontWeight: FontWeight.bold),
+          )]
+        ),
+        child: SizedBox(
+          width: containerWidth,
+          height: containerHeight,
+          child: Center(
+            child: Container(
+              height: height,
+              width: width,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(height*0.5),
+                color: Colors.red
+              ),
+              child: Center(
+                child: WidgetUtils().customText('EXIT GROUP',color: Colors.white,fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ),
