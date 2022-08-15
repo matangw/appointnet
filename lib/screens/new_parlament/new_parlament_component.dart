@@ -241,7 +241,10 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
       title: Text('Are you sure you want to create the group '+nameController.text),
       actions: [
         InkWell(
-          onTap: ()=>model.uploadParlament(nameController.text,File(userImage?.path as String),whatsappLinkController.text),
+          onTap: ()=>{
+            Navigator.pop(context),
+            model.uploadParlament(nameController.text,File(userImage?.path as String),whatsappLinkController.text)
+          },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: width*0.05,vertical: height*0.01),
             color: MyColors().mainColor,

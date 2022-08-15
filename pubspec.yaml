@@ -37,7 +37,7 @@ dependencies:
   firebase_core: ^1.20.0
   firebase_auth: ^3.3.18
   cloud_firestore: ^3.4.3
-  image_picker: ^0.8.5+3
+  image_picker: ^0.8.5
   image_cropper: ^2.0.3
   firebase_storage: ^10.2.16
   flutter_speed_dial: ^6.0.0
