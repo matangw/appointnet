@@ -1,7 +1,11 @@
 import 'package:appointnet/models/parlament.dart';
+import 'package:appointnet/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../models/event.dart';
 
 class SharedPreferencesUtils{
 
@@ -16,6 +20,56 @@ class SharedPreferencesUtils{
   Future<void>  initiate()async{
     sh =await SharedPreferences.getInstance();
     userId = _auth.currentUser?.uid as String;
+  }
+
+  Future<void> setUserdata(AppointnetUser user)async{
+    sh.setString(userId+'id', userId);
+    sh.setString(userId+'name', user.name);
+    sh.setString(userId+'phoneNumber', user.phoneNumber);
+    sh.setString(userId+'birthDate', user.birthDate.toString());
+    sh.setString(userId+'imageUrl', user.imageUrl as String);
+  }
+
+  Future<AppointnetUser?> getUserData(String userId)async{
+    if(sh.getString(userId+'id')==null){
+      return null;
+    }
+    return AppointnetUser(
+        id:sh.getString(userId+'id'),
+        name: sh.getString(userId+'name') as String,
+        phoneNumber:sh.getString(userId+'phoneNumber') as String,
+        birthDate: DateTime.parse(sh.getString(userId+'birthDate') as String),
+        imageUrl:     sh.getString(userId+'imageUrl') as String,
+    );
+  }
+
+
+  Future<void> setEventData(Event event)async{
+    String eventId = event.id as String;
+    sh.setString(eventId+'id', eventId);
+    sh.setString(eventId+'date', event.date.toString());
+    sh.setString(eventId+'imageUrl', event.parlamentImage);
+    sh.setString(eventId+'location', event.location);
+    sh.setStringList(eventId+'attendings', event.attendingsIds);
+    sh.setStringList(eventId+'invited', event.invitedIds);
+    sh.setString(eventId+'time', event.time.toString());
+  }
+  Future<Event?> getEventData(String eventId)async{
+    if(sh.getString(eventId)==null){
+      return null;
+    }
+    else{
+      String s = sh.getString(eventId+'time') as String;
+      return Event(
+          parlamentImage:sh.getString(eventId+'imageUrl') as String,
+          date:DateTime.parse(sh.getString(eventId+'date') as String),
+          time:TimeOfDay(hour:int.parse(s.split(":")[0]),minute: int.parse(s.split(":")[1])),
+          location: sh.getString(eventId+'location') as String,
+          attendingsIds: sh.getStringList(eventId+'attendings') as List<String>,
+          invitedIds: sh.getStringList(eventId+'invited',) as List<String>,
+          id:sh.getString(eventId+'id') as String
+    );
+    }
   }
 
   Future<void> setParlament(Parlament parlament) async{
