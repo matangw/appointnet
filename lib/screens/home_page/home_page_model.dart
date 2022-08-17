@@ -15,6 +15,7 @@ class HomePageModel{
 
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  SharedPreferencesUtils localData  = SharedPreferencesUtils();
 
   ///user data
   late AppointnetUser user;
@@ -27,6 +28,37 @@ class HomePageModel{
   HomePageModel(this.view){
     getUserData();
   }
+
+
+  //setting local data
+  Future<void> setLocalData() async{
+    List<String> parlamentsIds = [];
+    for(var p in userParlaments){
+      parlamentsIds.add(p.id as String);
+    }
+    localData.setUserdata(user);
+    for(var p in userParlaments){
+      localData.setParlament(p);
+    }
+    localData.setLocalParlamentsIds(parlamentsIds);
+    for(var e in userUpcomingEvents){
+      localData.setEventData(e);
+    }
+
+  }
+
+  Future<void> getLocalData() async{
+    AppointnetUser? localUser = await localData.getUserData(FirebaseAuth.instance.currentUser?.uid as String);
+    if(localUser!=null){
+      user = localUser;
+      List<String>? parlamentsIds = sh.getStringList('palamentsIds');
+      /// if need to pull certin parlaments
+      if(parlamentsIds!=null){
+        userParlaments =  await localData.getParlamentList(parlamentsIds);
+        }
+      }
+    view.gotLocalData();
+    }
 
   Future<void> getUserData() async{
     sh = await SharedPreferences.getInstance();

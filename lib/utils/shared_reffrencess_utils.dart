@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:appointnet/models/parlament.dart';
 import 'package:appointnet/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,6 +30,32 @@ class SharedPreferencesUtils{
     sh.setString(userId+'phoneNumber', user.phoneNumber);
     sh.setString(userId+'birthDate', user.birthDate.toString());
     sh.setString(userId+'imageUrl', user.imageUrl as String);
+  }
+
+
+  Future<void> setLocalParlamentsIds(List<String> parlamentsId)async{
+    sh.setStringList('palamentsIds', parlamentsId);
+  }
+
+
+  Future<List<Parlament>> getParlamentList(List<String> ids) async {
+    List<Parlament> parlaments = [];
+    for(var id in ids){
+      Parlament? parlament = await  getLocalParlmanet(id);
+      if(parlament!=null){
+        parlaments.add(parlament);
+      }
+    }
+    return parlaments;
+  }
+
+  Future<List<String>?> getLocalParlamentsIds()async{
+    List<String>? ids =  sh.getStringList('palamentsIds');
+    if(ids ==null)
+      return null;
+    else{
+      return ids;
+    }
   }
 
   Future<AppointnetUser?> getUserData(String userId)async{

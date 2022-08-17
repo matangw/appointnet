@@ -40,6 +40,7 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
 
   @override
   Widget build(BuildContext context) {
+    model.getLocalData();
     if(!dataFetched){
       model.getUserUpcomingEvents();
       dataFetched = true;
@@ -230,13 +231,11 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
   @override
   void onFinishedLoading() {
     setState(() {
-      setState(() {
-        print('SETTING NEW STATE');
-      });
       isLoading = false;
       user = model.user;
       userParlaments = model.userParlaments;
     });
+    model.setLocalData();
   }
 
   @override
@@ -249,6 +248,11 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
     Parlament wantedParlament = model.userParlaments.firstWhere((element) => element.imageUrl==event.parlamentImage);
     Navigator.of(context).pushNamed(ParlamentScreenComponent.tag,arguments: [wantedParlament,event])
         .then((value) => setState(()=>dataFetched = false));
+  }
+
+  @override
+  void gotLocalData() {
+   setState(()=>isLoading = false);
   }
 
 
