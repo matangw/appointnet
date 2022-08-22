@@ -26,6 +26,7 @@ class HomePageModel{
 
   HomePageView view;
   HomePageModel(this.view){
+    getLocalData();
     getUserData();
   }
 
@@ -36,6 +37,7 @@ class HomePageModel{
     for(var p in userParlaments){
       parlamentsIds.add(p.id as String);
     }
+    await localData.initiate();
     localData.setUserdata(user);
     for(var p in userParlaments){
       localData.setParlament(p);
@@ -48,6 +50,7 @@ class HomePageModel{
   }
 
   Future<void> getLocalData() async{
+    await localData.initiate();
     AppointnetUser? localUser = await localData.getUserData(FirebaseAuth.instance.currentUser?.uid as String);
     if(localUser!=null){
       user = localUser;
@@ -56,8 +59,9 @@ class HomePageModel{
       if(parlamentsIds!=null){
         userParlaments =  await localData.getParlamentList(parlamentsIds);
         }
+      view.gotLocalData();
       }
-    view.gotLocalData();
+
     }
 
   Future<void> getUserData() async{

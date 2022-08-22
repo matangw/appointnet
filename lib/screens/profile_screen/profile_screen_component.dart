@@ -4,6 +4,7 @@ import 'package:appointnet/screens/profile_screen/profile_screen_view.dart';
 import 'package:appointnet/utils/general_utils.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/shared_reffrencess_utils.dart';
@@ -87,7 +88,7 @@ class _ProfileScreenComponentState extends State<ProfileScreenComponent> impleme
           SizedBox(width: width*0.05,),
           CircleAvatar(
             radius: height*0.3,backgroundColor: MyColors().mainColor,
-            backgroundImage:NetworkImage(user.imageUrl as String),
+            backgroundImage:CachedNetworkImageProvider(user.imageUrl as String),
           ),
           SizedBox(width: width*0.1,),
          // WidgetUtils().customText(user.name)

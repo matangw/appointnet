@@ -15,9 +15,7 @@ class SharedPreferencesUtils{
   late String userId;
 
   late SharedPreferences sh;
-  SharedPreferencesUtils(){
-    initiate();
-  }
+  SharedPreferencesUtils();
 
   Future<void>  initiate()async{
     sh =await SharedPreferences.getInstance();
@@ -25,6 +23,7 @@ class SharedPreferencesUtils{
   }
 
   Future<void> setUserdata(AppointnetUser user)async{
+    print('Setting data for user: '+user.name);
     sh.setString(userId+'id', userId);
     sh.setString(userId+'name', user.name);
     sh.setString(userId+'phoneNumber', user.phoneNumber);
@@ -34,6 +33,7 @@ class SharedPreferencesUtils{
 
 
   Future<void> setLocalParlamentsIds(List<String> parlamentsId)async{
+    print('Setting local parlaments: '+parlamentsId.toString());
     sh.setStringList('palamentsIds', parlamentsId);
   }
 
@@ -101,7 +101,7 @@ class SharedPreferencesUtils{
   }
 
   Future<void> setParlament(Parlament parlament) async{
-    await Future.delayed(Duration(milliseconds: 100));
+    print('Setting local data for parlament: '+ parlament.name);
     String parlamentId = parlament.id as String;
     String imageUrl = parlament.imageUrl as String;
     List<String> usersId = parlament.usersId;

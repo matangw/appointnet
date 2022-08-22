@@ -4,6 +4,7 @@ import 'package:appointnet/screens/parlament_profile_screen/parlament_profile_mo
 import 'package:appointnet/screens/parlament_profile_screen/parlament_profile_view.dart';
 import 'package:appointnet/utils/general_utils.dart';
 import 'package:appointnet/utils/my_colors.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:appointnet/models/user.dart';
 
@@ -74,7 +75,7 @@ class _ParlamentProfileComponentState extends State<ParlamentProfileComponent> i
             width: width,
             decoration: BoxDecoration(
                 color: MyColors().mainDark,
-                image: DecorationImage(image: NetworkImage(parlament.imageUrl as String),fit: BoxFit.fitWidth)
+                image: DecorationImage(image: CachedNetworkImageProvider(parlament.imageUrl as String),fit: BoxFit.fitWidth)
             ),)),
           Positioned(
               left:0,right: 0,bottom: height*0.25,
@@ -220,7 +221,7 @@ class _ParlamentProfileComponentState extends State<ParlamentProfileComponent> i
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(width: width*0.1,),
-          CircleAvatar(backgroundImage: NetworkImage(member.imageUrl as String),),
+          CircleAvatar(backgroundImage: CachedNetworkImageProvider(member.imageUrl as String),),
           SizedBox(width: width*0.05,),
           Text(member.name),
           Expanded(child: SizedBox()),

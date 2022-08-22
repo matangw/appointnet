@@ -4,6 +4,7 @@ import 'package:appointnet/screens/edit_parlament/edit_parlament_model.dart';
 import 'package:appointnet/screens/edit_parlament/edit_parlament_view.dart';
 import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/utils/general_utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -90,7 +91,7 @@ class _EditParlamentComponentState extends State<EditParlamentComponent> impleme
             CircleAvatar(
               radius: height*0.2,
               backgroundColor: MyColors().mainBright,
-              backgroundImage: NetworkImage(parlament.imageUrl as String),
+              backgroundImage: CachedNetworkImageProvider(parlament.imageUrl as String),
               child: Icon(Icons.image,color: Colors.white,),
             ):
             CircleAvatar(
