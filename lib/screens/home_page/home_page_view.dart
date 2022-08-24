@@ -6,4 +6,5 @@ abstract class HomePageView{
   void onError(String error);
   void onGotAllEvents();
   void eventPressed(Event event);
+  void gotLocalData();
 }

@@ -8,6 +8,7 @@ import 'package:appointnet/screens/parlament_screen/parlament_screen_component.d
 import 'package:appointnet/screens/profile_screen/profile_screen_component.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -88,7 +89,7 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
               child: CircleAvatar(
                 radius: height*0.3,
                 backgroundColor: MyColors().mainColor,
-                backgroundImage: NetworkImage(user.imageUrl as String),
+                backgroundImage: CachedNetworkImageProvider(user.imageUrl as String),
               )
           ),
           SizedBox(height: height*0.1,),
@@ -138,7 +139,7 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: width * 0.05),
         child: CircleAvatar(
-            backgroundImage: NetworkImage(
+            backgroundImage: CachedNetworkImageProvider(
               userUpcomingEvents[index].parlamentImage,)
         ),
       ),
@@ -194,7 +195,7 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(width: width*0.1,),
-              CircleAvatar(backgroundImage: NetworkImage(parlament.imageUrl as String),),
+              CircleAvatar(backgroundImage: CachedNetworkImageProvider(parlament.imageUrl as String),),
               SizedBox(width: width*0.05,),
               WidgetUtils().customText(parlament.name,fontWeight: FontWeight.bold,color: MyColors().textColor)
             ],
@@ -230,13 +231,11 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
   @override
   void onFinishedLoading() {
     setState(() {
-      setState(() {
-        print('SETTING NEW STATE');
-      });
       isLoading = false;
       user = model.user;
       userParlaments = model.userParlaments;
     });
+    model.setLocalData();
   }
 
   @override
@@ -249,6 +248,15 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
     Parlament wantedParlament = model.userParlaments.firstWhere((element) => element.imageUrl==event.parlamentImage);
     Navigator.of(context).pushNamed(ParlamentScreenComponent.tag,arguments: [wantedParlament,event])
         .then((value) => setState(()=>dataFetched = false));
+  }
+
+  @override
+  void gotLocalData() {
+    setState(() {
+      isLoading = false;
+      user = model.user;
+      userParlaments = model.userParlaments;
+    });
   }
 
 

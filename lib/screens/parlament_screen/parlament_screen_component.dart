@@ -8,6 +8,7 @@ import 'package:appointnet/screens/parlament_screen/parlament_screen_view.dart';
 import 'package:appointnet/screens/parlament_screen/show_event_attendings.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -115,7 +116,7 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
             width: width,
             decoration: BoxDecoration(
               color: MyColors().mainDark,
-                image: DecorationImage(image: NetworkImage(parlament.imageUrl as String),fit: BoxFit.fitWidth)
+                image: DecorationImage(image: CachedNetworkImageProvider(parlament.imageUrl as String),fit: BoxFit.fitWidth)
             ),)),
           Positioned(
               left:0,right: 0,bottom: height*0.25,
@@ -301,20 +302,20 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
                   Positioned(
                     bottom: height*0.1,
                     left: width*0.4,
-                      child: usersComing.length>2?CircleAvatar(radius: height*0.3,backgroundImage: NetworkImage(usersComing[2].imageUrl as String),)
+                      child: usersComing.length>2?CircleAvatar(radius: height*0.3,backgroundImage: CachedNetworkImageProvider(usersComing[2].imageUrl as String),)
                           : Container()
                   ),
                   Positioned(
                       bottom: height*0.1,
                       left: width*0.2,
-                      child: usersComing.length>1 ? CircleAvatar(radius: height*0.3,backgroundImage: NetworkImage(usersComing[1].imageUrl as String),)
+                      child: usersComing.length>1 ? CircleAvatar(radius: height*0.3,backgroundImage: CachedNetworkImageProvider(usersComing[1].imageUrl as String),)
                           :Container()
                   ),
                   Positioned(
                       bottom: height*0.1,
                       left: 0,
                       child:usersComing.isNotEmpty? CircleAvatar(
-                        radius: height*0.3,backgroundImage: NetworkImage(usersComing[0].imageUrl as String),)
+                        radius: height*0.3,backgroundImage: CachedNetworkImageProvider(usersComing[0].imageUrl as String),)
                           :Container()
                   ),
                 ],
