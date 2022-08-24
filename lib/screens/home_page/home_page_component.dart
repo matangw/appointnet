@@ -252,7 +252,11 @@ class _HomePageComponentState extends State<HomePageComponent> implements HomePa
 
   @override
   void gotLocalData() {
-   setState(()=>isLoading = false);
+    setState(() {
+      isLoading = false;
+      user = model.user;
+      userParlaments = model.userParlaments;
+    });
   }
 
 

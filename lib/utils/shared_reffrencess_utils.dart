@@ -131,22 +131,22 @@ class SharedPreferencesUtils{
   }
 
   Future<void> setUserParlamentsNumber(int number)async{
-    await Future.delayed(Duration(milliseconds: 100));
+    await Future.delayed(Duration(milliseconds: 50));
     sh.setInt(userId+'ParlamentNumber', number);
   }
 
   Future<int?> getUserNumberOfParlaments()async{
-    await Future.delayed(Duration(milliseconds: 100));
+    await Future.delayed(Duration(milliseconds: 50));
     return sh.getInt(userId+'ParlamentNumber');
   }
 
   Future<void> setUserFriendsNumber(int number)async{
-    await Future.delayed(Duration(milliseconds: 100));
+    await Future.delayed(Duration(milliseconds: 50));
     sh.setInt(userId+'FriendsNumber', number);
   }
 
   Future<int?> getUserFriendsNumber() async{
-    await Future.delayed(Duration(milliseconds: 100));
+    await Future.delayed(Duration(milliseconds: 50));
     return sh.getInt(userId+'FriendsNumber');
   }
 

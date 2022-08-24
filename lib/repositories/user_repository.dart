@@ -33,6 +33,7 @@ class UserRepository{
     if(snap.data() == null)
       {return null;}
     var data = snap.data();
+    print('[+] found data from function');
     return AppointnetUser.fromJson(data as Map<String,dynamic>);
 
   }

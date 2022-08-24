@@ -54,7 +54,7 @@ class HomePageModel{
     AppointnetUser? localUser = await localData.getUserData(FirebaseAuth.instance.currentUser?.uid as String);
     if(localUser!=null){
       user = localUser;
-      List<String>? parlamentsIds = sh.getStringList('palamentsIds');
+      List<String>? parlamentsIds = await localData.getLocalParlamentsIds();
       /// if need to pull certin parlaments
       if(parlamentsIds!=null){
         userParlaments =  await localData.getParlamentList(parlamentsIds);
@@ -65,7 +65,6 @@ class HomePageModel{
     }
 
   Future<void> getUserData() async{
-    sh = await SharedPreferences.getInstance();
     getUserUpcomingEvents();
     AppointnetUser? user = await UserRepository().getUserData(auth.currentUser?.uid as String);
     if(user== null){
@@ -76,7 +75,6 @@ class HomePageModel{
       await getUserParlaments();
       this.user = user;
       view.onFinishedLoading();
-
       /// listen for every parlament topic
       NotificationSettings notificationSettings = await messaging.requestPermission();
       for(var p in userParlaments){
