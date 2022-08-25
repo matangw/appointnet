@@ -13,8 +13,8 @@ class GeneralUtils{
 
 
   String? phoneValidationError(String userInput){
-    if(userInput.length!=10){return 'Not in the correct length';}
-    else if(userInput.startsWith('05')==false){return 'Not valid number';}
+    if(userInput.length!=10 && userInput.length!=12){return 'Not in the correct length';}
+    else if(userInput.startsWith('05')==false && userInput.startsWith('972')==false){return 'Not valid number';}
     if(int.tryParse(userInput)==null){
       return 'Insert only numbers';
     }
@@ -22,6 +22,10 @@ class GeneralUtils{
   }
 
   String phoneTemplate(String userInput){
+    if(userInput.length == 12){
+      String phoneNumber = '+'+userInput;
+      return phoneNumber;
+    }
     userInput = userInput.substring(1);
     String phoneNumber = '+972'+userInput;
     return phoneNumber;

@@ -6,7 +6,7 @@ abstract class ParlamentScreenView{
   void gotUpcomingEvents(List<Event> events);
   void successFeedBack(String message);
   void startAddingUserToParlament();
-  void finishedAddingUserToParlament();
+  void finishedAddingUserToParlament(bool success);
   void finishedLoadingUsers();
   void onError(String error);
   void deleteEvent(Event event);

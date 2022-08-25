@@ -152,7 +152,7 @@ class _ShowEventAttendingsState extends State<ShowEventAttendings> implements Pa
   }
 
   @override
-  void finishedAddingUserToParlament() {
+  void finishedAddingUserToParlament(bool success) {
     // TODO: implement finishedAddingUserToParlament
   }
 

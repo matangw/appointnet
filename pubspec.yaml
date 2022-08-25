@@ -49,6 +49,8 @@ dependencies:
   firebase_messaging: ^12.0.0
   firebase_analytics: ^9.3.0
   cached_network_image: ^3.2.1
+  fluttercontactpicker: ^4.7.0
+
 
 
 
