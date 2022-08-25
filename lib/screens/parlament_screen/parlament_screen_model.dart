@@ -10,6 +10,7 @@ import 'package:appointnet/utils/general_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:add_2_calendar/add_2_calendar.dart' as calendar;
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/event.dart';
 
@@ -43,7 +44,26 @@ class ParlamentScreenModel{
     view.gotUpcomingEvents(events);
   }
 
+  Future<void> addUserFromContacts()async{
+    bool premmision = await FlutterContactPicker.hasPermission();
+    if(!premmision){
+      await FlutterContactPicker.requestPermission();
+      return;
+    }
+    PhoneContact contact =await FlutterContactPicker.pickPhoneContact();
+    if(contact.phoneNumber==null){
+      view.onError('Contact does not have phone number');
+    }
+    String contactPhone = contact.phoneNumber?.number as String;
+    contactPhone = contactPhone.replaceAll(RegExp('[^0-9]'), '');
+    print('[!] Contact phone number: '+ contactPhone);
+    addNewUserToParlament(contactPhone);
+
+  }
+
+
   Future<void> addNewUserToParlament(String phone)async{
+    bool success = true;
     String? phoneError = GeneralUtils().phoneValidationError(phone);
     print('[!] USER PHONE NUMBER: '+phone);
     if(phoneError!=null){
@@ -56,8 +76,9 @@ class ParlamentScreenModel{
     String? error = await ParlamentsRepository().addUserToParlamentUsingPhone(parlament, newPhone);
     if(error!=null){
       view.onError(error);
+      success = false;
     }
-    view.finishedAddingUserToParlament();
+    view.finishedAddingUserToParlament(success);
   }
 
   Future<void> confirmAttend(Event event)async{

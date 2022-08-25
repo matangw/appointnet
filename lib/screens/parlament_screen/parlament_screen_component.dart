@@ -346,7 +346,8 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
 
  FloatingActionButton myActionButton(double height,double width){
     return FloatingActionButton(
-      onPressed: ()=>showDialog(context: context, builder: (_)=>myAlertDialog(height, width)),
+      onPressed: ()=> model.addUserFromContacts(),
+          //showDialog(context: context, builder: (_)=>myAlertDialog(height, width)),
       backgroundColor: MyColors().mainColor,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -438,13 +439,15 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
   }
 
   @override
-  void finishedAddingUserToParlament() {
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: WidgetUtils().customText('User added successfully!',color: Colors.white),
-          backgroundColor: MyColors().mainBright,
-        )
-    );
+  void finishedAddingUserToParlament(bool success) {
+    if(success){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: WidgetUtils().customText('User added successfully!',color: Colors.white),
+            backgroundColor: MyColors().mainBright,
+          )
+      );
+    }
     setState(()=> isLoading =false);
   }
 
