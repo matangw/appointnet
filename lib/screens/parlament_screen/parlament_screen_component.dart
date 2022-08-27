@@ -425,6 +425,7 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
   @override
   void onFinishedLoading() {
     setState(()=> isLoading = false);
+    Future.delayed(Duration(milliseconds: 100)).then((value) =>     model.setLocalData(events));
   }
 
   @override
@@ -473,6 +474,14 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
         )
     );
     setState(()=>{null});
+  }
+
+  @override
+  void onLocalDataLoad() {
+    setState(()=>{
+      isLoading = false,
+      isLoadingUsers = false
+    });
   }
 
 }
