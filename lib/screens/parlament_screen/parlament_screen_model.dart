@@ -13,16 +13,17 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/event.dart';
+import '../../utils/shared_reffrencess_utils.dart';
 
 class ParlamentScreenModel{
 
   Parlament parlament;
   ParlamentScreenView view;
-  late List<AppointnetUser> parlamentUsers;
+  late List<AppointnetUser> parlamentUsers = [];
   late EventRepository eventRepository ;
-
-  late SharedPreferences sh;
   
+  SharedPreferencesUtils localData = SharedPreferencesUtils();
+    
   ParlamentScreenModel(this.view,this.parlament){
     eventRepository = EventRepository(parlamentId: parlament.id as String);
     loadAllData();
@@ -32,10 +33,42 @@ class ParlamentScreenModel{
 
 
   Future<void> loadAllData()async{
-    await getUpcomingParlamentEvents(); //.catchError((error)=> view.onError(error.toString()));
+    await localData.initiate();
+    getLocalData();
+    await getUpcomingParlamentEvents();
     getParlamentUsers();
     view.onFinishedLoading();
   }
+
+  Future<void> setLocalData(List<Event> events)async{
+    List<String> eventsIds  = [];
+    for(var event in events){
+      eventsIds.add(event.id as String);
+    }
+    await localData.setParlamentEventsIds(parlament.id as String, eventsIds);
+    for(var event in events){
+      localData.setEventData(event);
+    }
+    for(var user in parlamentUsers){
+      localData.setUserdata(user);
+    }
+  }
+
+  Future<void> getLocalData()async{
+    List<Event> events = [];
+    List<String>? eventsIds = await localData.getParlamentEventsIds(parlament.id as String);
+    if(eventsIds!=null){
+      events = await localData.getListEventsData(eventsIds);
+      events.removeWhere((element) => element.date.isAfter(DateTime.now()));
+      view.gotUpcomingEvents(events);
+    }
+    for(var id in parlament.usersId){
+      AppointnetUser user =await localData.getUserData(id) as AppointnetUser;
+      parlamentUsers.add(user);
+    }
+    view.onLocalDataLoad();
+  }
+
 
 
   Future<void> getUpcomingParlamentEvents()async{

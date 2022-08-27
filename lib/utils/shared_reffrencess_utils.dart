@@ -71,6 +71,17 @@ class SharedPreferencesUtils{
     );
   }
 
+  Future<void> setParlamentEventsIds(String parlamentId,List<String> ids)async{
+    await sh.setStringList(parlamentId+ 'localEvents', ids);
+  }
+  Future<List<String>?> getParlamentEventsIds(String parlamentId)async{
+    List<String>? ids = await sh.getStringList(parlamentId+'localEvents');
+    if(ids==null){
+      return null;
+    }
+    return ids;
+  }
+
 
   Future<void> setEventData(Event event)async{
     String eventId = event.id as String;
@@ -82,6 +93,8 @@ class SharedPreferencesUtils{
     sh.setStringList(eventId+'invited', event.invitedIds);
     sh.setString(eventId+'time', event.time.toString());
   }
+
+
   Future<Event?> getEventData(String eventId)async{
     if(sh.getString(eventId)==null){
       return null;
@@ -98,6 +111,14 @@ class SharedPreferencesUtils{
           id:sh.getString(eventId+'id') as String
     );
     }
+  }
+
+  Future<List<Event>> getListEventsData(List<String> ids)async{
+    List<Event> result = [];
+    for(var id in ids){
+      result.add(await getEventData(id) as Event);
+    }
+    return result;
   }
 
   Future<void> setParlament(Parlament parlament) async{
@@ -131,22 +152,18 @@ class SharedPreferencesUtils{
   }
 
   Future<void> setUserParlamentsNumber(int number)async{
-    await Future.delayed(Duration(milliseconds: 50));
     sh.setInt(userId+'ParlamentNumber', number);
   }
 
   Future<int?> getUserNumberOfParlaments()async{
-    await Future.delayed(Duration(milliseconds: 50));
     return sh.getInt(userId+'ParlamentNumber');
   }
 
   Future<void> setUserFriendsNumber(int number)async{
-    await Future.delayed(Duration(milliseconds: 50));
     sh.setInt(userId+'FriendsNumber', number);
   }
 
   Future<int?> getUserFriendsNumber() async{
-    await Future.delayed(Duration(milliseconds: 50));
     return sh.getInt(userId+'FriendsNumber');
   }
 

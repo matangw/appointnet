@@ -2,6 +2,7 @@ import 'package:appointnet/models/event.dart';
 import 'package:appointnet/screens/parlament_screen/parlament_screen_view.dart';
 import 'package:appointnet/utils/general_utils.dart';
 import 'package:appointnet/utils/widget_utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/user.dart';
@@ -132,7 +133,7 @@ class _ShowEventAttendingsState extends State<ShowEventAttendings> implements Pa
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(width: width*0.1,),
-          CircleAvatar(backgroundImage: NetworkImage(member.imageUrl as String),),
+          CircleAvatar(backgroundImage: CachedNetworkImageProvider(member.imageUrl as String),),
           SizedBox(width: width*0.05,),
           Text(member.name),
           Expanded(child: SizedBox()),
@@ -189,5 +190,10 @@ class _ShowEventAttendingsState extends State<ShowEventAttendings> implements Pa
   @override
   void deleteEvent(Event event) {
     // TODO: implement deleteEvent
+  }
+
+  @override
+  void onLocalDataLoad() {
+    // TODO: implement onLocalDataLoad
   }
 }
