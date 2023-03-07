@@ -8,6 +8,7 @@ import 'package:appointnet/screens/parlament_screen/parlament_screen_view.dart';
 import 'package:appointnet/screens/parlament_screen/show_event_attendings.dart';
 import 'package:appointnet/utils/my_colors.dart';
 import 'package:appointnet/utils/widget_utils.dart';
+import 'package:appointnet/utils/widgets/add_member_floation_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -81,7 +82,7 @@ class _ParlamentScreenComponentState extends State<ParlamentScreenComponent> imp
 
     // TODO: implement build
     return Scaffold(
-      floatingActionButton: myActionButton(height, width),
+      floatingActionButton: addMemberButton(parlament: parlament,),
       backgroundColor: MyColors().backgroundColor,
       body: isLoading? WidgetUtils().loadingWidget(height*0.6, width*0.8)
       :SingleChildScrollView(

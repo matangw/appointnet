@@ -7,7 +7,12 @@ class ProfileScreenModel{
   ProfileScreenView view;
   late SharedPreferencesUtils sh;
   ProfileScreenModel(this.view){
-    sh  = SharedPreferencesUtils();
+   initialize();
+  }
+
+  Future<void> initialize()async{
+    sh = SharedPreferencesUtils();
+    await sh.initiate();
     fetchedSharedData();
   }
 

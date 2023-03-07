@@ -10,7 +10,7 @@ class WidgetUtils{
       onTap:()=>Navigator.of(context).pop(),
       child: CircleAvatar(
         backgroundColor: MyColors().mainColor,
-        child: Center(child: Icon(Icons.arrow_left,color: Colors.white,size: height,)),
+        child: Center(child: Icon(Icons.arrow_left,color: Colors.white,)),
       ),
     );
   }

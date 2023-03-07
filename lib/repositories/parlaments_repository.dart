@@ -50,6 +50,24 @@ class ParlamentsRepository{
     return result;
   }
 
+  Future<bool> addMemberViaLink({required String parlamentId})async{
+    bool success = true;
+    Parlament? parlament = await getParlamentData(parlamentId);
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if(userId == null){
+      throw 'user not logged in';
+    }
+    if(parlament==null){
+      throw 'did not found parlament';
+    }
+    if(parlament.usersId.contains(FirebaseAuth.instance.currentUser?.uid)){
+      throw 'user already in this parlament';
+    }
+    parlament.usersId.add(userId);
+    success = await  ParlamentsRepository().updateParlament(parlament);
+    return success;
+  }
+
   Future<String?> addUserToParlamentUsingPhone(Parlament parlament,String phoneNumber)async{
     AppointnetUser? user = await UserRepository().getUserByPhone(phoneNumber);
     if(user==null){

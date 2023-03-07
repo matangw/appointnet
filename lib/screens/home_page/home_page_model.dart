@@ -87,7 +87,9 @@ class HomePageModel{
 
   Future<void> getUserParlaments()async{
     userParlaments = await ParlamentsRepository().getParlmanetsForUser(auth.currentUser?.uid as String);
-    SharedPreferencesUtils().setUserParlamentsNumber(userParlaments.length);
+    SharedPreferencesUtils shUtils = SharedPreferencesUtils(); 
+    await shUtils.initiate();
+    shUtils.setUserParlamentsNumber(userParlaments.length);
   }
 
   Future<void> getUserUpcomingEvents()async{

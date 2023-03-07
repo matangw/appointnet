@@ -18,12 +18,6 @@
 	<string>appointnet</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>We need accsess to your gallery, to get a good profile picture </string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need accsess to your gallery, to get a good profile picture </string>
-	<key>NSCameraUsageDescription</key>
-	<string>Please accept to be able to use camera to take a good pictures</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
@@ -35,15 +29,35 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>app-1-101848093224-ios-e49ffa14707c4b7294db1d</string>
+				<string>fb1540036939756650</string>
+				<string>whatsapp</string>
 			</array>
 		</dict>
-		<dict/>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.101848093224-04j6posh0jjbf2gus1ejcuf5j8k69b4r</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FacebookAppID</key>
+	<string>fbid</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCalendarsUsageDescription</key>
+	<string>to_add_events_to_the_calendar</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Please accept to be able to use camera to take a good pictures</string>
+	<key>NSContactsUsageDescription</key>
+	<string>to_add_the_location_of_event_automatically</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We need accsess to your gallery, to get a good profile picture </string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need accsess to your gallery, to get a good profile picture </string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

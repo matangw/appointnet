@@ -55,7 +55,7 @@ class _ProfileScreenComponentState extends State<ProfileScreenComponent> impleme
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: height*0.03,),
+              SizedBox(height: height*0.05,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [

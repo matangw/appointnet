@@ -63,8 +63,8 @@ class ParlamentScreenModel{
       view.gotUpcomingEvents(events);
     }
     for(var id in parlament.usersId){
-      AppointnetUser user =await localData.getUserData(id) as AppointnetUser;
-      parlamentUsers.add(user);
+      AppointnetUser? user =await localData.getUserData(id);
+      user!= null? parlamentUsers.add(user)  : null;
     }
     view.onLocalDataLoad();
   }

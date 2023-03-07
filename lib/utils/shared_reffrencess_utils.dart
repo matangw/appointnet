@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:appointnet/models/parlament.dart';
 import 'package:appointnet/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,7 +13,9 @@ class SharedPreferencesUtils{
   late String userId;
 
   late SharedPreferences sh;
-  SharedPreferencesUtils();
+  SharedPreferencesUtils(){
+    initiate();
+  }
 
   Future<void>  initiate()async{
     sh =await SharedPreferences.getInstance();
@@ -116,7 +116,10 @@ class SharedPreferencesUtils{
   Future<List<Event>> getListEventsData(List<String> ids)async{
     List<Event> result = [];
     for(var id in ids){
-      result.add(await getEventData(id) as Event);
+      Event? e = await getEventData(id);
+      if(e != null){
+        result.add(e);
+      }
     }
     return result;
   }
