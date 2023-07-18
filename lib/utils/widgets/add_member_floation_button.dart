@@ -9,11 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 
 class addMemberButton extends StatefulWidget {
-
   Parlament parlament;
 
   addMemberButton({required this.parlament});
-
 
   @override
   _addMemberButton createState() => _addMemberButton();
@@ -66,11 +64,8 @@ class _addMemberButton extends State<addMemberButton>
                   ),
                   child: Column(
                     children: [
-                      RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              side: BorderSide(color: Colors.transparent)),
-                          onPressed: () {
+                      InkWell(
+                          onTap: () {
                             String screen = "None";
                             if (index == 0) {
                               addUserFromContacts();
@@ -81,23 +76,27 @@ class _addMemberButton extends State<addMemberButton>
                                   group: widget.parlament);
                             }
                           },
-                          color: Colors.white,
-                          textColor: MyColors().mainColor,
-                          child: Row(
-                            children: [
-                              Icon(icons[index],
-                                  color: MyColors().mainColor,
-                                  size: _controller.isDismissed ? 0 : 16.0),
-                              Container(
-                                  width: _controller.isDismissed ? 0 : 10.0),
-                              Flexible(
-                                child: Text(texts[index],
-                                    style: TextStyle(fontSize: 16),
-                                    overflow: TextOverflow.fade,
-                                    maxLines: 1,
-                                    softWrap: false),
-                              ),
-                            ],
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(icons[index],
+                                    color: MyColors().mainColor,
+                                    size: _controller.isDismissed ? 0 : 16.0),
+                                Container(
+                                    width: _controller.isDismissed ? 0 : 10.0),
+                                Flexible(
+                                  child: Text(texts[index],
+                                      style: TextStyle(fontSize: 16),
+                                      overflow: TextOverflow.fade,
+                                      maxLines: 1,
+                                      softWrap: false),
+                                ),
+                              ],
+                            ),
                           )),
                     ],
                   )),
@@ -113,7 +112,7 @@ class _addMemberButton extends State<addMemberButton>
                   builder: (BuildContext context, Widget? child) {
                     return Transform(
                       transform:
-                      Matrix4.rotationZ(_controller.value * 0.5 * math.pi),
+                          Matrix4.rotationZ(_controller.value * 0.5 * math.pi),
                       alignment: FractionalOffset.center,
                       child: Icon(
                           _controller.isDismissed ? Icons.add : Icons.close,
@@ -142,32 +141,28 @@ class _addMemberButton extends State<addMemberButton>
     );
   }
 
-
-  Future<void> addUserFromContacts()async{
+  Future<void> addUserFromContacts() async {
     bool premmision = await FlutterContactPicker.hasPermission();
-    if(!premmision){
+    if (!premmision) {
       await FlutterContactPicker.requestPermission();
       return;
     }
-    PhoneContact contact =await FlutterContactPicker.pickPhoneContact();
-    if(contact.phoneNumber==null){
+    PhoneContact contact = await FlutterContactPicker.pickPhoneContact();
+    if (contact.phoneNumber == null) {
       print('Contact does not have phone number');
     }
     String contactPhone = contact.phoneNumber?.number as String;
     contactPhone = contactPhone.replaceAll(RegExp('[^0-9]'), '');
-    print('[!] Contact phone number: '+ contactPhone);
+    print('[!] Contact phone number: ' + contactPhone);
     addNewUserToParlament(contactPhone);
-
   }
 
-
-  Future<void> addNewUserToParlament(String phone)async{
+  Future<void> addNewUserToParlament(String phone) async {
     bool success = true;
     String? phoneError = GeneralUtils().phoneValidationError(phone);
-    print('[!] USER PHONE NUMBER: '+phone);
-    if(phoneError!=null){
+    print('[!] USER PHONE NUMBER: ' + phone);
+    if (phoneError != null) {
       return;
     }
   }
-
 }

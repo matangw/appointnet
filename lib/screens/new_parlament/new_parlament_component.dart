@@ -9,17 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-
-class NewParlamentComponent extends StatefulWidget{
-
+class NewParlamentComponent extends StatefulWidget {
   static const String tag = '/new_parlament';
 
   @override
   State<NewParlamentComponent> createState() => _NewParlamentComponentState();
 }
 
-class _NewParlamentComponentState extends State<NewParlamentComponent> implements NewParlamentView{
-
+class _NewParlamentComponentState extends State<NewParlamentComponent>
+    implements NewParlamentView {
   /// USER INPUT VARIABLES
   TextEditingController nameController = TextEditingController();
   TextEditingController friendsSearchingBar = TextEditingController();
@@ -42,13 +40,14 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
     model = NewParlamentModel(this);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: MyColors().backgroundColor,
-      floatingActionButton: myActionButton(height,width),
+      floatingActionButton: myActionButton(height, width),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SingleChildScrollView(
         child: Container(
@@ -58,13 +57,24 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: height*0.1,),
-              Row(mainAxisAlignment: MainAxisAlignment.start,
-                children: [SizedBox(width: width*0.05,), WidgetUtils().goBackButton(width*0.2, height*0.05, context)],),
-              SizedBox(height: height*0.1,),
-              titleWidget(height*0.5, width),
+              SizedBox(
+                height: height * 0.1,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: width * 0.05,
+                  ),
+                  WidgetUtils()
+                      .goBackButton(width * 0.2, height * 0.05, context)
+                ],
+              ),
+              SizedBox(
+                height: height * 0.1,
+              ),
+              titleWidget(height * 0.5, width),
               //friendsContainer(height*0.6, width)
-                
             ],
           ),
         ),
@@ -72,7 +82,7 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
     );
   }
 
-  Widget titleWidget(double height,double width){
+  Widget titleWidget(double height, double width) {
     return Container(
       height: height,
       width: width,
@@ -81,36 +91,52 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           InkWell(
-            onTap: ()=> onPickImage(),
+            onTap: () => onPickImage(),
             child: CircleAvatar(
-              radius: height*0.2,
+              radius: height * 0.2,
               backgroundColor: MyColors().mainBright,
-              backgroundImage: userImage == null? null : FileImage(File(userImage?.path as String )),
-              child: Icon(Icons.image,color: Colors.white,),
+              backgroundImage: userImage == null
+                  ? null
+                  : FileImage(File(userImage?.path as String)),
+              child: Icon(
+                Icons.image,
+                color: Colors.white,
+              ),
             ),
           ),
-          SizedBox(height: height*0.05,),
+          SizedBox(
+            height: height * 0.05,
+          ),
           Card(
             elevation: 5,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.2)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(height * 0.2)),
             child: Container(
-              width: width*0.9,
-              padding: EdgeInsets.symmetric(vertical: height*0.03),
+              width: width * 0.9,
+              padding: EdgeInsets.symmetric(vertical: height * 0.03),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(height*0.2),
+                borderRadius: BorderRadius.circular(height * 0.2),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(width: width*0.05,),
-                  Icon(Icons.group,color: MyColors().mainColor,),
-                  SizedBox(width: width*0.05,),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                      width:width*0.25,child: WidgetUtils().customText('Name: ',fontWeight: FontWeight.bold)
+                  SizedBox(
+                    width: width * 0.05,
+                  ),
+                  Icon(
+                    Icons.group,
+                    color: MyColors().mainColor,
+                  ),
+                  SizedBox(
+                    width: width * 0.05,
                   ),
                   Container(
-                    width: width*0.4,
+                      alignment: Alignment.centerLeft,
+                      width: width * 0.25,
+                      child: WidgetUtils()
+                          .customText('Name: ', fontWeight: FontWeight.bold)),
+                  Container(
+                    width: width * 0.4,
                     child: TextField(
                       decoration: InputDecoration(hintText: ' must*'),
                       controller: nameController,
@@ -120,28 +146,39 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
               ),
             ),
           ),
-          SizedBox(height: height*0.05,),
+          SizedBox(
+            height: height * 0.05,
+          ),
           Card(
             elevation: 5,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.2)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(height * 0.2)),
             child: Container(
-              width: width*0.9,
-              padding: EdgeInsets.symmetric(vertical: height*0.03),
+              width: width * 0.9,
+              padding: EdgeInsets.symmetric(vertical: height * 0.03),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(height*0.2),
+                borderRadius: BorderRadius.circular(height * 0.2),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(width: width*0.05,),
-                  Icon(Icons.whatsapp_sharp,color: MyColors().mainColor,),
-                  SizedBox(width: width*0.05,),
-                  Container(
-                      alignment: Alignment.centerLeft,
-                      width: width*0.25,child: WidgetUtils().customText('whatsapp link: ',fontWeight: FontWeight.bold)
+                  SizedBox(
+                    width: width * 0.05,
+                  ),
+                  Icon(
+                    Icons.sms,
+                    color: MyColors().mainColor,
+                  ),
+                  SizedBox(
+                    width: width * 0.05,
                   ),
                   Container(
-                    width: width*0.4,
+                      alignment: Alignment.centerLeft,
+                      width: width * 0.25,
+                      child: WidgetUtils().customText('whatsapp link: ',
+                          fontWeight: FontWeight.bold)),
+                  Container(
+                    width: width * 0.4,
                     child: TextField(
                       decoration: InputDecoration(hintText: 'mandetory'),
                       controller: whatsappLinkController,
@@ -195,108 +232,131 @@ class _NewParlamentComponentState extends State<NewParlamentComponent> implement
       ),
     );
   }*/
-  
-  List<Widget> friendsList(double tileHeight,double tileWidth,String search){
+
+  List<Widget> friendsList(double tileHeight, double tileWidth, String search) {
     return [];
   }
-  
-  Widget freindListTile(double height,double width){
+
+  Widget freindListTile(double height, double width) {
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(height*0.25)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(height * 0.25)),
       child: Container(
         height: height,
         width: width,
-        margin: EdgeInsets.symmetric(vertical: height*0.15),
+        margin: EdgeInsets.symmetric(vertical: height * 0.15),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(height*0.25),
-          color: Colors.white
-        ),
+            borderRadius: BorderRadius.circular(height * 0.25),
+            color: Colors.white),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(width: width*0.1,),
-            CircleAvatar(backgroundColor: MyColors().backgroundColor,),
-            SizedBox(width: width*0.05,),
-            WidgetUtils().customText('user name',fontWeight: FontWeight.bold),
+            SizedBox(
+              width: width * 0.1,
+            ),
+            CircleAvatar(
+              backgroundColor: MyColors().backgroundColor,
+            ),
+            SizedBox(
+              width: width * 0.05,
+            ),
+            WidgetUtils().customText('user name', fontWeight: FontWeight.bold),
             Expanded(child: SizedBox()),
-            CircleAvatar(backgroundColor: MyColors().mainColor,child: Icon(Icons.add,color: Colors.white,),),
-            SizedBox(width: width*0.1,)
+            CircleAvatar(
+              backgroundColor: MyColors().mainColor,
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(
+              width: width * 0.1,
+            )
           ],
         ),
       ),
     );
   }
 
-  FloatingActionButton myActionButton(double height,double width){
+  FloatingActionButton myActionButton(double height, double width) {
     return FloatingActionButton(
-        backgroundColor: MyColors().mainBright,
-        child: Icon(Icons.check,color:needToConfirm?Colors.white : Colors.white,),
-        onPressed: ()=> floatingActionButtonFunction(height, width),
+      backgroundColor: MyColors().mainBright,
+      child: Icon(
+        Icons.check,
+        color: needToConfirm ? Colors.white : Colors.white,
+      ),
+      onPressed: () => floatingActionButtonFunction(height, width),
     );
   }
 
-  Widget myAlertDialog(double height,double width){
+  Widget myAlertDialog(double height, double width) {
     return AlertDialog(
-      title: Text('Are you sure you want to create the group '+nameController.text),
+      title: Text(
+          'Are you sure you want to create the group ' + nameController.text),
       actions: [
         InkWell(
-          onTap: ()=>{
+          onTap: () => {
             Navigator.pop(context),
-            model.uploadParlament(nameController.text,File(userImage?.path as String),whatsappLinkController.text)
+            model.uploadParlament(nameController.text,
+                File(userImage?.path as String), whatsappLinkController.text)
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: width*0.05,vertical: height*0.01),
+            padding: EdgeInsets.symmetric(
+                horizontal: width * 0.05, vertical: height * 0.01),
             color: MyColors().mainColor,
-            child: WidgetUtils().customText('YES',color: Colors.white),
+            child: WidgetUtils().customText('YES', color: Colors.white),
           ),
         ),
         InkWell(
-          onTap: ()=>Navigator.of(context).pop(),
+          onTap: () => Navigator.of(context).pop(),
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: width*0.05,vertical: height*0.01),
+            padding: EdgeInsets.symmetric(
+                horizontal: width * 0.05, vertical: height * 0.01),
             color: Colors.red,
-            child: WidgetUtils().customText('NO',color: Colors.white),
+            child: WidgetUtils().customText('NO', color: Colors.white),
           ),
         )
       ],
     );
   }
 
-
-  void floatingActionButtonFunction(double height,double width){
-      if(model.allFieldsFilled(nameController.text, friendsIds,userImage?.path)){
-        showDialog(context: context, builder:(_)=>myAlertDialog(height, width));
-      }
+  void floatingActionButtonFunction(double height, double width) {
+    if (model.allFieldsFilled(
+        nameController.text, friendsIds, userImage?.path)) {
+      showDialog(
+          context: context, builder: (_) => myAlertDialog(height, width));
+    }
   }
 
   @override
   void onError(String error) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.white,content: WidgetUtils().customText(error,color: Colors.red)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.white,
+        content: WidgetUtils().customText(error, color: Colors.red)));
   }
 
   @override
   void onPickImage() {
     picker.pickImage(source: ImageSource.gallery).then((value) => {
-      if(value!=null){
-        ImageCropper().cropImage(
-          sourcePath: value.path,
-          uiSettings: [
-            AndroidUiSettings(
-                toolbarTitle: 'Cropper',
-                toolbarColor: MyColors().mainColor,
-                toolbarWidgetColor: Colors.white,
-                initAspectRatio: CropAspectRatioPreset.original,
-                lockAspectRatio: false),
-            IOSUiSettings(
-              title: 'Cropper',
-            ),
-          ],
-        ).then((value) =>
-        {userImage = value,onDataChanged()}
-        )
-      }
-    });
+          if (value != null)
+            {
+              ImageCropper().cropImage(
+                sourcePath: value.path,
+                uiSettings: [
+                  AndroidUiSettings(
+                      toolbarTitle: 'Cropper',
+                      toolbarColor: MyColors().mainColor,
+                      toolbarWidgetColor: Colors.white,
+                      initAspectRatio: CropAspectRatioPreset.original,
+                      lockAspectRatio: false),
+                  IOSUiSettings(
+                    title: 'Cropper',
+                  ),
+                ],
+              ).then((value) => {userImage = value, onDataChanged()})
+            }
+        });
   }
 
   @override

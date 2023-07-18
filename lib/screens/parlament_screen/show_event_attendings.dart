@@ -8,16 +8,15 @@ import 'package:flutter/material.dart';
 import '../../models/user.dart';
 import '../../utils/my_colors.dart';
 
-class ShowEventAttendings extends StatefulWidget{
-
+class ShowEventAttendings extends StatefulWidget {
   static const String tag = '/show_event_attending';
 
   @override
   State<ShowEventAttendings> createState() => _ShowEventAttendingsState();
 }
 
-class _ShowEventAttendingsState extends State<ShowEventAttendings> implements ParlamentScreenView{
-
+class _ShowEventAttendingsState extends State<ShowEventAttendings>
+    implements ParlamentScreenView {
   bool needToGetEvent = true;
 
   late Event event;
@@ -25,9 +24,9 @@ class _ShowEventAttendingsState extends State<ShowEventAttendings> implements Pa
 
   @override
   Widget build(BuildContext context) {
-
-    if(needToGetEvent){
-      List<dynamic> arguments = ModalRoute.of(context)?.settings.arguments as List<dynamic>;
+    if (needToGetEvent) {
+      List<dynamic> arguments =
+          ModalRoute.of(context)?.settings.arguments as List<dynamic>;
       event = arguments[0];
       members = arguments[1];
     }
@@ -42,17 +41,23 @@ class _ShowEventAttendingsState extends State<ShowEventAttendings> implements Pa
           width: width,
           child: Column(
             children: [
-              SizedBox(height: height*0.07,),
+              SizedBox(
+                height: height * 0.07,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(width: width*0.1,),
-                  WidgetUtils().goBackButton(width, height*0.05, context),
+                  SizedBox(
+                    width: width * 0.1,
+                  ),
+                  WidgetUtils().goBackButton(width, height * 0.05, context),
                 ],
               ),
-              SizedBox(height: height*0.07,),
-              attendingContainer(height*0.4, width*0.9),
-              notAttendingContainer(height*0.4, width*0.9)
+              SizedBox(
+                height: height * 0.07,
+              ),
+              attendingContainer(height * 0.4, width * 0.9),
+              notAttendingContainer(height * 0.4, width * 0.9)
             ],
           ),
         ),
@@ -60,7 +65,7 @@ class _ShowEventAttendingsState extends State<ShowEventAttendings> implements Pa
     );
   }
 
-  Widget attendingContainer(double height,double width){
+  Widget attendingContainer(double height, double width) {
     return Container(
       height: height,
       width: width,
@@ -69,11 +74,13 @@ class _ShowEventAttendingsState extends State<ShowEventAttendings> implements Pa
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           WidgetUtils().customText('Attendings'),
-          Divider(height: height*0.1,),
+          Divider(
+            height: height * 0.1,
+          ),
           Container(
-            height: height*0.7,
-            child:ListView(
-              children: attendingListCreation(height*0.17, width),
+            height: height * 0.7,
+            child: ListView(
+              children: attendingListCreation(height * 0.17, width),
             ),
           )
         ],
@@ -81,7 +88,7 @@ class _ShowEventAttendingsState extends State<ShowEventAttendings> implements Pa
     );
   }
 
-  Widget notAttendingContainer(double height,double width){
+  Widget notAttendingContainer(double height, double width) {
     return Container(
       height: height,
       width: width,
@@ -90,11 +97,13 @@ class _ShowEventAttendingsState extends State<ShowEventAttendings> implements Pa
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           WidgetUtils().customText('Not Attending'),
-          Divider(height: height*0.1,),
+          Divider(
+            height: height * 0.1,
+          ),
           Container(
-            height: height*0.7,
-            child:ListView(
-              children: notAttendingListCreation(height*0.2, width),
+            height: height * 0.7,
+            child: ListView(
+              children: notAttendingListCreation(height * 0.2, width),
             ),
           )
         ],
@@ -102,51 +111,69 @@ class _ShowEventAttendingsState extends State<ShowEventAttendings> implements Pa
     );
   }
 
-
-  List<Widget> attendingListCreation(double tileHeight,double tileWidth){
-    List<Widget> result =[];
-    for(var attend in event.attendingsIds){
-      result.add(memeberListTile(tileHeight, tileWidth, members.firstWhere((element) => element.id==attend),true));
+  List<Widget> attendingListCreation(double tileHeight, double tileWidth) {
+    List<Widget> result = [];
+    for (var attend in event.attendingsIds) {
+      result.add(memeberListTile(tileHeight, tileWidth,
+          members.firstWhere((element) => element.id == attend), true));
     }
     return result;
   }
 
-  List<Widget> notAttendingListCreation(double tileHeight,double tileWidth){
-    List<Widget> result =[];
-    for(var member in members){
-      if(event.attendingsIds.contains(member.id)==false){
-        result.add(memeberListTile(tileHeight, tileWidth, members.firstWhere((element) => element.id==member.id),false));
+  List<Widget> notAttendingListCreation(double tileHeight, double tileWidth) {
+    List<Widget> result = [];
+    for (var member in members) {
+      if (event.attendingsIds.contains(member.id) == false) {
+        result.add(memeberListTile(tileHeight, tileWidth,
+            members.firstWhere((element) => element.id == member.id), false));
       }
     }
     return result;
   }
-  Widget memeberListTile(double height,double width,AppointnetUser member,bool isAttending){
+
+  Widget memeberListTile(
+      double height, double width, AppointnetUser member, bool isAttending) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: height*0.1),
+      margin: EdgeInsets.symmetric(vertical: height * 0.1),
       height: height,
       width: width,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(height*0.25),
-          color: isAttending? MyColors().mainBright : Colors.red[300]
-      ),
+          borderRadius: BorderRadius.circular(height * 0.25),
+          color: isAttending ? MyColors().mainBright : Colors.red[300]),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(width: width*0.1,),
-          CircleAvatar(backgroundImage: CachedNetworkImageProvider(member.imageUrl as String),),
-          SizedBox(width: width*0.05,),
+          SizedBox(
+            width: width * 0.1,
+          ),
+          CircleAvatar(
+            backgroundImage:
+                CachedNetworkImageProvider(member.imageUrl as String),
+          ),
+          SizedBox(
+            width: width * 0.05,
+          ),
           Text(member.name),
           Expanded(child: SizedBox()),
           InkWell(
-              onTap: ()=> GeneralUtils().launchPhone(member.phoneNumber),
-              child: Icon(Icons.phone,color: Colors.white,)
+              onTap: () => GeneralUtils().launchPhone(member.phoneNumber),
+              child: Icon(
+                Icons.phone,
+                color: Colors.white,
+              )),
+          SizedBox(
+            width: width * 0.03,
           ),
-          SizedBox(width: width*0.03,),
           InkWell(
-              onTap: ()=> GeneralUtils().openWhatsappContact(member.phoneNumber,this),
-              child: Icon(Icons.whatsapp,color: Colors.white,)
-          ),
-          SizedBox(width: width*0.1,)
+              onTap: () =>
+                  GeneralUtils().openWhatsappContact(member.phoneNumber, this),
+              child: Icon(
+                Icons.sms,
+                color: Colors.white,
+              )),
+          SizedBox(
+            width: width * 0.1,
+          )
         ],
       ),
     );
