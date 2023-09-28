@@ -4,12 +4,11 @@ import 'package:appointnet/models/parlament.dart';
 import 'package:appointnet/services/dynamic_links_creation.dart';
 import 'package:appointnet/utils/general_utils.dart';
 import 'package:appointnet/utils/my_colors.dart';
-import 'package:appointnet/utils/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 
 class addMemberButton extends StatefulWidget {
-  Parlament parlament;
+  final Parlament parlament;
 
   addMemberButton({required this.parlament});
 
@@ -66,7 +65,6 @@ class _addMemberButton extends State<addMemberButton>
                     children: [
                       InkWell(
                           onTap: () {
-                            String screen = "None";
                             if (index == 0) {
                               addUserFromContacts();
                             }
@@ -158,7 +156,6 @@ class _addMemberButton extends State<addMemberButton>
   }
 
   Future<void> addNewUserToParlament(String phone) async {
-    bool success = true;
     String? phoneError = GeneralUtils().phoneValidationError(phone);
     print('[!] USER PHONE NUMBER: ' + phone);
     if (phoneError != null) {

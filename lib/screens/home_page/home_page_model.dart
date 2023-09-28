@@ -11,11 +11,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePageModel{
-
+class HomePageModel {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-  SharedPreferencesUtils localData  = SharedPreferencesUtils();
+  SharedPreferencesUtils localData = SharedPreferencesUtils();
 
   ///user data
   late AppointnetUser user;
@@ -25,94 +24,96 @@ class HomePageModel{
   late SharedPreferences sh;
 
   HomePageView view;
-  HomePageModel(this.view){
+  HomePageModel(this.view) {
     getLocalData();
     getUserData();
   }
 
-
   //setting local data
-  Future<void> setLocalData() async{
+  Future<void> setLocalData() async {
     List<String> parlamentsIds = [];
-    for(var p in userParlaments){
+    for (var p in userParlaments) {
       parlamentsIds.add(p.id as String);
     }
     await localData.initiate();
     localData.setUserdata(user);
-    for(var p in userParlaments){
+    for (var p in userParlaments) {
       localData.setParlament(p);
     }
     localData.setLocalParlamentsIds(parlamentsIds);
-    for(var e in userUpcomingEvents){
+    for (var e in userUpcomingEvents) {
       localData.setEventData(e);
     }
-
   }
 
-  Future<void> getLocalData() async{
+  Future<void> getLocalData() async {
     await localData.initiate();
-    AppointnetUser? localUser = await localData.getUserData(FirebaseAuth.instance.currentUser?.uid as String);
-    if(localUser!=null){
+    AppointnetUser? localUser = await localData
+        .getUserData(FirebaseAuth.instance.currentUser?.uid as String);
+    if (localUser != null) {
       user = localUser;
       List<String>? parlamentsIds = await localData.getLocalParlamentsIds();
+
       /// if need to pull certin parlaments
-      if(parlamentsIds!=null){
-        userParlaments =  await localData.getParlamentList(parlamentsIds);
-        }
-      view.gotLocalData();
+      if (parlamentsIds != null) {
+        userParlaments = await localData.getParlamentList(parlamentsIds);
       }
-
+      view.gotLocalData();
     }
+  }
 
-  Future<void> getUserData() async{
+  Future<void> getUserData() async {
     getUserUpcomingEvents();
-    AppointnetUser? user = await UserRepository().getUserData(auth.currentUser?.uid as String);
-    if(user== null){
+    AppointnetUser? user =
+        await UserRepository().getUserData(auth.currentUser?.uid as String);
+    if (user == null) {
       view.onError('[-] USER NOT FOUND');
-    }
-    else{
+    } else {
       print('[+] FOUND USER');
       await getUserParlaments();
       this.user = user;
       view.onFinishedLoading();
+
       /// listen for every parlament topic
-      NotificationSettings notificationSettings = await messaging.requestPermission();
-      for(var p in userParlaments){
+      await messaging.requestPermission();
+      for (var p in userParlaments) {
         messaging.subscribeToTopic(p.id as String);
         print('[!] Subscribed to ${p.id as String}');
       }
-     messaging.subscribeToTopic(user.id as String);
+      messaging.subscribeToTopic(user.id as String);
     }
   }
 
-  Future<void> getUserParlaments()async{
-    userParlaments = await ParlamentsRepository().getParlmanetsForUser(auth.currentUser?.uid as String);
-    SharedPreferencesUtils shUtils = SharedPreferencesUtils(); 
+  Future<void> getUserParlaments() async {
+    userParlaments = await ParlamentsRepository()
+        .getParlmanetsForUser(auth.currentUser?.uid as String);
+    SharedPreferencesUtils shUtils = SharedPreferencesUtils();
     await shUtils.initiate();
     shUtils.setUserParlamentsNumber(userParlaments.length);
   }
 
-  Future<void> getUserUpcomingEvents()async{
-    List<Event> events =await EventRepository(parlamentId: 'noEnd').upcomingUserEvents();
+  Future<void> getUserUpcomingEvents() async {
+    List<Event> events =
+        await EventRepository(parlamentId: 'noEnd').upcomingUserEvents();
     userUpcomingEvents = events;
     view.onGotAllEvents();
-
   }
 
-  Future<void> checkForRefresh()async{
+  Future<void> checkForRefresh() async {
     print('[!] FUNCTION EXECUTED');
-    bool? needRefresh = await SharedPreferences.getInstance().then((value) => value.getBool('home_screen_update'));
-    if(needRefresh==true){
+    bool? needRefresh = await SharedPreferences.getInstance()
+        .then((value) => value.getBool('home_screen_update'));
+    if (needRefresh == true) {
       print('[!] NEED TO REFRESH');
       getUserUpcomingEvents();
       sh.setBool('home_screen_update', false);
     }
   }
 
-  Future<void> subscribeToParlaments()async{
-    for(var p in userParlaments){
+  Future<void> subscribeToParlaments() async {
+    for (var p in userParlaments) {
       messaging.subscribeToTopic(p.id as String);
       print('[!] Subscribed to ${p.id as String}');
     }
   }
- }
+}

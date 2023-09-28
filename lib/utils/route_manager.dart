@@ -1,4 +1,3 @@
-import 'package:appointnet/screens/add_friend_screen/add_friend_component.dart';
 import 'package:appointnet/screens/edit_parlament/edit_parlament_component.dart';
 import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/screens/login/login_component.dart';
@@ -16,15 +15,10 @@ import 'package:appointnet/utils/transitions/slide_right.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../main.dart';
-
 class RouteManager {
   static MaterialPageRoute _noScreen() {
     return MaterialPageRoute(
-        builder: (_) => Scaffold(
-            body: Container(
-                child: Center(
-                    ))));
+        builder: (_) => Scaffold(body: Container(child: Center())));
   }
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -33,13 +27,17 @@ class RouteManager {
     switch (settings.name) {
       case LoginComponent.tag:
         screen = LoginComponent();
-        return ScaleRoute(page: screen, routeSettings: settings);   /// page animation
+        return ScaleRoute(page: screen, routeSettings: settings);
+
+      /// page animation
       case UpdateDetailsComponent.tag:
         screen = UpdateDetailsComponent();
         return ScaleRoute(page: screen, routeSettings: settings);
       case HomePageComponent.tag:
         screen = HomePageComponent();
-        return ScaleRoute(page: screen, routeSettings: settings);   /// page animation/// page animation
+        return ScaleRoute(page: screen, routeSettings: settings);
+
+      /// page animation/// page animation
       case NewParlamentComponent.tag:
         screen = NewParlamentComponent();
         return ScaleRoute(page: screen, routeSettings: settings);
@@ -57,15 +55,16 @@ class RouteManager {
         return SizeRoute(page: screen, routeSettings: settings);
       case ParlamentProfileComponent.tag:
         screen = ParlamentProfileComponent();
-        return SlideRightRoute(page: screen,routeSettings: settings);
+        return SlideRightRoute(page: screen, routeSettings: settings);
       case ShowEventAttendings.tag:
         screen = ShowEventAttendings();
-        return SlideRightRoute(page: screen,routeSettings: settings);
+        return SlideRightRoute(page: screen, routeSettings: settings);
       case EditParlamentComponent.tag:
         screen = EditParlamentComponent();
-        return SlideRightRoute(page: screen,routeSettings: settings);
+        return SlideRightRoute(page: screen, routeSettings: settings);
       default:
-        return SlideRightRoute(page: HomePageComponent(),routeSettings: settings);;
+        return SlideRightRoute(
+            page: HomePageComponent(), routeSettings: settings);
     }
   }
 }

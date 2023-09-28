@@ -9,16 +9,15 @@ import 'package:flutter/material.dart';
 
 import '../../utils/shared_reffrencess_utils.dart';
 
-class ProfileScreenComponent extends StatefulWidget{
-
+class ProfileScreenComponent extends StatefulWidget {
   static const String tag = '/profile_screen';
 
   @override
   State<ProfileScreenComponent> createState() => _ProfileScreenComponentState();
 }
 
-class _ProfileScreenComponentState extends State<ProfileScreenComponent> implements ProfileScreenView{
-
+class _ProfileScreenComponentState extends State<ProfileScreenComponent>
+    implements ProfileScreenView {
   bool loadingUser = true;
   late AppointnetUser user;
 
@@ -38,11 +37,11 @@ class _ProfileScreenComponentState extends State<ProfileScreenComponent> impleme
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
-    if(loadingUser){
-      setState(()=> {
-        user = ModalRoute.of(context)?.settings.arguments as AppointnetUser,
-        loadingUser = false
-      });
+    if (loadingUser) {
+      setState(() => {
+            user = ModalRoute.of(context)?.settings.arguments as AppointnetUser,
+            loadingUser = false
+          });
     }
 
     return Scaffold(
@@ -55,21 +54,31 @@ class _ProfileScreenComponentState extends State<ProfileScreenComponent> impleme
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: height*0.05,),
+              SizedBox(
+                height: height * 0.05,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(width: width*0.1,),
-                  WidgetUtils().goBackButton(width, height*0.05, context),
+                  SizedBox(
+                    width: width * 0.1,
+                  ),
+                  WidgetUtils().goBackButton(width, height * 0.05, context),
                 ],
               ),
-                SizedBox(height: height*0.03,),
-              titleWidget(height*0.2, width),
-              SizedBox(height: height*0.05,),
-              bottomContainer(height*0.4, width*0.8),
+              SizedBox(
+                height: height * 0.03,
+              ),
+              titleWidget(height * 0.2, width),
+              SizedBox(
+                height: height * 0.05,
+              ),
+              bottomContainer(height * 0.4, width * 0.8),
               Expanded(child: SizedBox()),
-              logOutButton(height*0.1, width*0.6),
-              SizedBox(height: height*0.1,)
+              logOutButton(height * 0.1, width * 0.6),
+              SizedBox(
+                height: height * 0.1,
+              )
             ],
           ),
         ),
@@ -77,27 +86,33 @@ class _ProfileScreenComponentState extends State<ProfileScreenComponent> impleme
     );
   }
 
-  Widget titleWidget(double height,double width){
+  Widget titleWidget(double height, double width) {
     return Container(
       height: height,
       width: width,
-      child:  Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(width: width*0.05,),
-          CircleAvatar(
-            radius: height*0.3,backgroundColor: MyColors().mainColor,
-            backgroundImage:CachedNetworkImageProvider(user.imageUrl as String),
+          SizedBox(
+            width: width * 0.05,
           ),
-          SizedBox(width: width*0.1,),
-         // WidgetUtils().customText(user.name)
+          CircleAvatar(
+            radius: height * 0.3,
+            backgroundColor: MyColors().mainColor,
+            backgroundImage:
+                CachedNetworkImageProvider(user.imageUrl as String),
+          ),
+          SizedBox(
+            width: width * 0.1,
+          ),
+          // WidgetUtils().customText(user.name)
         ],
       ),
     );
   }
 
-  Widget bottomContainer(double height,double width){
+  Widget bottomContainer(double height, double width) {
     return Container(
       height: height,
       width: width,
@@ -105,35 +120,49 @@ class _ProfileScreenComponentState extends State<ProfileScreenComponent> impleme
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           dataRow(width, 'Name', Icons.person, user.name),
-          dataRow(width, 'Phone number', Icons.phone,GeneralUtils().reversePhoneTemplate(user.phoneNumber)),
-          dataRow(width, 'Parlaments', Icons.group,numberOfParlaments==0?'no data' : numberOfParlaments.toString()),
-          dataRow(width, 'Age', Icons.calendar_month,GeneralUtils().ageCalculator(user).toString()),
+          dataRow(width, 'Phone number', Icons.phone,
+              GeneralUtils().reversePhoneTemplate(user.phoneNumber)),
+          dataRow(
+              width,
+              'Parlaments',
+              Icons.group,
+              numberOfParlaments == 0
+                  ? 'no data'
+                  : numberOfParlaments.toString()),
+          dataRow(width, 'Age', Icons.calendar_month,
+              GeneralUtils().ageCalculator(user).toString()),
         ],
       ),
     );
-
   }
 
-  Widget dataRow(double width,String name,IconData icon,String data,{Widget? usersComingWidget}){
+  Widget dataRow(double width, String name, IconData icon, String data,
+      {Widget? usersComingWidget}) {
     return Container(
       width: width,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            width: width*0.5,
+            width: width * 0.5,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Icon(icon,color: MyColors().mainBright,),
-                SizedBox(width: width*0.03,),
+                Icon(
+                  icon,
+                  color: MyColors().mainBright,
+                ),
+                SizedBox(
+                  width: width * 0.03,
+                ),
                 WidgetUtils().customText(name)
               ],
             ),
           ),
           Row(
             children: [
-              usersComingWidget?? WidgetUtils().customText(data,fontWeight: FontWeight.bold)
+              usersComingWidget ??
+                  WidgetUtils().customText(data, fontWeight: FontWeight.bold)
             ],
           )
         ],
@@ -141,34 +170,35 @@ class _ProfileScreenComponentState extends State<ProfileScreenComponent> impleme
     );
   }
 
-  Widget logOutButton(double height,double width){
+  Widget logOutButton(double height, double width) {
     return InkWell(
-      onTap: ()=> GeneralUtils().signOut(context),
+      onTap: () => GeneralUtils().signOut(context),
       child: Container(
           height: height,
           width: width,
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(height*0.5)
-          ),
-          child:Row(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(height * 0.5)),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(Icons.logout,color: Colors.red,),
-              SizedBox(width: width*0.1,),
+              Icon(
+                Icons.logout,
+                color: Colors.red,
+              ),
+              SizedBox(
+                width: width * 0.1,
+              ),
               WidgetUtils().customText('LOG OUT')
             ],
-          )
-      ),
+          )),
     );
   }
 
   @override
   void gotSharedData(int numberOfParlaments) {
-    setState(()=>{
-      this.numberOfParlaments =   numberOfParlaments
-    });
+    setState(() => this.numberOfParlaments = numberOfParlaments);
   }
 
   @override
@@ -176,4 +206,3 @@ class _ProfileScreenComponentState extends State<ProfileScreenComponent> impleme
     // TODO: implement onError
   }
 }
-

@@ -1,4 +1,3 @@
-import 'package:appointnet/screens/home_page/home_page_component.dart';
 import 'package:appointnet/screens/login/login_model.dart';
 import 'package:appointnet/screens/login/login_view.dart';
 import 'package:appointnet/screens/splash_screen/splash_component.dart';
