@@ -333,7 +333,7 @@ class _ParlamentProfileComponentState extends State<ParlamentProfileComponent>
 
   @override
   void gotEventsNumber(int number) {
-    setState(() => {eventNumber = number});
+    setState(() => eventNumber = number);
   }
 
   @override

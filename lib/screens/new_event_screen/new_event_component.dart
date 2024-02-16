@@ -298,6 +298,6 @@ class _NewEventComponentState extends State<NewEventComponent>
 
   @override
   void startedUploading() {
-    setState(() => {loading = true});
+    setState(() => loading = true);
   }
 }

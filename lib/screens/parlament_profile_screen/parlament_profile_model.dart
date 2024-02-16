@@ -48,7 +48,6 @@ class ParlamentProfileModel {
       view.onError('No link for this group');
       return;
     }
-    var whatsapp = link;
     if (Platform.isIOS) {
       // for iOS phone only
       if (await canLaunch(link)) {
