@@ -20,6 +20,7 @@ class BringItem{
       'id': this.id,
       'quantity': this.quantity,
       'name': this.name,
+      
       'parlamental': this.parlamental
     };
   }
