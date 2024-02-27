@@ -1,6 +1,7 @@
 import 'package:appointnet/models/link_details.dart';
 import 'package:appointnet/repositories/link_repository.dart';
 import 'package:appointnet/repositories/parlaments_repository.dart';
+import 'package:appointnet/utils/globals/flags.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 class DynamicLinkService {
@@ -36,6 +37,7 @@ class DynamicLinkService {
     print('parlament id found');
     ParlamentsRepository()
         .addMemberViaLink(parlamentId: link?.groupId as String);
+    Flags.needDynamicLinksUpdate = true;
   }
 
   Future<void> initialLinkFunction() async {

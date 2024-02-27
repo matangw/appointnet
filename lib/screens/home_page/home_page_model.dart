@@ -5,6 +5,7 @@ import 'package:appointnet/repositories/event_repository.dart';
 import 'package:appointnet/repositories/parlaments_repository.dart';
 import 'package:appointnet/repositories/user_repository.dart';
 import 'package:appointnet/screens/home_page/home_page_view.dart';
+import 'package:appointnet/utils/globals/flags.dart';
 import 'package:appointnet/utils/shared_reffrencess_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -25,6 +26,12 @@ class HomePageModel {
 
   HomePageView view;
   HomePageModel(this.view) {
+    if (Flags.needDynamicLinksUpdate) {
+      Future.delayed(Duration(seconds: 2), () {
+        getUserData();
+      });
+    }
+
     getLocalData();
     getUserData();
   }
